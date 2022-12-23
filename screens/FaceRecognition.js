@@ -26,21 +26,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { firestore, storage } from "../firebase";
-import { cameraWithTensors } from "@tensorflow/tfjs-react-native";
-import { Camera } from "expo-camera";
-const TEXTURE_SIZE = { width: 1080, height: 1920 };
-
-const TENSOR_WIDTH = 152;
-
-const CAMERA_RATIO = TEXTURE_SIZE.height / TEXTURE_SIZE.width;
-
-const TENSOR_SIZE = {
-  width: TENSOR_WIDTH,
-  height: TENSOR_WIDTH * CAMERA_RATIO,
-};
-
-const TensorCamera = cameraWithTensors(Camera);
-const FaceRecognition = ({ route, style, width, ...props }) => {
+const FaceRecognition = ({ route }) => {
   const user = route.params;
   const navigation = useNavigation();
   const [image, setImage] = React.useState(null);
@@ -98,21 +84,10 @@ const FaceRecognition = ({ route, style, width, ...props }) => {
       })
     );
   }
-  const sizeStyle = React.useMemo(() => {
-    const ratio = width / TEXTURE_SIZE.width;
-    const cameraWidth = TEXTURE_SIZE.width * ratio;
-    const cameraHeight = TEXTURE_SIZE.height * ratio;
-    return {
-      maxWidth: cameraWidth,
-      minWidth: cameraWidth,
-      maxHeight: cameraHeight,
-      minHeight: cameraHeight,
-    };
-  }, [width]);
 
   return (
     <View style={styles.faceRecognitionView}>
-      {/* <ImageBackground
+      <ImageBackground
         style={[styles.faceIcon, styles.ml52]}
         resizeMode="cover"
         source={{ uri: image && image }}
@@ -152,128 +127,128 @@ const FaceRecognition = ({ route, style, width, ...props }) => {
           <View style={styles.rectangleView3} />
           <Text style={styles.continueText}>Upload</Text>
         </Pressable>
-      )} */}
+      )}
     </View>
   );
 };
 
-// const styles = StyleSheet.create({
-//   ml52: {
-//     marginLeft: 52,
-//   },
-//   mt_832: {
-//     marginTop: -832,
-//   },
-//   mt_812: {
-//     marginTop: -812,
-//   },
-//   mt_698: {
-//     marginTop: -698,
-//   },
-//   mr2: {
-//     marginRight: 2,
-//   },
-//   mt143: {
-//     marginTop: 143,
-//   },
-//   ml1: {
-//     marginLeft: 1,
-//   },
-//   mt55: {
-//     marginTop: 55,
-//   },
-//   faceIcon: {
-//     position: "relative",
-//     width: 607.37,
-//     height: 851.9,
-//     transform: [
-//       {
-//         rotate: "355deg",
-//       },
-//     ],
-//   },
-//   rectangleView: {
-//     position: "absolute",
-//     top: 0,
-//     right: 0,
-//     bottom: 0,
-//     left: 0,
-//     backgroundColor: "rgba(249, 172, 25, 0.02)",
-//   },
-//   rectangleView1: {
-//     position: "absolute",
-//     top: 116,
-//     right: 35,
-//     left: 35,
-//     backgroundColor: "rgba(249, 172, 25, 0.02)",
-//     height: 385,
-//   },
-//   subtraction1View: {
-//     position: "relative",
-//     backgroundColor: "rgba(249, 172, 25, 0.02)",
-//     width: 375,
-//     height: 812,
-//   },
-//   rectangleIcon: {
-//     position: "relative",
-//     width: 375,
-//     height: 812,
-//   },
-//   rectangleView2: {
-//     position: "relative",
-//     borderRadius: 3,
-//     borderStyle: "solid",
-//     borderColor: "#fff",
-//     borderWidth: 1,
-//     width: 307,
-//     height: 387,
-//   },
-//   faceScanText: {
-//     position: "relative",
-//     fontSize: 20,
-//     letterSpacing: -0.32,
-//     lineHeight: 18,
-//     fontFamily: "Quicksand",
-//     color: "#fff",
-//     textAlign: "center",
-//     width: 97,
-//   },
-//   rectangleView3: {
-//     position: "absolute",
-//     top: 0,
-//     right: 0,
-//     bottom: 0,
-//     left: 0,
-//     borderRadius: 10,
-//     backgroundColor: "#21ae9c",
-//   },
-//   continueText: {
-//     position: "absolute",
-//     marginTop: -11,
-//     marginLeft: -38,
-//     top: "50%",
-//     left: "50%",
-//     fontSize: 18,
-//     lineHeight: 12,
-//     fontWeight: "700",
-//     fontFamily: "Quicksand",
-//     color: "#fff",
-//     textAlign: "center",
-//     width: 79,
-//   },
-//   continuePressable: {
-//     position: "relative",
-//     width: 302,
-//     height: 48,
-//   },
-//   faceRecognitionView: {
-//     position: "relative",
-//     backgroundColor: "#fff",
-//     flex: 1,
-//     width: "100%",
-//     flexDirection: "column",
-//     alignItems: "center",
-//   },
-// });
+const styles = StyleSheet.create({
+  ml52: {
+    marginLeft: 52,
+  },
+  mt_832: {
+    marginTop: -832,
+  },
+  mt_812: {
+    marginTop: -812,
+  },
+  mt_698: {
+    marginTop: -698,
+  },
+  mr2: {
+    marginRight: 2,
+  },
+  mt143: {
+    marginTop: 143,
+  },
+  ml1: {
+    marginLeft: 1,
+  },
+  mt55: {
+    marginTop: 55,
+  },
+  faceIcon: {
+    position: "relative",
+    width: 607.37,
+    height: 851.9,
+    transform: [
+      {
+        rotate: "355deg",
+      },
+    ],
+  },
+  rectangleView: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    backgroundColor: "rgba(249, 172, 25, 0.02)",
+  },
+  rectangleView1: {
+    position: "absolute",
+    top: 116,
+    right: 35,
+    left: 35,
+    backgroundColor: "rgba(249, 172, 25, 0.02)",
+    height: 385,
+  },
+  subtraction1View: {
+    position: "relative",
+    backgroundColor: "rgba(249, 172, 25, 0.02)",
+    width: 375,
+    height: 812,
+  },
+  rectangleIcon: {
+    position: "relative",
+    width: 375,
+    height: 812,
+  },
+  rectangleView2: {
+    position: "relative",
+    borderRadius: 3,
+    borderStyle: "solid",
+    borderColor: "#fff",
+    borderWidth: 1,
+    width: 307,
+    height: 387,
+  },
+  faceScanText: {
+    position: "relative",
+    fontSize: 20,
+    letterSpacing: -0.32,
+    lineHeight: 18,
+    fontFamily: "Quicksand",
+    color: "#fff",
+    textAlign: "center",
+    width: 97,
+  },
+  rectangleView3: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    borderRadius: 10,
+    backgroundColor: "#21ae9c",
+  },
+  continueText: {
+    position: "absolute",
+    marginTop: -11,
+    marginLeft: -38,
+    top: "50%",
+    left: "50%",
+    fontSize: 18,
+    lineHeight: 12,
+    fontWeight: "700",
+    fontFamily: "Quicksand",
+    color: "#fff",
+    textAlign: "center",
+    width: 79,
+  },
+  continuePressable: {
+    position: "relative",
+    width: 302,
+    height: 48,
+  },
+  faceRecognitionView: {
+    position: "relative",
+    backgroundColor: "#fff",
+    flex: 1,
+    width: "100%",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+});
 
 export default FaceRecognition;

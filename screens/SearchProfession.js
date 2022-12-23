@@ -78,7 +78,7 @@ const SearchProfession = () => {
           theme={{ colors: { text: "#000", background: "#fff" } }}
         />
 
-        {users &&
+        {users ? (
           users.map((u) => (
             <View style={[styles.nameView, styles.mt35, styles.mr1]}>
               <Text style={styles.neliaCardosoText}>{u.name}</Text>
@@ -92,7 +92,10 @@ const SearchProfession = () => {
                 diam nonumy eirmod tempor
               </Text>
             </View>
-          ))}
+          ))
+        ) : (
+          <Text>No Profession similar to yours found!</Text>
+        )}
       </Pressable>
     </ScrollView>
   );

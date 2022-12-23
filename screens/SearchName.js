@@ -77,7 +77,7 @@ const SearchName = () => {
           theme={{ colors: { text: "#000", background: "#fff" } }}
         />
 
-        {users &&
+        {users ? (
           users.map((u) => (
             <View style={[styles.nameView, styles.mt35, styles.mr1]}>
               <Text style={styles.neliaCardosoText}>{u.name}</Text>
@@ -91,7 +91,10 @@ const SearchName = () => {
                 diam nonumy eirmod tempor
               </Text>
             </View>
-          ))}
+          ))
+        ) : (
+          <Text>No Name similar to yours found!</Text>
+        )}
       </Pressable>
     </ScrollView>
   );

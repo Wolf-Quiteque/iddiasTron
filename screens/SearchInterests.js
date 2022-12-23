@@ -1,7 +1,14 @@
 import * as React from "react";
-import { Text, StyleSheet, Image, Pressable, View } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  View,
+  ScrollView,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
+import { TextInput as RNPTextInput } from "react-native-paper";
 import {
   selectIsLoggedIn,
   selectUser,
@@ -9,7 +16,7 @@ import {
   selectUserDetails,
 } from "../redux/slices/authSlice";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { useSelecto } from "react-redux";
+import { useSelector } from "react-redux";
 
 const SearchInterests = () => {
   const email = useSelector(selectUserName);

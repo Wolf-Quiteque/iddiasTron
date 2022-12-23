@@ -88,36 +88,41 @@ const FaceRecognition = ({ route }) => {
       })
     );
   }
+  const TEXTURE_SIZE = { width: 1080, height: 1920 };
 
-  function handleCameraStream(images, updatePreview, gl) {
-    const loop = async () => {
-      const nextImageTensor = images.next().value;
+  const TENSOR_WIDTH = 152;
 
-      //
-      // do something with tensor here
-      //
+  const CAMERA_RATIO = TEXTURE_SIZE.height / TEXTURE_SIZE.width;
 
-      // if autorender is false you need the following two lines.
-      // updatePreview();
-      // gl.endFrameEXP();
+  const TENSOR_SIZE = {
+    width: TENSOR_WIDTH,
+    height: TENSOR_WIDTH * CAMERA_RATIO,
+  };
 
-      requestAnimationFrame(loop);
+  const TensorCamera = cameraWithTensors(Camera);
+
+  const sizeStyle = React.useMemo(() => {
+    const ratio = width / TEXTURE_SIZE.width;
+    const cameraWidth = TEXTURE_SIZE.width * ratio;
+    const cameraHeight = TEXTURE_SIZE.height * ratio;
+    return {
+      maxWidth: cameraWidth,
+      minWidth: cameraWidth,
+      maxHeight: cameraHeight,
+      minHeight: cameraHeight,
     };
-    loop();
-  }
+  }, [width]);
 
   return (
     <View>
       <TensorCamera
-        // Standard Camera props
-        style={styles.camera}
-        type={Camera.Constants.Type.front}
-        // Tensor related props
-        resizeHeight={200}
-        resizeWidth={152}
+        {...props}
+        style={[style, sizeStyle]}
+        cameraTextureWidth={TEXTURE_SIZE.width}
+        cameraTextureHeight={TEXTURE_SIZE.height}
+        resizeWidth={TENSOR_SIZE.width}
+        resizeHeight={TENSOR_SIZE.height}
         resizeDepth={3}
-        onReady={handleCameraStream}
-        autorender={true}
       />
     </View>
     // <View style={styles.faceRecognitionView}>

@@ -29,6 +29,7 @@
     "@tensorflow-models/mobilenet": "^2.1.0",
     "@tensorflow/tfjs": "^4.1.0",
     "@tensorflow/tfjs-react-native": "^0.8.0",
+    "babel-preset-es2015": "^6.24.1",
     "expo": "~47.0.8",
     "expo-camera": "^13.1.0",
     "expo-font": "^11.0.1",

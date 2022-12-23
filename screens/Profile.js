@@ -8,9 +8,18 @@ import {
   ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import {
+  selectIsLoggedIn,
+  selectUser,
+  selectUserName,
+  selectUserDetails,
+} from "../redux/slices/authSlice";
 
 const Profile = () => {
   const navigation = useNavigation();
+
+  const User = useSelector(selectUserDetails);
 
   return (
     <ScrollView>
@@ -46,8 +55,8 @@ const Profile = () => {
             source={require("../assets/profile5@3x.png")}
           />
           <View style={styles.nameView}>
-            <Text style={styles.johnDoeText}>John Doe</Text>
-            <Text style={styles.sanFranciscoCA}>San Francisco, CA</Text>
+            <Text style={styles.johnDoeText}>{User && User.name}</Text>
+            <Text style={styles.sanFranciscoCA}>{User && User.city}</Text>
           </View>
           <Text style={styles.hiMyNameIsJohnImACre}>
             Hi! My name is John, I’m a creative geek from San Francisco, CA. I

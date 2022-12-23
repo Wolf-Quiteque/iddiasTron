@@ -20,6 +20,7 @@ const AuthNavigator = () => {
 
       <Stack.Screen name="FaceRecognition" component={FaceRecognition} />
       <Stack.Screen name="Interests" component={Interests} />
+      {/* <Stack.Screen name="AI" component={AI} /> */}
     </Stack.Navigator>
   );
 };

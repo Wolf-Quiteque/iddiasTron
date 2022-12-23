@@ -2,6 +2,15 @@ import * as React from "react";
 import { Text, StyleSheet, Image, Pressable, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
+import {
+  selectIsLoggedIn,
+  selectUser,
+  selectUserName,
+  selectUserDetails,
+} from "../redux/slices/authSlice";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { useSelecto } from "react-redux";
+
 const SearchInterests = () => {
   const email = useSelector(selectUserName);
   const User = useSelector(selectUserDetails);

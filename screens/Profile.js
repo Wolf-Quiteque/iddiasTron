@@ -135,65 +135,6 @@ const Profile = () => {
             nonumy eirmod tempor
           </Text>
         </View>
-        <View style={[styles.toolbarView, styles.mt30]}>
-          <View style={styles.rectangleView2} />
-          <View style={styles.profileView}>
-            <Text style={styles.profileText1}>Profile</Text>
-            <View style={styles.lineView} />
-            <Image
-              style={styles.union46Icon}
-              resizeMode="cover"
-              source={require("../assets/union-46@3x.png")}
-            />
-          </View>
-          <Pressable
-            style={styles.feedPressable}
-            onPress={() => navigation.navigate("NewsFeed")}
-          >
-            <Text style={styles.feedText}>Feed</Text>
-            <Image
-              style={styles.feedIcon}
-              resizeMode="cover"
-              source={require("../assets/feed5@3x.png")}
-            />
-          </Pressable>
-          <Pressable
-            style={styles.searchPressable}
-            onPress={() => navigation.navigate("Search")}
-          >
-            <Text style={styles.searchText}>Search</Text>
-            <View style={styles.searchView}>
-              <View style={styles.rectangleView3} />
-              <Image
-                style={styles.path99Icon}
-                resizeMode="cover"
-                source={require("../assets/path-996@3x.png")}
-              />
-            </View>
-          </Pressable>
-          <Pressable
-            style={styles.chatPressable}
-            onPress={() => navigation.navigate("Chat")}
-          >
-            <Text style={styles.chatText}>Chat</Text>
-            <Image
-              style={styles.iconMaterialChatBubble}
-              resizeMode="cover"
-              source={require("../assets/icon-materialchatbubble@3x.png")}
-            />
-          </Pressable>
-          <Pressable
-            style={styles.groupPressable}
-            onPress={() => navigation.navigate("GroupFeed")}
-          >
-            <Text style={styles.groupText}>Group</Text>
-            <Image
-              style={styles.iconMaterialGroup}
-              resizeMode="cover"
-              source={require("../assets/icon-materialgroup@3x.png")}
-            />
-          </Pressable>
-        </View>
       </View>
     </ScrollView>
   );

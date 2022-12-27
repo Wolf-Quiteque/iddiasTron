@@ -7,9 +7,10 @@ import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 const AI = () => {
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
+
   useEffect(() => {
     (async () => {
-      const cameraStatus = await Camera.requestPermissionsAsync();
+      const cameraStatus = await Camera.getCameraPermissionsAsync();
       requestPermission(cameraStatus.status === "granted");
     })();
   }, []);

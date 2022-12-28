@@ -32,6 +32,7 @@
     "babel-preset-es2015": "^6.24.1",
     "expo": "~47.0.8",
     "expo-camera": "^13.1.0",
+    "expo-face-detector": "^12.0.0",
     "expo-font": "^11.0.1",
     "expo-gl": "^12.0.1",
     "expo-image-picker": "^14.0.2",

@@ -1,90 +1,51 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-import { Camera, CameraType } from "expo-camera";
-import * as FaceDetector from "expo-face-detector";
+import React, {useState, useEffect, useRef} from 'react';
+import {Text, View, Button} from 'react-native';
+import {Camera} from 'expo-camera';
+import * as Permissions from 'expo-permissions';
+import {cameraWithTensors} from '@tensorflow/tfjs-react-native';
+import * as MediaLibrary from 'expo-media-library';
 
-export default function AI() {
-  const [hasPermission, setHasPermission] = React.useState();
-  const [faceData, setFaceData] = React.useState([]);
+const TensorCamera = cameraWithTensors(Camera);
 
-  React.useEffect(() => {
+export default function App() {
+  const cameraRef = useRef();
+  const [hasPermission, setHasPermission] = useState(false);
+
+  useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === "granted");
+      const {status} = await Permissions.askAsync(Permissions.CAMERA, Permissionsa.MEDIA_LIBRARY);
+      setHasPermission(status === 'granted');
     })();
   }, []);
 
+  if (hasPermission === null) {
+    return <View />;
+  }
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
 
-  function getFaceDataView() {
-    if (faceData.length === 0) {
-      return (
-        <View style={styles.faces}>
-          <Text style={styles.faceDesc}>No faces :(</Text>
-        </View>
-      );
-    } else {
-      return faceData.map((face, index) => {
-        const eyesShut =
-          face.rightEyeOpenProbability < 0.4 &&
-          face.leftEyeOpenProbability < 0.4;
-        const winking =
-          !eyesShut &&
-          (face.rightEyeOpenProbability < 0.4 ||
-            face.leftEyeOpenProbability < 0.4);
-        const smiling = face.smilingProbability > 0.7;
-        return (
-          <View style={styles.faces} key={index}>
-            <Text style={styles.faceDesc}>
-              Eyes Shut: {eyesShut.toString()}
-            </Text>
-            <Text style={styles.faceDesc}>Winking: {winking.toString()}</Text>
-            <Text style={styles.faceDesc}>Smiling: {smiling.toString()}</Text>
-          </View>
-        );
-      });
-    }
-  }
-
-  const handleFacesDetected = ({ faces }) => {
-    setFaceData(faces);
-    console.log(faces);
+  const takePicture = async () => {
+    cameraRef.current.camera.takePictureAsync().then(result => {
+      MediaLibrary.saveToLibraryAsync(result.uri);
+    });
   };
 
   return (
-    <Camera
-      type={CameraType.back}
-      style={styles.camera}
-      onFacesDetected={handleFacesDetected}
-      faceDetectorSettings={{
-        mode: FaceDetector.FaceDetectorMode.fast,
-        detectLandmarks: FaceDetector.FaceDetectorLandmarks.none,
-        runClassifications: FaceDetector.FaceDetectorClassifications.none,
-        minDetectionInterval: 100,
-        tracking: true,
-      }}
-    >
-      {getFaceDataView()}
-    </Camera>
+    <View>
+      <TensorCamera
+        ref={cameraRef}
+        style={{
+          width: 600,
+          height: 600,
+        }}
+        autorender={true}
+        type={Camera.Constants.Type.back}
+      />
+      <View style={{marginTop: 50}}>
+        <Button onPress={() => takePicture()} title="Take Picture">
+        </Button>
+      </View>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  camera: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  faces: {
-    backgroundColor: "#ffffff",
-    alignSelf: "stretch",
-    alignItems: "center",
-    justifyContent: "center",
-    margin: 16,
-  },
-  faceDesc: {
-    fontSize: 20,
-  },
-});

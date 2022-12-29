@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { Camera } from "expo-camera";
+import { Camera, CameraType } from "expo-camera";
 import * as FaceDetector from "expo-face-detector";
 
 export default function AI() {
@@ -55,7 +55,7 @@ export default function AI() {
 
   return (
     <Camera
-      type={Camera.Constants.Type.front}
+      type={CameraType.back}
       style={styles.camera}
       onFacesDetected={handleFacesDetected}
       faceDetectorSettings={{

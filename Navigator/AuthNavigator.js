@@ -5,7 +5,7 @@ import SignIn from "../screens/SignIn";
 import SignUp from "../screens/SignUp";
 import FaceRecognition from "../screens/FaceRecognition";
 import Interests from "../screens/Interests";
-import AI from "../screens/AI";
+import AI from "../screens/FaceRecognition";
 
 const Stack = createStackNavigator();
 
@@ -16,7 +16,7 @@ const AuthNavigator = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="AI" component={AI} />
+      
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="SignUp" component={SignUp} />
 

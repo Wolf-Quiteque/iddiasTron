@@ -49,9 +49,7 @@ const NewsFeed = () => {
         <View style={styles.postsView}>
           <Text style={styles.loremIpsumDolorSitAmetCo}>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-            eiusmod tempor #incididunt ero labore et dolore magna aliqua. Ut
-            enim ad minim veniam, quis nostrud exercitation ullamco poriti
-            laboris nisi ut aliquip ex ea commodo consequat.
+            eiusmod tempor #incididunt ero ... read more.
           </Text>
           <ImageBackground
             style={styles.rectangleIcon}
@@ -78,36 +76,39 @@ const NewsFeed = () => {
             <Text style={styles.hAgoText}>1h ago</Text>
           </View>
         </View>
-        <View style={[styles.postsView1, styles.mt20]}>
-          <Text style={styles.loremIpsumDolorSitAmetCo1}>
+
+
+        <View style={styles.postsView}>
+          <Text style={styles.loremIpsumDolorSitAmetCo}>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-            eiusmod tempor #incididunt ero labore et dolore magna aliqua. Ut
-            enim ad minim veniam, quis nostrud exercitation ullamco poriti
-            laboris nisi ut aliquip ex ea commodo consequat.
+            eiusmod tempor #incididunt ero ... read more.
           </Text>
-          <Image
-            style={styles.rectangleIcon1}
+          <ImageBackground
+            style={styles.rectangleIcon}
             resizeMode="cover"
-            source={require("../assets/rectangle-216@3x.png")}
+            source={require("../assets/rectangle216@3x.png")}
           />
-          <View style={styles.likesCommentsView1}>
-            <View style={styles.likesView1}>
-              <Text style={styles.text1}>721</Text>
-              <View style={styles.componentView1}>
+          <View style={styles.likesCommentsView}>
+            <View style={styles.likesView}>
+              <Text style={styles.text}>609</Text>
+              <View style={styles.componentView}>
                 <Image
-                  style={styles.heartIcon1}
+                  style={styles.heartIcon}
                   resizeMode="cover"
-                  source={require("../assets/heart1@3x.png")}
+                  source={require("../assets/heart@3x.png")}
                 />
-                <View style={styles.rectangleView2} />
+                <View style={styles.rectangleView1} />
               </View>
             </View>
           </View>
-          <View style={styles.titleView1}>
-            <Text style={styles.motivationalQuizText}>Motivational Quiz</Text>
-            <Text style={styles.hAgoText1}>1h ago</Text>
+          <View style={styles.titleView}>
+            <Text style={styles.thingsAboutYourPersonality}>
+              5 Things about your personality
+            </Text>
+            <Text style={styles.hAgoText}>1h ago</Text>
           </View>
         </View>
+        
       </ScrollView>
     </View>
   );
@@ -303,6 +304,7 @@ const styles = StyleSheet.create({
   },
   postsView: {
     width: "99.33%",
+    marginBottom:"50px",
     position: "relative",
     height: 341,
     alignSelf: "flex-end",

@@ -9,9 +9,151 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { TextInput as RNPTextInput } from "react-native-paper";
+import axios from "axios";
+import {
+  collection,
+  addDoc,
+  orderBy,
+  query,
+  getDoc,
+  onSnapshot,
+  getDocs,
+  where,
+  doc,
+  setDoc,
+} from "firebase/firestore";
+import { firestore, storage } from "../firebase";
+import * as ImagePicker from "expo-image-picker";
+
+import { useSelector } from "react-redux";
+import {
+  selectIsLoggedIn,
+  selectUser,
+  selectUserName,
+  selectUserDetails,
+} from "../redux/slices/authSlice";
+
+import { setSignIn } from "../redux/slices/authSlice";
+import { useDispatch } from "react-redux";
+import { async } from "@firebase/util";
+
 
 const ProfileEdit = () => {
+  const dispatch = useDispatch();
+
+ const [User,setuser ] = React.useState(useSelector(selectUserDetails));
+
+
   const navigation = useNavigation();
+
+  var personal_info = {}
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+  let file  = result.assets[0].uri;
+
+
+    const data = new FormData();
+    const fileName = Date.now() + file.name;
+    data.append("file", file);
+    data.append("name", fileName);
+    data.append("upload_preset", "ipo-uploads");
+   
+
+    const resultPic = await fetch(
+      "https://api.cloudinary.com/v1_1/quitopia/image/upload",
+      {
+        method: "Post",
+        body: data,
+      }
+    ).then((r) => r.json());
+    
+    const docRef = doc(firestore, "users", User.email);
+    const dataPic = {
+      dummyphoto: resultPic.secure_url,
+    };
+    setDoc(docRef, dataPic, { merge: true })
+      .then(() => {
+        console.log("Document has been added successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      AIauth(resultPic.secure_url,User.firstpic)
+  };
+
+
+ //compare picture with picture from DB
+  async function AIauth(photo_taken,db_photo) {
+
+
+  const response = await axios.post("http://127.0.0.1:5000/profile",{photo_taken:photo_taken,db_photo:db_photo});
+
+if(response.data == "True"){
+  const docRef = doc(firestore, "users", User.email);
+  const dataPic = {
+    avatar: photo_taken,
+  };
+  setDoc(docRef, dataPic, { merge: true })
+    .then(() => {
+      getUser()
+      
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+  }
+
+
+  const UpdateUser = async ()=>{
+    const docRef = doc(firestore, "users", User.email);
+ 
+    setDoc(docRef, personal_info, { merge: true })
+      .then(() => {
+       getUser()
+
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+
+  const getUser = async () => {
+    try {
+      const q = query(
+        collection(firestore, "users"),
+        where("email", "in", [User.email])
+      );
+
+      const querySnapshot = await getDocs(q);
+      chartData = querySnapshot.docs.map((doc) => doc.data());
+
+      dispatch(
+        setSignIn({
+          email: User.email,
+          isLoggedIn: true,
+          userName: chartData[0].name,
+          userDetails: chartData[0],
+        })
+      );
+      setuser(chartData[0])
+   
+        navigation.navigate("Profile")
+    
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <View style={styles.profileEditView}>
@@ -25,7 +167,7 @@ const ProfileEdit = () => {
           <Image
             style={styles.path104Icon}
             resizeMode="cover"
-            source={require("../assets/path-104.png")}
+            source={require("../assets/path-104@3x.png")}
           />
         </Pressable>
         <Pressable
@@ -35,21 +177,23 @@ const ProfileEdit = () => {
           <Image
             style={styles.icon}
             resizeMode="cover"
-            source={require("../assets/icon-materialnotificationsactive.png")}
+            source={require("../assets/icon-materialnotificationsactive@3x.png")}
           />
         </Pressable>
       </View>
       <View style={[styles.heroView, styles.mt39, styles.ml36]}>
+      <Pressable onPress={pickImage}>  
+        
         <Image
           style={styles.profileIcon}
           resizeMode="cover"
-          source={require("../assets/profile5.png")}
+          source={User && User.avatar ? User.avatar:User.firstpic}
         />
+        <Text style={styles.editPhotoText}>Edit Photo</Text></Pressable>
         <View style={styles.nameView}>
-          <Text style={styles.johnDoeText}>John Doe</Text>
-          <Text style={styles.editNameText}>Edit Name</Text>
+          <Text style={styles.johnDoeText}>{User && User.name}</Text>
         </View>
-        <Text style={styles.editPhotoText}>Edit Photo</Text>
+        
       </View>
       <ScrollView
         style={[styles.scrollGroup4, styles.ml37]}
@@ -62,6 +206,11 @@ const ProfileEdit = () => {
             label="Edit Biography"
             mode="outlined"
             theme={{ colors: { background: "#fff" } }}
+            defaultValue={User && User.biography}
+            onChangeText={(text)=>{
+              personal_info.biography = text
+            }}
+        
           />
           <RNPTextInput
             style={styles.rectangleRNPTextInput1}
@@ -69,6 +218,10 @@ const ProfileEdit = () => {
             label="Date of Birth"
             mode="outlined"
             theme={{ colors: { background: "#fff" } }}
+            defaultValue={User && User.date_of_birth}
+            onChangeText={(text)=>{
+              personal_info.date_of_birth = text
+            }}
           />
           <RNPTextInput
             style={styles.rectangleRNPTextInput2}
@@ -76,6 +229,10 @@ const ProfileEdit = () => {
             label="Phone Number"
             mode="outlined"
             theme={{ colors: { background: "#fff" } }}
+            defaultValue={User && User.phone}
+            onChangeText={(text)=>{
+              personal_info.phone = text
+            }}
           />
           <RNPTextInput
             style={styles.rectangleRNPTextInput3}
@@ -83,6 +240,10 @@ const ProfileEdit = () => {
             label="City"
             mode="outlined"
             theme={{ colors: { background: "#fff" } }}
+            defaultValue={User && User.city}
+            onChangeText={(text)=>{
+              personal_info.city = text
+            }}
           />
           <RNPTextInput
             style={styles.rectangleRNPTextInput4}
@@ -90,6 +251,10 @@ const ProfileEdit = () => {
             label="Country"
             mode="outlined"
             theme={{ colors: { background: "#fff" } }}
+            defaultValue={User && User.country}
+            onChangeText={(text)=>{
+              personal_info.country = text
+            }}
           />
           <RNPTextInput
             style={styles.rectangleRNPTextInput5}
@@ -97,6 +262,10 @@ const ProfileEdit = () => {
             label="Profession"
             mode="outlined"
             theme={{ colors: { background: "#fff" } }}
+            defaultValue={User && User.profession}
+            onChangeText={(text)=>{
+              personal_info.profession = text
+            }}
           />
           <RNPTextInput
             style={styles.rectangleRNPTextInput6}
@@ -104,99 +273,30 @@ const ProfileEdit = () => {
             label="E-mail"
             mode="outlined"
             theme={{ colors: { background: "#fff" } }}
+            defaultValue={User && User.email}
+         
           />
-          <RNPTextInput
-            style={styles.rectangleRNPTextInput7}
-            placeholder="Password"
-            label="Password"
-            mode="outlined"
-            theme={{ colors: { background: "#fff" } }}
-          />
-          <RNPTextInput
-            style={styles.rectangleRNPTextInput8}
-            placeholder="Confirm Password"
-            label="Confirm Password"
-            mode="outlined"
-            theme={{ colors: { background: "#fff" } }}
-          />
+       
+          
           <RNPTextInput
             style={styles.rectangleRNPTextInput9}
             placeholder="Interests"
             label="Interests"
             mode="outlined"
             theme={{ colors: { background: "#fff" } }}
+            defaultValue={User && User.interests}
+           
           />
         </View>
         <Pressable
           style={[styles.continuePressable, styles.mt29]}
-          onPress={() => navigation.navigate("Profile")}
+          onPress={UpdateUser}
         >
           <View style={styles.rectangleView1} />
           <Text style={styles.saveChangesText}>Save Changes</Text>
         </Pressable>
       </ScrollView>
-      <View style={[styles.toolbarView, styles.mt45]}>
-        <View style={styles.rectangleView2} />
-        <Pressable
-          style={styles.profilePressable}
-          onPress={() => navigation.navigate("Profile")}
-        >
-          <Text style={styles.profileText1}>Profile</Text>
-          <View style={styles.lineView} />
-          <Image
-            style={styles.union46Icon}
-            resizeMode="cover"
-            source={require("../assets/union-46.png")}
-          />
-        </Pressable>
-        <Pressable
-          style={styles.feedPressable}
-          onPress={() => navigation.navigate("NewsFeed")}
-        >
-          <Text style={styles.feedText}>Feed</Text>
-          <Image
-            style={styles.feedIcon}
-            resizeMode="cover"
-            source={require("../assets/feed5.png")}
-          />
-        </Pressable>
-        <Pressable
-          style={styles.searchPressable}
-          onPress={() => navigation.navigate("Search")}
-        >
-          <Text style={styles.searchText}>Search</Text>
-          <View style={styles.searchView}>
-            <View style={styles.rectangleView3} />
-            <Image
-              style={styles.path99Icon}
-              resizeMode="cover"
-              source={require("../assets/path-996.png")}
-            />
-          </View>
-        </Pressable>
-        <Pressable
-          style={styles.chatPressable}
-          onPress={() => navigation.navigate("Chat")}
-        >
-          <Text style={styles.chatText}>Chat</Text>
-          <Image
-            style={styles.iconMaterialChatBubble}
-            resizeMode="cover"
-            source={require("../assets/icon-materialchatbubble.png")}
-          />
-        </Pressable>
-        <Pressable
-          style={styles.groupPressable}
-          onPress={() => navigation.navigate("GroupFeed")}
-        >
-          <Text style={styles.groupText}>Group</Text>
-          <Image
-            style={styles.iconMaterialGroup}
-            resizeMode="cover"
-            source={require("../assets/icon-materialgroup.png")}
-          />
-        </Pressable>
-      </View>
+      
     </View>
   );
 };
@@ -206,7 +306,8 @@ const styles = StyleSheet.create({
     marginLeft: 11,
   },
   mt29: {
-    marginTop: 29,
+    marginTop: -80,
+    marginBottom: 50,
   },
   scrollGroup4Content: {
     alignItems: "flex-start",
@@ -287,6 +388,7 @@ const styles = StyleSheet.create({
     left: 0,
     width: 56,
     height: 56,
+    borderRadius: "50%"
   },
   johnDoeText: {
     position: "absolute",
@@ -398,29 +500,12 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     height: 48,
   },
-  rectangleRNPTextInput7: {
+
+  rectangleRNPTextInput9: {
     position: "absolute",
     marginTop: 166,
     top: "50%",
     right: 0,
-    left: 0,
-    borderRadius: 10,
-    borderStyle: "solid",
-    height: 48,
-  },
-  rectangleRNPTextInput8: {
-    position: "absolute",
-    right: 0,
-    bottom: 65,
-    left: 0,
-    borderRadius: 10,
-    borderStyle: "solid",
-    height: 48,
-  },
-  rectangleRNPTextInput9: {
-    position: "absolute",
-    right: 0,
-    bottom: 0,
     left: 0,
     borderRadius: 10,
     borderStyle: "solid",
@@ -457,6 +542,7 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     position: "relative",
     height: 48,
+  
   },
   scrollGroup4: {
     width: 302,

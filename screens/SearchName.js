@@ -84,7 +84,7 @@ const SearchName = () => {
               <Image
                 style={styles.rectangleIcon}
                 resizeMode="cover"
-                source={require("../assets/rectangle-2615@3x.png")}
+                source={u.avatar ? u.avatar : u.firstpic}
               />
               <Text style={styles.loremIpsumDolorSitAmetCo}>
                 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed

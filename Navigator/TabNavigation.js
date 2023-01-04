@@ -13,6 +13,8 @@ import NewsFeed from "../screens/NewsFeed";
 import GroupFeed from "../screens/GroupFeed";
 import Search from "../screens/Search";
 import { ChatNavigator } from "./ChatNavigator";
+import { ProfileNavigator } from "./ProfileNavigator";
+
 import { SearchNavigator } from "./SearchNavigator";
 
 const Tab = createBottomTabNavigator();
@@ -96,7 +98,7 @@ const BottomTabNavigator = () => {
 
       <Tab.Screen
         name="Profile"
-        component={Profile}
+        component={ProfileNavigator}
         options={{
           tabBarLabel: "Profile",
           tabBarIcon: () => (

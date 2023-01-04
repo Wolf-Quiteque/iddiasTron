@@ -115,6 +115,12 @@ const Chat = ({ navigation, user }) => {
                 {" "}
                 <View style={styles.nameView}>
                   <View>
+                  <Image
+                   style={styles.profileIcon}
+                   resizeMode="cover"
+            source={u.avatar ? u.avatar : u.firstpic}
+          />
+                    
                     <Text style={styles.mikeFullerText}>{u.name}</Text>
                     <Text style={styles.loremIpsumDolorSitAme}>
                       Lorem ipsum dolor sit ame{" "}
@@ -341,6 +347,15 @@ const styles = StyleSheet.create({
     right: 0,
     left: 0,
     height: 47,
+  },
+  profileIcon: {
+    position: "absolute",
+    top: 0,
+    marginLeft: -14,
+    marginTop:-7,
+    width: 50,
+    height: 50,
+    borderRadius: "50%"
   },
   familyGroupText: {
     position: "absolute",

@@ -52,16 +52,14 @@ const Profile = () => {
           <Image
             style={styles.profileIcon}
             resizeMode="cover"
-            source={require("../assets/profile5@3x.png")}
+            source={User && User.avatar ? User.avatar:User.firstpic}
           />
           <View style={styles.nameView}>
             <Text style={styles.johnDoeText}>{User && User.name}</Text>
             <Text style={styles.sanFranciscoCA}>{User && User.city}</Text>
           </View>
           <Text style={styles.hiMyNameIsJohnImACre}>
-            Hi! My name is John, I’m a creative geek from San Francisco, CA. I
-            enjoy creating eye candy solutions for web and mobile apps. Contact
-            me at john@mail.com
+            {User && User.biography}
           </Text>
           <Pressable
             style={styles.editPressable}
@@ -223,12 +221,14 @@ const styles = StyleSheet.create({
     left: 0,
     width: 56,
     height: 56,
+    borderRadius: "50%"
   },
   johnDoeText: {
     position: "absolute",
     top: 0,
     left: 0,
     fontSize: 16,
+    marginBottom:15,
     fontWeight: "700",
     // fontFamily: "Quicksand",
     color: "#21ae9c",

@@ -87,8 +87,7 @@ const SearchName = () => {
                 source={u.avatar ? u.avatar : u.firstpic}
               />
               <Text style={styles.loremIpsumDolorSitAmetCo}>
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                diam nonumy eirmod tempor
+                {u.biography && u.biography.slice(0,30)}
               </Text>
             </View>
           ))

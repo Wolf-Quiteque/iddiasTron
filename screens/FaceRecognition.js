@@ -20,7 +20,8 @@ import { setSignIn } from "../redux/slices/authSlice";
 import { firestore, storage } from "../firebase";
 import { ref, uploadBytes } from "firebase/storage";
 import { useNavigation } from "@react-navigation/native";
-
+import { set } from "firebase/database";
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export default function FaceRecognition({ route }) {
   const dispatch = useDispatch();
@@ -31,6 +32,8 @@ export default function FaceRecognition({ route }) {
   const [hasCameraPermission, setHasCameraPermission] = useState();
   const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
   const [photo, setPhoto] = useState();
+  const [pressed, setpressed] = useState(false);
+
 
   async function addAvatar(avatar) {
     const docRef = doc(firestore, "users", user.email);
@@ -108,15 +111,27 @@ export default function FaceRecognition({ route }) {
     setPhoto(newPhoto);
 
     saveImage(newPhoto.uri);
+    setpressed(true)
   };
 
 
   return (
-    <Camera style={styles.container} ref={cameraRef}>
-      <View style={styles.buttonContainer}>
+    <>
+    {pressed ? <>
+      <Spinner
+          //visibility of Overlay Loading Spinner
+          visible={true}
+          //Text with the Spinner
+          textContent={'Loading...'}
+          //Text style of the Spinner Text
+          textStyle={styles.spinnerTextStyle}
+        /></> :  <Camera style={styles.container} ref={cameraRef}>
+        <View style={styles.buttonContainer}>
         <Button title="Take Pic" onPress={takePic} />
-      </View>
-    </Camera>
+        </View>
+      </Camera>} 
+        </> 
+    
   );
 }
 
@@ -133,5 +148,8 @@ const styles = StyleSheet.create({
   preview: {
     alignSelf: "stretch",
     flex: 1,
+  },
+  spinnerTextStyle: {
+    color: '#FFF',
   },
 });

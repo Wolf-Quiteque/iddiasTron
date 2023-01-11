@@ -1,123 +1,109 @@
 import * as React from "react";
 import { Text, StyleSheet, Image, Pressable, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { firestore, storage } from "../firebase";
+import axios from "axios";
 
+import { getDownloadURL, ref } from "firebase/storage";
+import {
+  selectUserDetails,
+} from "../redux/slices/authSlice";
 const SearchFaceSimiliarity = () => {
   const navigation = useNavigation();
 
-  return (
+  const User = useSelector(selectUserDetails);
+  const [users, setUsers] = React.useState(false);
+  const [Similarusers, setSimilarUsers] = React.useState(false);
+  const [totalfaces, settotalfaces] = React.useState(false);
+  const [searching, setsearching] = React.useState(true);
+
+
+
+
+
+  var UserMatches = [];
+
+
+  const getUsers = async () => {
+    try {
+      const q = query(
+        collection(firestore, "users"),
+        where("email", "!=", User.email)
+      );
+
+      const querySnapshot = await getDocs(q);
+      chartData = querySnapshot.docs.map((doc) => doc.data());
+      setUsers(chartData);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+  async function GetFace() {
+    for (let index = 0; index < users.length; index++) {
+      if(users[index].firstpic){
+        var response = await axios.post("http://127.0.0.1:5000/ai",{photo_taken:users[index].firstpic,db_photo:User.firstpic});
+       
+        if(response.data != "False"){
+          var dummyuser = users[index];
+          dummyuser.percentage = Math.round(Number(response.data)*100)
+        
+          UserMatches.push(dummyuser)
+          setSimilarUsers(UserMatches)
+        
+        }
+      }
+    }
+
+    if(UserMatches.length){settotalfaces(UserMatches.length);
+    }else setsearching(false)
+
+    
+
+   
+  }
+
+  React.useEffect(() => {
+    if(!users){
+      getUsers();
+    }
+    if(users){
+        GetFace()
+    }
+    
+  }, [users]);
+
+
+  return ( 
     <Pressable
       style={styles.searchFaceSimiliarityPressable}
       onPress={() => navigation.navigate("SearchResults")}
     >
+
+{Similarusers ? (
+          Similarusers.map((u) => (
       <View style={[styles.nameView, styles.mt43, styles.mr1]}>
-        <Text style={styles.beatrizSilvaText}>Beatriz Silva</Text>
+        <Text style={styles.beatrizSilvaText}>{u.name}</Text>
         <Image
           style={styles.rectangleIcon}
           resizeMode="cover"
-          source={require("../assets/rectangle-261@3x.png")}
+          source={u.avatar ? u.avatar:u.firstpic }
         />
-        <Text style={styles.similarityText}>83% Similarity</Text>
-      </View>
-      <View style={[styles.nameView1, styles.mt35, styles.ml1]}>
-        <Text style={styles.neliaCamposText}>Nelia Campos</Text>
-        <Image
-          style={styles.rectangleIcon1}
-          resizeMode="cover"
-          source={require("../assets/rectangle-2611@3x.png")}
-        />
-        <Text style={styles.similarityText1}>96% Similarity</Text>
-      </View>
-      <View style={[styles.nameView2, styles.mt35, styles.ml1]}>
-        <Text style={styles.luziaBeltrandText}>Luzia Beltrand</Text>
-        <Image
-          style={styles.rectangleIcon2}
-          resizeMode="cover"
-          source={require("../assets/rectangle-2612@3x.png")}
-        />
-        <Text style={styles.similarityText2}>51% Similarity</Text>
-      </View>
-      <View style={[styles.nameView3, styles.mt35, styles.ml1]}>
-        <Text style={styles.sofiaNabaisText}>Sofia Nabais</Text>
-        <Image
-          style={styles.rectangleIcon3}
-          resizeMode="cover"
-          source={require("../assets/rectangle-2613@3x.png")}
-        />
-        <Text style={styles.similarityText3}>28% Similarity</Text>
-      </View>
-      <View style={[styles.nameView4, styles.mt35, styles.ml1]}>
-        <Text style={styles.conceioSousaText}>Conceição Sousa</Text>
-        <Image
-          style={styles.rectangleIcon4}
-          resizeMode="cover"
-          source={require("../assets/rectangle-2614@3x.png")}
-        />
-        <Text style={styles.similarityText4}>73% Similarity</Text>
-      </View>
-      <View style={[styles.toolbarView, styles.mt53]}>
-        <View style={styles.rectangleView} />
-        <Pressable
-          style={styles.profilePressable}
-          onPress={() => navigation.navigate("Profile")}
-        >
-          <Text style={styles.profileText}>Profile</Text>
-          <Image
-            style={styles.profileIcon}
-            resizeMode="cover"
-            source={require("../assets/profile@3x.png")}
-          />
-        </Pressable>
-        <Pressable
-          style={styles.feedPressable}
-          onPress={() => navigation.navigate("NewsFeed")}
-        >
-          <Text style={styles.feedText}>Feed</Text>
-          <Image
-            style={styles.feedIcon}
-            resizeMode="cover"
-            source={require("../assets/feed@3x.png")}
-          />
-        </Pressable>
-        <Pressable
-          style={styles.searchPressable}
-          onPress={() => navigation.navigate("Search")}
-        >
-          <Text style={styles.searchText}>Search</Text>
-          <View style={styles.searchView}>
-            <View style={styles.rectangleView1} />
-            <Image
-              style={styles.path99Icon}
-              resizeMode="cover"
-              source={require("../assets/path-99@3x.png")}
-            />
-          </View>
-          <View style={styles.lineView} />
-        </Pressable>
-        <Pressable
-          style={styles.chatPressable}
-          onPress={() => navigation.navigate("Chat")}
-        >
-          <Text style={styles.chatText}>Chat</Text>
-          <Image
-            style={styles.iconMaterialChatBubble}
-            resizeMode="cover"
-            source={require("../assets/icon-materialchatbubble@3x.png")}
-          />
-        </Pressable>
-        <Pressable
-          style={styles.groupPressable}
-          onPress={() => navigation.navigate("GroupFeed")}
-        >
-          <Text style={styles.groupText}>Group</Text>
-          <Image
-            style={styles.iconMaterialGroup}
-            resizeMode="cover"
-            source={require("../assets/icon-materialgroup@3x.png")}
-          />
-        </Pressable>
-      </View>
-    </Pressable>
+        <Text style={styles.similarityText}>{u.percentage}% Similarity</Text>
+          
+        
+      </View>   ))
+        ) : (
+          <>
+          { searching ? <Text>Searching</Text> : <Text>No similar face found</Text>  }</>
+          
+        )}
+        {totalfaces &&<Text>  {totalfaces} similar faces found!</Text>} 
+
+     </Pressable>
   );
 };
 

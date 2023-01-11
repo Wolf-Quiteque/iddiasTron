@@ -26,7 +26,7 @@ const SearchProfession = () => {
   const navigation = useNavigation();
   const [users, setUsers] = React.useState(null);
   const [name, setname] = React.useState(User.profession);
-  console.log(User);
+  
   const getUsers = async () => {
     try {
       const q = query(
@@ -85,11 +85,10 @@ const SearchProfession = () => {
               <Image
                 style={styles.rectangleIcon}
                 resizeMode="cover"
-                source={require("../assets/rectangle-2615@3x.png")}
+                source={u.avatar? u.avatar : u.firstpic}
               />
               <Text style={styles.loremIpsumDolorSitAmetCo}>
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                diam nonumy eirmod tempor
+                 {u.profession }
               </Text>
             </View>
           ))

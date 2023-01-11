@@ -36,18 +36,22 @@ import {
 import { setSignIn } from "../redux/slices/authSlice";
 import { useDispatch } from "react-redux";
 import { async } from "@firebase/util";
-
+import DatePicker from 'react-native-modern-datepicker';
 
 const ProfileEdit = () => {
-  const dispatch = useDispatch();
+const dispatch = useDispatch();
+const [birthdate, setbirthdate] = React.useState('');
+const [open, setOpen] = React.useState(false);
 
- const [User,setuser ] = React.useState(useSelector(selectUserDetails));
+const [User,setuser ] = React.useState(useSelector(selectUserDetails));
 
 
-  const navigation = useNavigation();
 
-  var personal_info = {}
-  const pickImage = async () => {
+
+const navigation = useNavigation();
+
+var personal_info = {}
+const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -114,6 +118,7 @@ if(response.data == "True"){
 
 
   const UpdateUser = async ()=>{
+   
     const docRef = doc(firestore, "users", User.email);
  
     setDoc(docRef, personal_info, { merge: true })
@@ -154,7 +159,12 @@ if(response.data == "True"){
       console.log(error);
     }
   };
-
+  React.useEffect(() => {
+    if(birthdate){
+   personal_info.birthdate = birthdate
+      console.log(personal_info)
+    }
+   }, [birthdate]);
   return (
     <View style={styles.profileEditView}>
       <View style={[styles.navigationBarView, styles.ml157]}>
@@ -212,17 +222,34 @@ if(response.data == "True"){
             }}
         
           />
+          
+           <Pressable  
+             style={styles.rectangleRNPTextInput1}
+          onPress = {()=>{
+              setOpen(true)
+            }}>
           <RNPTextInput
-            style={styles.rectangleRNPTextInput1}
+         
             placeholder="Date of Birth"
             label="Date of Birth"
             mode="outlined"
             theme={{ colors: { background: "#fff" } }}
-            defaultValue={User && User.date_of_birth}
-            onChangeText={(text)=>{
-              personal_info.date_of_birth = text
-            }}
+            defaultValue={User.birthdate && User.birthdate}
+          /></Pressable>
+         
+
+
+          {open && ( <><DatePicker style={{zIndex:999}}
+              onSelectedChange={(date) =>{
+               
+              setbirthdate(date.slice(0,-6));
+                setOpen(false)
+              } }
+
           />
+
+
+          </> )}
           <RNPTextInput
             style={styles.rectangleRNPTextInput2}
             placeholder="Phone Number"

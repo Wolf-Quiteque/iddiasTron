@@ -15,11 +15,61 @@ import {
   selectUserName,
   selectUserDetails,
 } from "../redux/slices/authSlice";
+import {
+  collection,
+  addDoc,
+  orderBy,
+  query,
+  getDoc,
+  onSnapshot,
+  getDocs,
+  where,
+  doc,
+  setDoc,
+} from "firebase/firestore";
+import { firestore, storage } from "../firebase";
 
 const Profile = () => {
   const navigation = useNavigation();
 
-  const User = useSelector(selectUserDetails);
+ const [User,setuser ] = React.useState(useSelector(selectUserDetails));
+
+
+  const getUser = async () => {
+    try {
+      const q = query(
+        collection(firestore, "users"),
+        where("email", "in", [User.email])
+      );
+
+      const querySnapshot = await getDocs(q);
+      chartData = querySnapshot.docs.map((doc) => doc.data());
+
+      dispatch(
+        setSignIn({
+          email: User.email,
+          isLoggedIn: true,
+          userName: chartData[0].name,
+          userDetails: chartData[0],
+        })
+      );
+      setuser(chartData[0])
+   
+        navigation.navigate("Profile")
+    
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  React.useEffect(() => {
+    if(!User.firstpic){
+      getUser();
+    }
+  }, []);
+
+
 
   return (
     <ScrollView>
@@ -56,8 +106,9 @@ const Profile = () => {
           />
           <View style={styles.nameView}>
             <Text style={styles.johnDoeText}>{User && User.name}</Text>
-            <Text style={styles.sanFranciscoCA}>{User && User.city}</Text>
+            
           </View>
+          <Text style={styles.sanFranciscoCA}>{User && User.city}</Text>
           <Text style={styles.hiMyNameIsJohnImACre}>
             {User && User.biography}
           </Text>

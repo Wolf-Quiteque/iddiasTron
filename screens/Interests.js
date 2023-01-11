@@ -21,11 +21,14 @@ import {
 import { firestore, storage } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
 
+
 const Interests = ({ route }) => {
   const user = route.params;
   const navigation = useNavigation();
 
   const [interests, setinterests] = React.useState(false);
+
+  var interestsArray = []
 
   async function addIntrest() {
     const docRef = doc(firestore, "users", user.email);
@@ -44,145 +47,159 @@ const Interests = ({ route }) => {
       });
   }
 
-  React.useEffect(() => {
-    if (interests) {
-      addIntrest();
-    }
-  }, [interests]);
+
+
+ 
+
 
   return (
     <View style={styles.interestsView}>
       <Text style={[styles.interestsText, styles.ml109]}>Interests</Text>{" "}
-      <ImageBackground
-        style={[styles.imageIcon, styles.mt36]}
+       <Pressable
+        onPress={() => {
+          interestsArray.push("Travel");
+          console.log(interestsArray)
+        }}
+      > <ImageBackground
+        style={[styles.green,styles.imageIcon, styles.mt36,]}
         resizeMode="cover"
         source={require("../assets/image@3x.png")}
       />
-      <Pressable
-        onPress={() => {
-          setinterests("Travel");
-        }}
-      >
-        <ImageBackground
-          style={[styles.imageIcon1, styles.mt_100, styles.ml156]}
-          resizeMode="cover"
-          source={require("../assets/image1@3x.png")}
-        />
-        <Text style={[styles.travelText, styles.mt_62, styles.ml43]}>
+      <Text style={[styles.travelText, styles.mt_62, styles.ml43]}>
           Travel
         </Text>
-      </Pressable>
+        </Pressable>
+
       <Pressable
         onPress={() => {
-          setinterests("Music");
+          interestsArray.push("Music");
+          console.log(interestsArray)
         }}
-      >
+      > <ImageBackground
+          style={[styles.green,styles.imageIcon1, styles.mt_100, styles.ml156]}
+          resizeMode="cover"
+          source={require("../assets/image1@3x.png")}
+        /> 
         <Text style={[styles.musicText, styles.mt_25, styles.ml203]}>
           Music
         </Text>
-        <ImageBackground
-          style={[styles.imageIcon2, styles.mt52]}
-          resizeMode="cover"
-          source={require("../assets/image2@3x.png")}
-        />
       </Pressable>
+
       <Pressable
         onPress={() => {
-          setinterests("Sports");
+          interestsArray.push("Sports");
+          console.log(interestsArray)
         }}
-      >
-        <ImageBackground
-          style={[styles.imageIcon3, styles.mt_100, styles.ml156]}
+      > <ImageBackground
+          style={[styles.green, styles.imageIcon2, styles.mt52]}
+          resizeMode="cover"
+          source={require("../assets/image2@3x.png")}
+        /> 
+        <Text style={[styles.musicText, styles.mt_25, styles.ml203]}>
+          Sports
+        </Text>
+        </Pressable>
+     
+      
+        <Pressable
+          onPress={() => {
+            interestsArray.push("Art");
+            console.log(interestsArray)
+          }}
+        > <ImageBackground
+          style={[styles.green, styles.imageIcon3, styles.mt_100, styles.ml156]}
           resizeMode="cover"
           source={require("../assets/image3@3x.png")}
         />
-        <Text style={[styles.sportsText, styles.mt_62, styles.ml41]}>
-          Sports
-        </Text>
-      </Pressable>
-      <Pressable
-        onPress={() => {
-          setinterests("Art");
-        }}
-      >
         <Text style={[styles.artText, styles.mt_25, styles.ml214]}>Art</Text>
-        <ImageBackground
-          style={[styles.imageIcon4, styles.mt52]}
+        </Pressable>
+    
+        
+       <Pressable
+          onPress={() => {
+            interestsArray.push("Food");
+            console.log(interestsArray)
+         }}
+        > <ImageBackground
+          style={[styles.green, styles.imageIcon4, styles.mt52]}
           resizeMode="cover"
           source={require("../assets/image4@3x.png")}
         />
-      </Pressable>
-      <Pressable
-        onPress={() => {
-          setinterests("Food");
-        }}
-      >
-        <ImageBackground
-          style={[styles.imageIcon5, styles.mt_100, styles.ml156]}
+        <Text style={[styles.foodText, styles.mt_62, styles.ml49]}>Food</Text>
+        </Pressable>
+      
+      
+        <Pressable
+          onPress={() => {
+            interestsArray.push("Technology");
+            console.log(interestsArray)
+          }}
+        ><ImageBackground
+          style={[styles.green, styles.imageIcon5, styles.mt_100, styles.ml156]}
           resizeMode="cover"
           source={require("../assets/image5@3x.png")}
         />
-        <Text style={[styles.foodText, styles.mt_62, styles.ml49]}>Food</Text>
-      </Pressable>
-      <Pressable
-        onPress={() => {
-          setinterests("Technology");
-        }}
-      >
-        <Text style={[styles.technologyText, styles.mt_25, styles.ml174]}>
-          Technology
-        </Text>
-        <ImageBackground
-          style={[styles.imageIcon6, styles.mt52]}
-          resizeMode="cover"
-          source={require("../assets/image6@3x.png")}
-        />
-      </Pressable>
-      <Pressable
-        onPress={() => {
-          setinterests("Cinema");
-        }}
-      >
-        <ImageBackground
-          style={[styles.imageIcon7, styles.mt_100, styles.ml156]}
+          <Text style={[styles.technologyText, styles.mt_25, styles.ml174]}>Technology</Text>
+        </Pressable>
+        
+      
+       <Pressable
+          onPress={() => {
+            interestsArray.push("Cinema");
+            console.log(interestsArray)
+          }}
+        > <ImageBackground
+            style={[styles.green, styles.imageIcon6, styles.mt52]}
+            resizeMode="cover"
+            source={require("../assets/image6@3x.png")}
+        /> 
+        <Text style={[styles.cinemaText, styles.mt_62, styles.ml37]}>Cinema</Text>
+        </Pressable>
+      
+      
+       <Pressable
+          onPress={() => {
+            interestsArray.push("Literature");
+            console.log(interestsArray)
+          }}
+        > <ImageBackground
+          style={[styles.green, styles.imageIcon7, styles.mt_100, styles.ml156]}
           resizeMode="cover"
           source={require("../assets/image7@3x.png")}
         />
-        <Text style={[styles.cinemaText, styles.mt_62, styles.ml37]}>
-          Cinema
-        </Text>
-      </Pressable>
-      <Pressable
-        onPress={() => {
-          setinterests("Literature");
-        }}
-      >
-        <Text style={[styles.literatureText, styles.mt_25, styles.ml181]}>
-          Literature
-        </Text>
-        <ImageBackground
-          style={[styles.imageIcon8, styles.mt52, styles.ml1]}
-          resizeMode="cover"
-          source={require("../assets/image8@3x.png")}
-        />
-      </Pressable>
-      <Pressable
-        onPress={() => {
-          setinterests("Fashion");
-        }}
-      >
-        <ImageBackground
-          style={[styles.imageIcon9, styles.mt_100]}
-          resizeMode="cover"
-          source={require("../assets/image9@3x.png")}
-        />
-        <Text style={[styles.fashionText, styles.mt_62, styles.ml37]}>
-          Fashion
-        </Text>
-      </Pressable>
-      <Text style={[styles.designText, styles.mt_25, styles.ml198]}>
-        Design
-      </Text>
+        <Text style={[styles.literatureText, styles.mt_25, styles.ml181]}>Literature</Text>
+        </Pressable>
+        
+     
+         <Pressable
+            onPress={() => {
+            interestsArray.push("Fashion");
+            console.log(interestsArray)
+            }}
+          > <ImageBackground
+            style={[styles.green, styles.imageIcon8, styles.mt52, styles.ml1]}
+            resizeMode="cover"
+            source={require("../assets/image8@3x.png")}
+          />
+          <Text style={[styles.fashionText, styles.mt_62, styles.ml37]}>Fashion</Text>
+          </Pressable>
+            
+        <Pressable
+          onPress={() => {
+          interestsArray.push("Design");
+            console.log(interestsArray)
+            }}
+          > <ImageBackground
+            style={[styles.green, styles.imageIcon9, styles.mt_100]}
+            resizeMode="cover"
+            source={require("../assets/image9@3x.png")}
+          />
+          <Text style={[styles.designText, styles.mt_25, styles.ml198]}>Design</Text>
+          </Pressable>
+    
+        
+      
+      
       <Pressable
         style={[styles.continuePressable, styles.mt101]}
         onPress={() => navigation.navigate("FaceRecognition")}
@@ -257,6 +274,9 @@ const styles = StyleSheet.create({
     color: "#000",
     textAlign: "center",
     width: 87,
+  },
+  green: {
+    border:"6px solid #21ae9c;"
   },
   imageIcon: {
     position: "relative",

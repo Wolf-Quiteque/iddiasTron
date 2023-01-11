@@ -22,7 +22,7 @@ const Search = () => {
       </View>
       <Pressable
         style={[styles.faceSimiliarityPressable, styles.mt25, styles.ml1]}
-        onPress={() => navigation.navigate("SearchFaceSimiliarity1")}
+        onPress={() => navigation.navigate("SearchFaceSimiliarity")}
       >
         <View style={styles.rectangleView} />
         <Text style={styles.faceText}>Face</Text>

@@ -16,6 +16,8 @@ import {
   selectUserDetails,
 } from "../redux/slices/authSlice";
 import { collection, query, where, getDocs } from "firebase/firestore";
+import { firestore, storage } from "../firebase";
+
 import { useSelector } from "react-redux";
 
 const SearchInterests = () => {
@@ -37,6 +39,7 @@ const SearchInterests = () => {
       const querySnapshot = await getDocs(q);
       chartData = querySnapshot.docs.map((doc) => doc.data());
       setUsers(chartData);
+      console.log(chartData)
     } catch (error) {
       console.log(error);
     }
@@ -84,11 +87,10 @@ const SearchInterests = () => {
               <Image
                 style={styles.rectangleIcon}
                 resizeMode="cover"
-                source={require("../assets/rectangle-2615@3x.png")}
+                source={u.avatar ? u.avatar:u.firstpic }
               />
               <Text style={styles.loremIpsumDolorSitAmetCo}>
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                diam nonumy eirmod tempor
+                {u.interests}
               </Text>
             </View>
           ))

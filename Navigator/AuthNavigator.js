@@ -20,12 +20,12 @@ const AuthNavigator = () => {
     >
       
 
-      
+      <Stack.Screen name="Interests" component={Interests} />
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="SignUp" component={SignUp} />
 
       <Stack.Screen name="FaceRecognition" component={FaceRecognition} />
-      <Stack.Screen name="Interests" component={Interests} />
+      
     </Stack.Navigator>
   );
 };

@@ -23,7 +23,6 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { firestore, storage } from "../firebase";
-import * as ImagePicker from "expo-image-picker";
 
 import { useSelector } from "react-redux";
 import {
@@ -36,22 +35,19 @@ import {
 import { setSignIn } from "../redux/slices/authSlice";
 import { useDispatch } from "react-redux";
 import { async } from "@firebase/util";
-import DatePicker from 'react-native-modern-datepicker';
+import DatePicker from "react-native-modern-datepicker";
 
 const ProfileEdit = () => {
-const dispatch = useDispatch();
-const [birthdate, setbirthdate] = React.useState('');
-const [open, setOpen] = React.useState(false);
+  const dispatch = useDispatch();
+  const [birthdate, setbirthdate] = React.useState("");
+  const [open, setOpen] = React.useState(false);
 
-const [User,setuser ] = React.useState(useSelector(selectUserDetails));
+  const [User, setuser] = React.useState(useSelector(selectUserDetails));
 
+  const navigation = useNavigation();
 
-
-
-const navigation = useNavigation();
-
-var personal_info = {}
-const pickImage = async () => {
+  var personal_info = {};
+  const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -60,15 +56,13 @@ const pickImage = async () => {
       quality: 1,
     });
 
-  let file  = result.assets[0].uri;
-
+    let file = result.assets[0].uri;
 
     const data = new FormData();
     const fileName = Date.now() + file.name;
     data.append("file", file);
     data.append("name", fileName);
     data.append("upload_preset", "ipo-uploads");
-   
 
     const resultPic = await fetch(
       "https://api.cloudinary.com/v1_1/quitopia/image/upload",
@@ -77,7 +71,7 @@ const pickImage = async () => {
         body: data,
       }
     ).then((r) => r.json());
-    
+
     const docRef = doc(firestore, "users", User.email);
     const dataPic = {
       dummyphoto: resultPic.secure_url,
@@ -89,49 +83,42 @@ const pickImage = async () => {
       .catch((error) => {
         console.log(error);
       });
-      AIauth(resultPic.secure_url,User.firstpic)
+    AIauth(resultPic.secure_url, User.firstpic);
   };
 
-
- //compare picture with picture from DB
-  async function AIauth(photo_taken,db_photo) {
-
-
-  const response = await axios.post("http://127.0.0.1:5000/profile",{photo_taken:photo_taken,db_photo:db_photo});
-
-if(response.data == "True"){
-  const docRef = doc(firestore, "users", User.email);
-  const dataPic = {
-    avatar: photo_taken,
-  };
-  setDoc(docRef, dataPic, { merge: true })
-    .then(() => {
-      getUser()
-      
-    })
-    .catch((error) => {
-      console.log(error);
+  //compare picture with picture from DB
+  async function AIauth(photo_taken, db_photo) {
+    const response = await axios.post("http://127.0.0.1:5000/profile", {
+      photo_taken: photo_taken,
+      db_photo: db_photo,
     });
-}
 
+    if (response.data == "True") {
+      const docRef = doc(firestore, "users", User.email);
+      const dataPic = {
+        avatar: photo_taken,
+      };
+      setDoc(docRef, dataPic, { merge: true })
+        .then(() => {
+          getUser();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
-
-  const UpdateUser = async ()=>{
-   
+  const UpdateUser = async () => {
     const docRef = doc(firestore, "users", User.email);
- 
+
     setDoc(docRef, personal_info, { merge: true })
       .then(() => {
-       getUser()
-
-
+        getUser();
       })
       .catch((error) => {
         console.log(error);
       });
-  }
-
+  };
 
   const getUser = async () => {
     try {
@@ -151,20 +138,19 @@ if(response.data == "True"){
           userDetails: chartData[0],
         })
       );
-      setuser(chartData[0])
-   
-        navigation.navigate("Profile")
-    
+      setuser(chartData[0]);
+
+      navigation.navigate("UserProfile");
     } catch (error) {
       console.log(error);
     }
   };
   React.useEffect(() => {
-    if(birthdate){
-   personal_info.birthdate = birthdate
-      console.log(personal_info)
+    if (birthdate) {
+      personal_info.birthdate = birthdate;
+      console.log(personal_info);
     }
-   }, [birthdate]);
+  }, [birthdate]);
   return (
     <View style={styles.profileEditView}>
       <View style={[styles.navigationBarView, styles.ml157]}>
@@ -192,18 +178,17 @@ if(response.data == "True"){
         </Pressable>
       </View>
       <View style={[styles.heroView, styles.mt39, styles.ml36]}>
-      <Pressable onPress={pickImage}>  
-        
-        <Image
-          style={styles.profileIcon}
-          resizeMode="cover"
-          source={User && User.avatar ? User.avatar:User.firstpic}
-        />
-        <Text style={styles.editPhotoText}>Edit Photo</Text></Pressable>
+        <Pressable onPress={pickImage}>
+          <Image
+            style={styles.profileIcon}
+            resizeMode="cover"
+            source={User && User.avatar ? User.avatar : User.firstpic}
+          />
+          <Text style={styles.editPhotoText}>Edit Photo</Text>
+        </Pressable>
         <View style={styles.nameView}>
           <Text style={styles.johnDoeText}>{User && User.name}</Text>
         </View>
-        
       </View>
       <ScrollView
         style={[styles.scrollGroup4, styles.ml37]}
@@ -217,39 +202,37 @@ if(response.data == "True"){
             mode="outlined"
             theme={{ colors: { background: "#fff" } }}
             defaultValue={User && User.biography}
-            onChangeText={(text)=>{
-              personal_info.biography = text
+            onChangeText={(text) => {
+              personal_info.biography = text;
             }}
-        
-          />
-          
-           <Pressable  
-             style={styles.rectangleRNPTextInput1}
-          onPress = {()=>{
-              setOpen(true)
-            }}>
-          <RNPTextInput
-         
-            placeholder="Date of Birth"
-            label="Date of Birth"
-            mode="outlined"
-            theme={{ colors: { background: "#fff" } }}
-            defaultValue={User.birthdate && User.birthdate}
-          /></Pressable>
-         
-
-
-          {open && ( <><DatePicker style={{zIndex:999}}
-              onSelectedChange={(date) =>{
-               
-              setbirthdate(date.slice(0,-6));
-                setOpen(false)
-              } }
-
           />
 
+          <Pressable
+            style={styles.rectangleRNPTextInput1}
+            onPress={() => {
+              setOpen(true);
+            }}
+          >
+            <RNPTextInput
+              placeholder="Date of Birth"
+              label="Date of Birth"
+              mode="outlined"
+              theme={{ colors: { background: "#fff" } }}
+              defaultValue={User.birthdate && User.birthdate}
+            />
+          </Pressable>
 
-          </> )}
+          {open && (
+            <>
+              <DatePicker
+                style={{ zIndex: 999 }}
+                onSelectedChange={(date) => {
+                  setbirthdate(date.slice(0, -6));
+                  setOpen(false);
+                }}
+              />
+            </>
+          )}
           <RNPTextInput
             style={styles.rectangleRNPTextInput2}
             placeholder="Phone Number"
@@ -257,8 +240,8 @@ if(response.data == "True"){
             mode="outlined"
             theme={{ colors: { background: "#fff" } }}
             defaultValue={User && User.phone}
-            onChangeText={(text)=>{
-              personal_info.phone = text
+            onChangeText={(text) => {
+              personal_info.phone = text;
             }}
           />
           <RNPTextInput
@@ -268,8 +251,8 @@ if(response.data == "True"){
             mode="outlined"
             theme={{ colors: { background: "#fff" } }}
             defaultValue={User && User.city}
-            onChangeText={(text)=>{
-              personal_info.city = text
+            onChangeText={(text) => {
+              personal_info.city = text;
             }}
           />
           <RNPTextInput
@@ -279,8 +262,8 @@ if(response.data == "True"){
             mode="outlined"
             theme={{ colors: { background: "#fff" } }}
             defaultValue={User && User.country}
-            onChangeText={(text)=>{
-              personal_info.country = text
+            onChangeText={(text) => {
+              personal_info.country = text;
             }}
           />
           <RNPTextInput
@@ -290,8 +273,8 @@ if(response.data == "True"){
             mode="outlined"
             theme={{ colors: { background: "#fff" } }}
             defaultValue={User && User.profession}
-            onChangeText={(text)=>{
-              personal_info.profession = text
+            onChangeText={(text) => {
+              personal_info.profession = text;
             }}
           />
           <RNPTextInput
@@ -301,10 +284,8 @@ if(response.data == "True"){
             mode="outlined"
             theme={{ colors: { background: "#fff" } }}
             defaultValue={User && User.email}
-         
           />
-       
-          
+
           <RNPTextInput
             style={styles.rectangleRNPTextInput9}
             placeholder="Interests"
@@ -312,7 +293,6 @@ if(response.data == "True"){
             mode="outlined"
             theme={{ colors: { background: "#fff" } }}
             defaultValue={User && User.interests}
-           
           />
         </View>
         <Pressable
@@ -323,7 +303,6 @@ if(response.data == "True"){
           <Text style={styles.saveChangesText}>Save Changes</Text>
         </Pressable>
       </ScrollView>
-      
     </View>
   );
 };
@@ -415,7 +394,7 @@ const styles = StyleSheet.create({
     left: 0,
     width: 56,
     height: 56,
-    borderRadius: "50%"
+    borderRadius: "50%",
   },
   johnDoeText: {
     position: "absolute",
@@ -569,7 +548,6 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     position: "relative",
     height: 48,
-  
   },
   scrollGroup4: {
     width: 302,

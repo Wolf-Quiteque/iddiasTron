@@ -5,9 +5,7 @@ import SignIn from "../screens/SignIn";
 import SignUp from "../screens/SignUp";
 import FaceRecognition from "../screens/FaceRecognition";
 import Interests from "../screens/Interests";
-import ProfileEdit from "../screens/ProfileEdit";
-
-
+import Profile from "../screens/Profile";
 
 const Stack = createStackNavigator();
 
@@ -18,14 +16,11 @@ const AuthNavigator = () => {
         headerShown: false,
       }}
     >
-      
-
-      <Stack.Screen name="Interests" component={Interests} />
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="Interests" component={Interests} />
 
       <Stack.Screen name="FaceRecognition" component={FaceRecognition} />
-      
     </Stack.Navigator>
   );
 };

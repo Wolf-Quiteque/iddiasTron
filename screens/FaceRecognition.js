@@ -40,6 +40,8 @@ export default function FaceRecognition({ route }) {
     const data = {
       firstpic: avatar,
     };
+    var userdata = user
+    userdata.firstpic = data.firstpic
     setDoc(docRef, data, { merge: true })
       .then(() => {
         dispatch(
@@ -47,6 +49,7 @@ export default function FaceRecognition({ route }) {
             email: user.email,
             isLoggedIn: true,
             userName: user.name,
+            userDetails:userdata
           })
         );
       })

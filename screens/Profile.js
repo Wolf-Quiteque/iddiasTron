@@ -5,6 +5,7 @@ import {
   Pressable,
   View,
   Image,
+  Button,
   ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -28,48 +29,138 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { firestore, storage } from "../firebase";
+import * as ImagePicker from "expo-image-picker";
 
-const Profile = () => {
+const Profile = ({ route }) => {
+  const user = route.params;
+
   const navigation = useNavigation();
 
- const [User,setuser ] = React.useState(useSelector(selectUserDetails));
+  const [User, setuser] = React.useState(
+    user ? user : useSelector(selectUserDetails)
+  );
+  // const [User, setuser] = React.useState(false);
 
+  const [image, setImage] = React.useState(null);
+  const [image2, setImage2] = React.useState(null);
+  const [image3, setImage3] = React.useState(null);
 
-  const getUser = async () => {
-    try {
-      const q = query(
-        collection(firestore, "users"),
-        where("email", "in", [User.email])
-      );
+  const pickNewImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
-      const querySnapshot = await getDocs(q);
-      chartData = querySnapshot.docs.map((doc) => doc.data());
+    setImage(result.assets[0].uri);
+    let file = result.assets[0].uri;
 
-      dispatch(
-        setSignIn({
-          email: User.email,
-          isLoggedIn: true,
-          userName: chartData[0].name,
-          userDetails: chartData[0],
-        })
-      );
-      setuser(chartData[0])
-   
-        navigation.navigate("Profile")
-    
-    } catch (error) {
-      console.log(error);
-    }
+    const data = new FormData();
+    const fileName = Date.now() + file.name;
+    data.append("file", file);
+    data.append("name", fileName);
+    data.append("upload_preset", "ipo-uploads");
+
+    const resultPic = await fetch(
+      "https://api.cloudinary.com/v1_1/quitopia/image/upload",
+      {
+        method: "Post",
+        body: data,
+      }
+    ).then((r) => r.json());
+
+    const docRef = doc(firestore, "users", User.email);
+    const dataPic = {
+      gallary: resultPic.secure_url,
+    };
+    setDoc(docRef, dataPic, { merge: true })
+      .then(() => {
+        console.log("Document has been added successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
+  const pickNewImage2 = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
-  React.useEffect(() => {
-    if(!User.firstpic){
-      getUser();
-    }
-  }, []);
+    setImage2(result.assets[0].uri);
+    let file = result.assets[0].uri;
 
+    const data = new FormData();
+    const fileName = Date.now() + file.name;
+    data.append("file", file);
+    data.append("name", fileName);
+    data.append("upload_preset", "ipo-uploads");
 
+    const resultPic = await fetch(
+      "https://api.cloudinary.com/v1_1/quitopia/image/upload",
+      {
+        method: "Post",
+        body: data,
+      }
+    ).then((r) => r.json());
+
+    const docRef = doc(firestore, "users", User.email);
+    const dataPic = {
+      gallary2: resultPic.secure_url,
+    };
+    setDoc(docRef, dataPic, { merge: true })
+      .then(() => {
+        console.log("Document has been added successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const pickNewImage3 = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    setImage3(result.assets[0].uri);
+    let file = result.assets[0].uri;
+
+    const data = new FormData();
+    const fileName = Date.now() + file.name;
+    data.append("file", file);
+    data.append("name", fileName);
+    data.append("upload_preset", "ipo-uploads");
+
+    const resultPic = await fetch(
+      "https://api.cloudinary.com/v1_1/quitopia/image/upload",
+      {
+        method: "Post",
+        body: data,
+      }
+    ).then((r) => r.json());
+
+    const docRef = doc(firestore, "users", User.email);
+    const dataPic = {
+      gallary3: resultPic.secure_url,
+    };
+    setDoc(docRef, dataPic, { merge: true })
+      .then(() => {
+        console.log("Document has been added successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <ScrollView>
@@ -102,15 +193,16 @@ const Profile = () => {
           <Image
             style={styles.profileIcon}
             resizeMode="cover"
-            source={User && User.avatar ? User.avatar:User.firstpic}
+            source={User.firstpic && User.avatar ? User.avatar : User.firstpic}
           />
           <View style={styles.nameView}>
-            <Text style={styles.johnDoeText}>{User && User.name}</Text>
-            
+            <Text style={styles.johnDoeText}>{User.firstpic && User.name}</Text>
           </View>
-          <Text style={styles.sanFranciscoCA}>{User && User.city}</Text>
+          <Text style={styles.sanFranciscoCA}>
+            {User.firstpic && User.city}
+          </Text>
           <Text style={styles.hiMyNameIsJohnImACre}>
-            {User && User.biography}
+            {User.biography ? User.biography : "welcome to my profile"}
           </Text>
           <Pressable
             style={styles.editPressable}
@@ -138,21 +230,45 @@ const Profile = () => {
         </View>
         <View style={[styles.galleryView, styles.mt27, styles.mr1]}>
           <Text style={styles.galleryText}>Gallery</Text>
-          <Image
-            style={styles.rectangleIcon}
-            resizeMode="cover"
-            source={require("../assets/rectangle-26135@3x.png")}
-          />
-          <Image
-            style={styles.rectangleIcon1}
-            resizeMode="cover"
-            source={require("../assets/rectangle-2625@3x.png")}
-          />
-          <Image
-            style={styles.rectangleIcon2}
-            resizeMode="cover"
-            source={require("../assets/rectangle-9205@3x.png")}
-          />
+          <Pressable onPress={pickNewImage}>
+            <Image
+              style={[styles.rectangleIcon3, styles.adjusts]}
+              resizeMode="cover"
+              source={
+                image
+                  ? { uri: image }
+                  : User.gallary
+                  ? User.gallary
+                  : require("../assets/rectangle-26135@3x.png")
+              }
+            />
+          </Pressable>
+          <Pressable onPress={pickNewImage2}>
+            <Image
+              style={[styles.rectangleIcon1, styles.adjustsImage2]}
+              resizeMode="cover"
+              source={
+                image2
+                  ? { uri: image2 }
+                  : User.gallary2
+                  ? User.gallary2
+                  : require("../assets/rectangle-2625@3x.png")
+              }
+            />
+          </Pressable>
+          <Pressable onPress={pickNewImage3}>
+            <Image
+              style={[styles.rectangleIcon2, styles.adjustsImage3]}
+              resizeMode="cover"
+              source={
+                image3
+                  ? { uri: image3 }
+                  : User.gallary3
+                  ? User.gallary3
+                  : require("../assets/rectangle-9205@3x.png")
+              }
+            />
+          </Pressable>
           <Pressable
             style={styles.pressable}
             onPress={() => navigation.navigate("ProfileEditGallery")}
@@ -160,37 +276,39 @@ const Profile = () => {
             <Image
               style={styles.icon2}
               resizeMode="cover"
-              // source={require("../assets/@3x.png" )}
+              source={require("../assets/@3x.png")}
             />
           </Pressable>
         </View>
         <View style={[styles.interestsView, styles.mt30, styles.mr1]}>
           <Text style={styles.interestsText}>Interests</Text>
+          <Pressable>
+            <Image
+              style={[styles.rectangleIcon3, styles.adjusts]}
+              resizeMode="cover"
+              source={
+                User && require("../assets/" + User.interests[0] + ".png")
+              }
+            />
+          </Pressable>
           <Image
-            style={styles.rectangleIcon3}
+            style={[styles.rectangleIcon4, styles.adjusts2]}
             resizeMode="cover"
-            source={require("../assets/rectangle-26136@3x.png")}
+            source={User && require("../assets/" + User.interests[1] + ".png")}
           />
           <Image
-            style={styles.rectangleIcon4}
+            style={[styles.rectangleIcon5, styles.adjusts3]}
             resizeMode="cover"
-            source={require("../assets/rectangle-2626@3x.png")}
-          />
-          <Image
-            style={styles.rectangleIcon5}
-            resizeMode="cover"
-            source={require("../assets/rectangle-9206@3x.png")}
+            source={User && require("../assets/" + User.interests[2] + ".png")}
           />
           <Text style={styles.loremIpsumDolorSitAmetCo}>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor
+            {User.interests[0]}
           </Text>
-          <Text
-            style={styles.loremIpsumDolorSitAmetCo1}
-          >{`Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor `}</Text>
+          <Text style={styles.loremIpsumDolorSitAmetCo1}>
+            {User.interests[1]}
+          </Text>
           <Text style={styles.loremIpsumDolorSitAmetCo2}>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor
+            {User.interests[2]}
           </Text>
         </View>
       </View>
@@ -204,6 +322,21 @@ const styles = StyleSheet.create({
   },
   mt39: {
     marginTop: 39,
+  },
+  adjusts: {
+    marginTop: 43,
+  },
+  adjusts2: {
+    marginBottom: -43,
+  },
+  adjustsImage2: {
+    marginBottom: -130,
+  },
+  adjusts3: {
+    marginBottom: -43,
+  },
+  adjustsImage3: {
+    marginBottom: -130,
   },
   mr1: {
     marginRight: 1,
@@ -272,14 +405,14 @@ const styles = StyleSheet.create({
     left: 0,
     width: 56,
     height: 56,
-    borderRadius: "50%"
+    borderRadius: "50%",
   },
   johnDoeText: {
     position: "absolute",
     top: 0,
     left: 0,
     fontSize: 16,
-    marginBottom:15,
+    marginBottom: 15,
     fontWeight: "700",
     // fontFamily: "Quicksand",
     color: "#21ae9c",
@@ -453,35 +586,38 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     left: 0,
-    fontSize: 10,
+    fontSize: 12,
     // fontFamily: "Quicksand",
     color: "#000",
-    textAlign: "left",
+    textAlign: "center",
     width: 89,
     height: 88,
+    fontWeight: 600,
   },
   loremIpsumDolorSitAmetCo1: {
     position: "absolute",
     marginLeft: -44,
     bottom: 0,
     left: "50%",
-    fontSize: 10,
+    fontSize: 12,
     // fontFamily: "Quicksand",
     color: "#000",
-    textAlign: "left",
+    textAlign: "center",
     width: 89,
     height: 88,
+    fontWeight: 600,
   },
   loremIpsumDolorSitAmetCo2: {
     position: "absolute",
     right: -1,
     bottom: 0,
-    fontSize: 10,
+    fontSize: 12,
     // fontFamily: "Quicksand",
     color: "#000",
-    textAlign: "left",
+    textAlign: "center",
     width: 89,
     height: 88,
+    fontWeight: 600,
   },
   interestsView: {
     position: "relative",

@@ -105,7 +105,7 @@ const SignUp = () => {
     };
     setDoc(docRef, data)
       .then(() => {
-        navigation.navigate("Interests", { name: name, email: email });
+        navigation.navigate("Interests", data);
       })
       .catch((error) => {
         console.log(error);

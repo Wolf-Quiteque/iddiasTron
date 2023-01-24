@@ -7,9 +7,7 @@ import { firestore, storage } from "../firebase";
 import axios from "axios";
 
 import { getDownloadURL, ref } from "firebase/storage";
-import {
-  selectUserDetails,
-} from "../redux/slices/authSlice";
+import { selectUserDetails } from "../redux/slices/authSlice";
 const SearchFaceSimiliarity = () => {
   const navigation = useNavigation();
 
@@ -19,12 +17,7 @@ const SearchFaceSimiliarity = () => {
   const [totalfaces, settotalfaces] = React.useState(false);
   const [searching, setsearching] = React.useState(true);
 
-
-
-
-
   var UserMatches = [];
-
 
   const getUsers = async () => {
     try {
@@ -39,71 +32,70 @@ const SearchFaceSimiliarity = () => {
     } catch (error) {
       console.log(error);
     }
-  }
-
+  };
 
   async function GetFace() {
     for (let index = 0; index < users.length; index++) {
-      if(users[index].firstpic){
-        var response = await axios.post("http://127.0.0.1:5000/ai",{photo_taken:users[index].firstpic,db_photo:User.firstpic});
-       
-        if(response.data != "False"){
+      if (users[index].firstpic) {
+        var response = await axios.post("http://127.0.0.1:5000/ai", {
+          photo_taken: users[index].firstpic,
+          db_photo: User.firstpic,
+        });
+
+        if (response.data != "image without a face has been uploaded") {
           var dummyuser = users[index];
-          dummyuser.percentage = Math.round(Number(response.data)*100)
-        
-          UserMatches.push(dummyuser)
-          setSimilarUsers(UserMatches)
-        
+          dummyuser.percentage = Math.round(Number(response.data) * 100);
+
+          UserMatches.push(dummyuser);
+          setSimilarUsers(UserMatches);
         }
       }
     }
 
-    if(UserMatches.length){settotalfaces(UserMatches.length);
-    }else setsearching(false)
-
-    
-
-   
+    if (UserMatches.length) {
+      settotalfaces(UserMatches.length);
+      setsearching(false);
+    } else setsearching(false);
   }
 
   React.useEffect(() => {
-    if(!users){
+    if (!users) {
       getUsers();
     }
-    if(users){
-        GetFace()
+    if (users) {
+      GetFace();
     }
-    
   }, [users]);
 
-
-  return ( 
-    <Pressable
-      style={styles.searchFaceSimiliarityPressable}
-      onPress={() => navigation.navigate("SearchResults")}
-    >
-
-{Similarusers ? (
-          Similarusers.map((u) => (
-      <View style={[styles.nameView, styles.mt43, styles.mr1]}>
-        <Text style={styles.beatrizSilvaText}>{u.name}</Text>
-        <Image
-          style={styles.rectangleIcon}
-          resizeMode="cover"
-          source={u.avatar ? u.avatar:u.firstpic }
-        />
-        <Text style={styles.similarityText}>{u.percentage}% Similarity</Text>
-          
-        
-      </View>   ))
-        ) : (
-          <>
-          { searching ? <Text>Searching</Text> : <Text>No similar face found</Text>  }</>
-          
+  return (
+    <>
+      <Pressable style={styles.searchFaceSimiliarityPressable}>
+        {searching && <Text style={{ fontSize: 25 }}>Searching</Text>}
+        {totalfaces && (
+          <Text style={{ fontSize: 25 }}>
+            {" "}
+            {totalfaces} similar faces found!
+          </Text>
         )}
-        {totalfaces &&<Text>  {totalfaces} similar faces found!</Text>} 
-
-     </Pressable>
+        {Similarusers &&
+          Similarusers.map((u) => (
+            <Pressable onPress={() => navigation.navigate("SearchResults")}>
+              {" "}
+              <View style={[styles.nameView, styles.mt43, styles.mr1]}>
+                <Text style={styles.beatrizSilvaText}>{u.name}</Text>
+                <Image
+                  style={styles.rectangleIcon}
+                  resizeMode="cover"
+                  source={u.avatar ? u.avatar : u.firstpic}
+                />
+                <Text style={styles.similarityText}>
+                  {u.percentage}% Similarity
+                </Text>
+              </View>
+            </Pressable>
+          ))}
+      </Pressable>
+    </>
   );
 };
 

@@ -10,8 +10,9 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import Carousel from "react-native-reanimated-carousel";
 
-const SearchResults = () => {
+const SearchResults = ({ route }) => {
   const navigation = useNavigation();
+  const user = route.params;
 
   return (
     <View style={styles.searchResultsView}>
@@ -19,15 +20,16 @@ const SearchResults = () => {
         <Image
           style={styles.profileIcon}
           resizeMode="cover"
-          source={require("../assets/profile6.png")}
+          source={require("../assets/profile6@3x.png")}
         />
         <View style={styles.nameView}>
-          <Text style={styles.neliaCamposText}>Nelia Campos</Text>
-          <Text style={styles.lisbonPTText}>Lisbon, PT</Text>
+          <Text style={styles.neliaCamposText}>{user && user.name}</Text>
+          <Text style={styles.lisbonPTText}>
+            {user && user.city}, {user && user.country}
+          </Text>
         </View>
         <Text style={styles.hiMyNameIsNeliaCamposI}>
-          Hi! My name is Nelia Campos, I love nature, camping, taking fotos and
-          literature. I'm a lawyer by profession.
+          {user && user.biography}
         </Text>
       </View>
       <Pressable
@@ -48,82 +50,84 @@ const SearchResults = () => {
         <Image
           style={styles.icon}
           resizeMode="cover"
-          source={require("../assets/icon-awesomerocketchat2.png")}
+          source={require("../assets/icon-awesomerocketchat2@3x.png")}
         />
       </Pressable>
-      <Text style={[styles.galleryText, styles.mt133, styles.mr1]}>
-        Gallery
-      </Text>
-      <View style={[styles.galleryView, styles.mt23, styles.mr1]}>
-        <Carousel />
+      <View style={[styles.galleryView, styles.mt27, styles.mr1]}>
+        <Text style={styles.galleryText}>Gallery</Text>
+        <Image
+          style={[styles.rectangleIcon3, styles.adjusts]}
+          resizeMode="cover"
+          source={
+            user.gallary
+              ? user.gallary
+              : require("../assets/rectangle-26135@3x.png")
+          }
+        />
+        <Pressable>
+          <Image
+            style={[styles.rectangleIcon1, styles.adjustsImage2]}
+            resizeMode="cover"
+            source={
+              user.gallary2
+                ? user.gallary2
+                : require("../assets/rectangle-26135@3x.png")
+            }
+          />
+        </Pressable>
+        <Pressable>
+          <Image
+            style={[styles.rectangleIcon2, styles.adjustsImage3]}
+            resizeMode="cover"
+            source={
+              user.gallary3
+                ? user.gallary3
+                : require("../assets/rectangle-26135@3x.png")
+            }
+          />
+        </Pressable>
+        <Pressable
+          style={styles.pressable}
+          onPress={() => navigation.navigate("ProfileEditGallery")}
+        >
+          <Image
+            style={styles.icon2}
+            resizeMode="cover"
+            source={require("../assets/@3x.png")}
+          />
+        </Pressable>
       </View>
-      <Text style={[styles.interestsText, styles.mt30, styles.mr1]}>
-        Interests
-      </Text>
-      <View style={[styles.interestsView, styles.mt23, styles.mr1]}>
-        <Carousel />
-      </View>
-      <View style={[styles.toolbarView, styles.mt83]}>
-        <View style={styles.rectangleView1} />
-        <Pressable
-          style={styles.profilePressable}
-          onPress={() => navigation.navigate("Profile")}
-        >
-          <Text style={styles.profileText}>Profile</Text>
+      <View style={[styles.galleryView, styles.mt23, styles.mr1]}></View>
+
+      <View style={[styles.interestsView, styles.mt30, styles.mr1]}>
+        <Text style={styles.interestsText}>Interests</Text>
+        <Pressable>
           <Image
-            style={styles.profileIcon1}
+            style={[styles.rectangleIcon3, styles.adjusts]}
             resizeMode="cover"
-            source={require("../assets/profile.png")}
+            source={
+              React.useReducer &&
+              require("../assets/" + user.interests[0] + ".png")
+            }
           />
         </Pressable>
-        <Pressable
-          style={styles.feedPressable}
-          onPress={() => navigation.navigate("NewsFeed")}
-        >
-          <Text style={styles.feedText}>Feed</Text>
-          <Image
-            style={styles.feedIcon}
-            resizeMode="cover"
-            source={require("../assets/feed.png")}
-          />
-        </Pressable>
-        <Pressable
-          style={styles.searchPressable}
-          onPress={() => navigation.navigate("Search")}
-        >
-          <Text style={styles.searchText}>Search</Text>
-          <View style={styles.searchView}>
-            <View style={styles.rectangleView2} />
-            <Image
-              style={styles.path99Icon}
-              resizeMode="cover"
-              source={require("../assets/path-99.png")}
-            />
-          </View>
-          <View style={styles.lineView} />
-        </Pressable>
-        <Pressable
-          style={styles.chatPressable}
-          onPress={() => navigation.navigate("Chat")}
-        >
-          <Text style={styles.chatText}>Chat</Text>
-          <Image
-            style={styles.iconMaterialChatBubble}
-            resizeMode="cover"
-            source={require("../assets/icon-materialchatbubble.png")}
-          />
-        </Pressable>
-        <Pressable
-          style={styles.groupPressable}
-          onPress={() => navigation.navigate("GroupFeed")}
-        >
-          <Text style={styles.groupText}>Group</Text>
-          <Image
-            style={styles.iconMaterialGroup}
-            resizeMode="cover"
-            source={require("../assets/icon-materialgroup.png")}
-          />
-        </Pressable>
+        <Image
+          style={[styles.rectangleIcon4, styles.adjusts2]}
+          resizeMode="cover"
+          source={user && require("../assets/" + user.interests[1] + ".png")}
+        />
+        <Image
+          style={[styles.rectangleIcon5, styles.adjusts3]}
+          resizeMode="cover"
+          source={user && require("../assets/" + user.interests[2] + ".png")}
+        />
+        <Text style={styles.loremIpsumDolorSitAmetCo}>{user.interests[0]}</Text>
+        <Text style={styles.loremIpsumDolorSitAmetCo1}>
+          {user.interests[1]}
+        </Text>
+        <Text style={styles.loremIpsumDolorSitAmetCo2}>
+          {user.interests[2]}
+        </Text>
       </View>
     </View>
   );

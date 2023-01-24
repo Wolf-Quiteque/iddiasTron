@@ -1,9 +1,26 @@
 import * as React from "react";
 import { Text, StyleSheet, Image, Pressable, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { selectUserDetails } from "../redux/slices/authSlice";
+import { useSelector } from "react-redux";
 
-const SearchResults1 = () => {
+const SearchResults1 = ({ route }) => {
   const navigation = useNavigation();
+  const user = route.params;
+  const [friend, setfriend] = React.useState(false);
+  const [User, setuser] = React.useState(useSelector(selectUserDetails));
+  function verifyFriend() {
+    if (user.Friendrequests) {
+      const value = user.Friendrequests.includes(User.email);
+      setfriend(value);
+    }
+
+    setfriend(value);
+  }
+
+  React.useEffect(() => {
+    verifyFriend();
+  }, []);
 
   return (
     <View style={styles.searchResults1View}>
@@ -16,7 +33,7 @@ const SearchResults1 = () => {
           <Image
             style={styles.icon}
             resizeMode="cover"
-            source={require("../assets/icon-materialnotificationsactive.png")}
+            source={require("../assets/icon-materialnotificationsactive@3x.png")}
           />
         </Pressable>
       </View>
@@ -24,45 +41,61 @@ const SearchResults1 = () => {
         <Image
           style={styles.profileIcon}
           resizeMode="cover"
-          source={require("../assets/profile6.png")}
+          source={require("../assets/profile6@3x.png")}
         />
         <View style={styles.nameView}>
-          <Text style={styles.neliaCamposText}>Nelia Campos</Text>
-          <Text style={styles.lisbonPTText}>Lisbon, PT</Text>
+          <Text style={styles.neliaCamposText}>{user.name}</Text>
+          <Text style={styles.lisbonPTText}>
+            {user.cidade}, {user.country}
+          </Text>
         </View>
-        <Text style={styles.hiMyNameIsNeliaCamposI}>
-          Hi! My name is Nelia Campos, I love nature, camping, taking fotos and
-          literature. I'm a lawyer by profession.
-        </Text>
+        <Text style={styles.hiMyNameIsNeliaCamposI}>{user.biography}</Text>
       </View>
       <Pressable
         style={[styles.connectPressable, styles.mt_150, styles.mr43]}
         onPress={() => navigation.navigate("ProfileConnected1")}
       >
         <View style={styles.rectangleView} />
-        <Text style={styles.iDText}>ID</Text>
+
+        {friend ? (
+          <Text style={styles.iDText}>request</Text>
+        ) : (
+          <Text style={styles.iDText}>ID</Text>
+        )}
       </Pressable>
       <Image
         style={[styles.iconAwesomeRocketchat, styles.mt_27, styles.mr120]}
         resizeMode="cover"
-        source={require("../assets/icon-awesomerocketchat.png")}
+        source={require("../assets/icon-awesomerocketchat@3x.png")}
       />
       <View style={[styles.galleryView, styles.mt133, styles.mr37]}>
         <Text style={styles.galleryText}>Gallery</Text>
         <Image
           style={styles.rectangleIcon}
           resizeMode="cover"
-          source={require("../assets/rectangle-26120.png")}
+          source={
+            user.gallary
+              ? user.gallary
+              : require("../assets/rectangle-26135@3x.png")
+          }
         />
         <Image
           style={styles.rectangleIcon1}
           resizeMode="cover"
-          source={require("../assets/rectangle-262.png")}
+          source={
+            user.gallary2
+              ? user.gallary2
+              : require("../assets/rectangle-26135@3x.png")
+          }
         />
         <Image
           style={styles.rectangleIcon2}
           resizeMode="cover"
-          source={require("../assets/rectangle-920.png")}
+          source={
+            user.gallary3
+              ? user.gallary3
+              : require("../assets/rectangle-26135@3x.png")
+          }
         />
       </View>
       <View style={[styles.interestsView, styles.mt30, styles.mr37]}>
@@ -70,28 +103,24 @@ const SearchResults1 = () => {
         <Image
           style={styles.rectangleIcon3}
           resizeMode="cover"
-          source={require("../assets/rectangle-26121.png")}
+          source={require("../assets/" + user.interests[0] + ".png")}
         />
         <Image
           style={styles.rectangleIcon4}
           resizeMode="cover"
-          source={require("../assets/rectangle-2621.png")}
+          source={require("../assets/" + user.interests[1] + ".png")}
         />
         <Image
           style={styles.rectangleIcon5}
           resizeMode="cover"
-          source={require("../assets/rectangle-9201.png")}
+          source={require("../assets/" + user.interests[2] + ".png")}
         />
-        <Text style={styles.loremIpsumDolorSitAmetCo}>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor
+        <Text style={styles.loremIpsumDolorSitAmetCo}>{user.interests[0]}</Text>
+        <Text style={styles.loremIpsumDolorSitAmetCo1}>
+          {user.interests[1]}
         </Text>
-        <Text
-          style={styles.loremIpsumDolorSitAmetCo1}
-        >{`Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor `}</Text>
         <Text style={styles.loremIpsumDolorSitAmetCo2}>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor
+          {user.interests[2]}
         </Text>
       </View>
       <View style={[styles.toolbarView, styles.mt83]}>
@@ -105,7 +134,7 @@ const SearchResults1 = () => {
           <Image
             style={styles.union46Icon}
             resizeMode="cover"
-            source={require("../assets/union-46.png")}
+            source={require("../assets/union-46@3x.png")}
           />
         </Pressable>
         <Pressable
@@ -116,7 +145,7 @@ const SearchResults1 = () => {
           <Image
             style={styles.feedIcon}
             resizeMode="cover"
-            source={require("../assets/feed5.png")}
+            source={require("../assets/feed5@3x.png")}
           />
         </Pressable>
         <Pressable
@@ -129,7 +158,7 @@ const SearchResults1 = () => {
             <Image
               style={styles.path99Icon}
               resizeMode="cover"
-              source={require("../assets/path-996.png")}
+              source={require("../assets/path-996@3x.png")}
             />
           </View>
         </Pressable>
@@ -141,7 +170,7 @@ const SearchResults1 = () => {
           <Image
             style={styles.iconMaterialChatBubble}
             resizeMode="cover"
-            source={require("../assets/icon-materialchatbubble.png")}
+            source={require("../assets/icon-materialchatbubble@3x.png")}
           />
         </Pressable>
         <Pressable
@@ -152,7 +181,7 @@ const SearchResults1 = () => {
           <Image
             style={styles.iconMaterialGroup}
             resizeMode="cover"
-            source={require("../assets/icon-materialgroup.png")}
+            source={require("../assets/icon-materialgroup@3x.png")}
           />
         </Pressable>
       </View>

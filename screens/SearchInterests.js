@@ -32,7 +32,8 @@ const SearchInterests = () => {
     try {
       const q = query(
         collection(firestore, "users"),
-        where("interests", "array-contains-any", [name[0], name[1], name[2]])
+        where("interests", "array-contains-any", [name[0], name[1], name[2]]),
+        where("email", "!=", email)
       );
 
       const querySnapshot = await getDocs(q);

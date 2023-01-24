@@ -39,8 +39,8 @@ const SearchName = () => {
       const q = query(
         collection(firestore, "users"),
         orderBy("name"),
-        startAt(name),
-        endAt(name + "\uf8ff")
+        startAt(name.charAt(0).toUpperCase() + name.slice(1)),
+        endAt(name.charAt(0).toUpperCase() + name.slice(1) + "\uf8ff")
       );
 
       const querySnapshot = await getDocs(q);
@@ -52,15 +52,14 @@ const SearchName = () => {
   };
 
   React.useEffect(() => {
-    getUsers();
+    if (name) {
+      getUsers();
+    }
   }, [name]);
 
   return (
     <ScrollView style={{ backgroundColor: "white" }}>
-      <Pressable
-        style={styles.searchNamePressable}
-        onPress={() => navigation.navigate("SearchResults")}
-      >
+      <Pressable style={styles.searchNamePressable}>
         <View style={[styles.navigationBarView, styles.ml80]}>
           <Text style={styles.searchName}>Search - Name</Text>
           <Pressable
@@ -88,17 +87,19 @@ const SearchName = () => {
 
         {users ? (
           users.map((u) => (
-            <View style={[styles.nameView, styles.mt35, styles.mr1]}>
-              <Text style={styles.neliaCardosoText}>{u.name}</Text>
-              <Image
-                style={styles.rectangleIcon}
-                resizeMode="cover"
-                source={u.avatar ? u.avatar : u.firstpic}
-              />
-              <Text style={styles.loremIpsumDolorSitAmetCo}>
-                {u.biography && u.biography.slice(0, 30)}
-              </Text>
-            </View>
+            <Pressable onPress={() => navigation.navigate("SearchResults1", u)}>
+              <View style={[styles.nameView, styles.mt35, styles.mr1]}>
+                <Text style={styles.neliaCardosoText}>{u.name && u.name}</Text>
+                <Image
+                  style={styles.rectangleIcon}
+                  resizeMode="cover"
+                  source={u.avatar ? u.avatar : u.firstpic}
+                />
+                <Text style={styles.loremIpsumDolorSitAmetCo}>
+                  {u.biography && u.biography.slice(0, 30)}
+                </Text>
+              </View>
+            </Pressable>
           ))
         ) : (
           <Text>No Name similar to yours found!</Text>

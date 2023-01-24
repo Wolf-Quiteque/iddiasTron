@@ -15,7 +15,15 @@ import {
   selectUser,
   selectUserName,
 } from "../redux/slices/authSlice";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  orderBy,
+  startAt,
+  endAt,
+} from "firebase/firestore";
 import { useSelector } from "react-redux";
 
 const SearchName = () => {
@@ -30,8 +38,9 @@ const SearchName = () => {
     try {
       const q = query(
         collection(firestore, "users"),
-        where("name", "in", [name]),
-        where("email", "!=", email)
+        orderBy("name"),
+        startAt(name),
+        endAt(name + "\uf8ff")
       );
 
       const querySnapshot = await getDocs(q);
@@ -87,7 +96,7 @@ const SearchName = () => {
                 source={u.avatar ? u.avatar : u.firstpic}
               />
               <Text style={styles.loremIpsumDolorSitAmetCo}>
-                {u.biography && u.biography.slice(0,30)}
+                {u.biography && u.biography.slice(0, 30)}
               </Text>
             </View>
           ))

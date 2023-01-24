@@ -73,14 +73,12 @@ const SearchFaceSimiliarity = () => {
         {searching && <Text style={{ fontSize: 25 }}>Searching</Text>}
         {totalfaces && (
           <Text style={{ fontSize: 25 }}>
-            {" "}
             {totalfaces} similar faces found!
           </Text>
         )}
         {Similarusers &&
           Similarusers.map((u) => (
             <Pressable onPress={() => navigation.navigate("SearchResults")}>
-              {" "}
               <View style={[styles.nameView, styles.mt43, styles.mr1]}>
                 <Text style={styles.beatrizSilvaText}>{u.name}</Text>
                 <Image

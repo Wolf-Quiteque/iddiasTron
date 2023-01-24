@@ -32,14 +32,13 @@ const SearchInterests = () => {
     try {
       const q = query(
         collection(firestore, "users"),
-        where("interests", "in", [name]),
-        where("email", "!=", email)
+        where("interests", "array-contains-any", [name[0], name[1], name[2]])
       );
 
       const querySnapshot = await getDocs(q);
       chartData = querySnapshot.docs.map((doc) => doc.data());
       setUsers(chartData);
-      console.log(chartData)
+      console.log(chartData);
     } catch (error) {
       console.log(error);
     }
@@ -87,11 +86,9 @@ const SearchInterests = () => {
               <Image
                 style={styles.rectangleIcon}
                 resizeMode="cover"
-                source={u.avatar ? u.avatar:u.firstpic }
+                source={u.avatar ? u.avatar : u.firstpic}
               />
-              <Text style={styles.loremIpsumDolorSitAmetCo}>
-                {u.interests}
-              </Text>
+              <Text style={styles.loremIpsumDolorSitAmetCo}>{u.interests}</Text>
             </View>
           ))
         ) : (

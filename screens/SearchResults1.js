@@ -3,15 +3,141 @@ import { Text, StyleSheet, Image, Pressable, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { selectUserDetails } from "../redux/slices/authSlice";
 import { useSelector } from "react-redux";
+import {
+  collection,
+  addDoc,
+  orderBy,
+  query,
+  getDoc,
+  onSnapshot,
+  getDocs,
+  where,
+  doc,
+  updateDoc,
+  FieldValue,
+  setDoc,
+} from "firebase/firestore";
+import { firestore, storage } from "../firebase";
 
 const SearchResults1 = ({ route }) => {
   const navigation = useNavigation();
-  const user = route.params;
+
   const [friend, setfriend] = React.useState(false);
-  const [User, setuser] = React.useState(useSelector(selectUserDetails));
+  const [friends, setfriends] = React.useState(false);
+
+  const [User, setUser] = React.useState(useSelector(selectUserDetails));
+  const [user, setuser] = React.useState(route.params);
+
+
+
+  const getUser = async () => {
+    try {
+      const q = query(
+        collection(firestore, "users"),
+        where("email", "in", [user.email])
+      );
+
+      const querySnapshot = await getDocs(q);
+      chartData = querySnapshot.docs.map((doc) => doc.data());
+
+
+      setuser(chartData[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   function decline (){
+
+    var list = user.Friendrequests
+    list.forEach(myFunction);
     
+    function myFunction(item, index) {
+      if(item == User.email){
+        delete list[index];
+
+      }
+    }
+
+    const docRef = doc(firestore, "users", user.email);
+    if(!list[0]){
+      const dataPic = {
+        Friendrequests: 0,
+      };
+      setDoc(docRef, dataPic,{ merge: true })
+        .then(() => {
+          console.log("Document has been added successfully");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+        return false
+    }
+    const dataPic = {
+      Friendrequests: list,
+    };
+    setDoc(docRef, dataPic, { merge: true })
+      .then(() => {
+        console.log("Document has been added successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    getUser()
+
+  }
+
+  function accept (){
+    var friendList, FriendList
+
+    if(user.friends){
+      friendList= user.friends
+      friendList.push(User.email)
+    } else{
+      friendList = [User.email]
+    }
+
+    if(User.friends){
+      FriendList= User.friends
+      FriendList.push(user.email)
+
+    }else{
+      FriendList = [user.email]
+
+    }
+
+    var list = user.Friendrequests
+    list.forEach(myFunction);
+    
+    function myFunction(item, index) {
+      if(item == User.email){
+        delete list[index];
+
+      }
+    }
+
+    if(!list[0]){
+      list = 0}
+
+    var docRef = doc(firestore, "users", user.email);
+    setDoc(docRef, {friends:friendList, Friendrequests:list},{ merge: true })
+    .then(() => {
+      console.log("Document has been added successfully");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+     docRef = doc(firestore, "users", User.email);
+    setDoc(docRef, {friends:FriendList},{ merge: true })
+    .then(() => {
+      console.log("Document has been added successfully");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+    getUser()
   }
 
 
@@ -24,12 +150,19 @@ const SearchResults1 = ({ route }) => {
       setfriend(value);
     }
 
+    if (user.friends) {
+      const value = user.friends.includes(User.email);
+      setfriends(value);
+    }
+
+
+
  
   }
 
   React.useEffect(() => {
     verifyFriend();
-  }, []);
+  }, [user]);
 
   return (
     <View style={styles.searchResults1View}>
@@ -89,11 +222,8 @@ const SearchResults1 = ({ route }) => {
         onPress={() => navigation.navigate("ProfileConnected1")}
       >
         <View style={styles.rectangleView} />
-
-       
-        <Text>fdkfj</Text>
      
-          <Text style={styles.iDText}>ID</Text>
+          {friends ? <Text style={styles.iDText}>IDID</Text> :<Text style={styles.iDText}>ID</Text>}
       
       </Pressable>)}
  

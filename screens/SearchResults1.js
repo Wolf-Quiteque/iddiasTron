@@ -9,13 +9,22 @@ const SearchResults1 = ({ route }) => {
   const user = route.params;
   const [friend, setfriend] = React.useState(false);
   const [User, setuser] = React.useState(useSelector(selectUserDetails));
+
+  function decline (){
+    
+  }
+
+
   function verifyFriend() {
+    if(User.email == user.email){
+      navigation.navigate("UserProfile")
+    }
     if (user.Friendrequests) {
       const value = user.Friendrequests.includes(User.email);
       setfriend(value);
     }
 
-    setfriend(value);
+ 
   }
 
   React.useEffect(() => {
@@ -41,28 +50,54 @@ const SearchResults1 = ({ route }) => {
         <Image
           style={styles.profileIcon}
           resizeMode="cover"
-          source={require("../assets/profile6@3x.png")}
+          source={user.firstpic && user.avatar ? user.avatar : user.firstpic}
         />
         <View style={styles.nameView}>
           <Text style={styles.neliaCamposText}>{user.name}</Text>
           <Text style={styles.lisbonPTText}>
-            {user.cidade}, {user.country}
+            {user.city}, {user.country}
           </Text>
         </View>
         <Text style={styles.hiMyNameIsNeliaCamposI}>{user.biography}</Text>
       </View>
-      <Pressable
+    
+        {friend ? (  <View    style={[ {display: "flex",
+  justifyContent: "space-between"}, styles.mt_150, styles.mr43]}>
+    <Pressable onPress={accept}>
+    <Image
+        style={[styles.acceptIcon, styles.mt_19]}
+        resizeMode="cover"
+        source={require("../assets/accept@3x.png")}
+      />
+    </Pressable>
+        
+        <Pressable onPress={decline}>
+        <Image
+        style={[
+          styles.declineIcon,
+          styles.mt_22,
+          styles.mr44,
+          styles.iconLayout1,
+        ]}
+        resizeMode="cover"
+        source={require("../assets/decline@3x.png")}
+      />
+        </Pressable>
+     
+          </View>):(     <Pressable
         style={[styles.connectPressable, styles.mt_150, styles.mr43]}
         onPress={() => navigation.navigate("ProfileConnected1")}
       >
         <View style={styles.rectangleView} />
 
-        {friend ? (
-          <Text style={styles.iDText}>request</Text>
-        ) : (
+       
+        <Text>fdkfj</Text>
+     
           <Text style={styles.iDText}>ID</Text>
-        )}
-      </Pressable>
+      
+      </Pressable>)}
+ 
+      
       <Image
         style={[styles.iconAwesomeRocketchat, styles.mt_27, styles.mr120]}
         resizeMode="cover"
@@ -265,6 +300,14 @@ const styles = StyleSheet.create({
     color: "#21ae9c",
     textAlign: "left",
   },
+  acceptIcon: {
+    width: 21,
+    height: 20,
+  },
+  declineIcon: {
+    width: 21,
+    height: 20,
+  },
   lisbonPTText: {
     position: "absolute",
     bottom: 0,
@@ -338,6 +381,10 @@ const styles = StyleSheet.create({
     fontFamily: "Quicksand",
     color: "#15abb5",
     textAlign: "center",
+  },
+  mt_22: {
+    marginTop: -20,
+    marginLeft: -40
   },
   rectangleIcon: {
     position: "absolute",

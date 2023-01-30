@@ -40,8 +40,39 @@ const SearchResults1 = ({ route }) => {
       const querySnapshot = await getDocs(q);
       chartData = querySnapshot.docs.map((doc) => doc.data());
 
-
+    
       setuser(chartData[0]);
+    } catch (error) {
+      console.log(error);
+    }
+    verifyFriend()
+  };
+
+
+
+  const addFriend = async () => {
+
+    var newList =[ ]
+
+    if(user.Friendrequests){
+      newList = user.Friendrequests
+    }
+    newList.push(User.email)
+
+    try {
+
+
+
+      docRef = doc(firestore, "users", user.email);
+      setDoc(docRef, {Friendrequests:newList},{ merge: true })
+      .then(() => {
+        console.log("Document has been added successfully");
+        getUser()
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     } catch (error) {
       console.log(error);
     }
@@ -67,6 +98,7 @@ const SearchResults1 = ({ route }) => {
       setDoc(docRef, dataPic,{ merge: true })
         .then(() => {
           console.log("Document has been added successfully");
+          getUser()
         })
         .catch((error) => {
           console.log(error);
@@ -79,12 +111,13 @@ const SearchResults1 = ({ route }) => {
     setDoc(docRef, dataPic, { merge: true })
       .then(() => {
         console.log("Document has been added successfully");
+        getUser()
       })
       .catch((error) => {
         console.log(error);
       });
 
-    getUser()
+
 
   }
 
@@ -223,7 +256,7 @@ const SearchResults1 = ({ route }) => {
       >
         <View style={styles.rectangleView} />
      
-          {friends ? <Text style={styles.iDText}>IDID</Text> :<Text style={styles.iDText}>ID</Text>}
+          {friends ?  <Text style={styles.iDText}>IDID</Text> : <Pressable onPress={addFriend}> <Text style={styles.iDText}>ID</Text></Pressable>}
       
       </Pressable>)}
  

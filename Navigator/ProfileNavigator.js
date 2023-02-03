@@ -8,6 +8,7 @@ import Profile from "../screens/Profile";
 import ProfileEdit from "../screens/ProfileEdit";
 import ProfileEditGallery from "../screens/ProfileEditGallery";
 import Notifications from "../screens/Notifications";
+import ProfileConnections from "../screens/ProfileConnections";
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,8 @@ const ProfileNavigator = () => {
       }}
     >
       <Stack.Screen name="UserProfile" component={Profile} />
+      <Stack.Screen name="ProfileConnections" component={ProfileConnections} />
+
       <Stack.Screen name="Notifications" component={Notifications} />
 
       <Stack.Screen name="ProfileEdit" component={ProfileEdit} />

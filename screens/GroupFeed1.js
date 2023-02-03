@@ -23,7 +23,7 @@ const GroupFeed1 = () => {
           <Image
             style={styles.icon}
             resizeMode="cover"
-            source={require("../assets/1.png")}
+            source={require("../assets/1@3x.png")}
           />
         </Pressable>
         <Pressable
@@ -33,7 +33,7 @@ const GroupFeed1 = () => {
           <Image
             style={styles.icon1}
             resizeMode="cover"
-            source={require("../assets/icon-materialnotificationsactive.png")}
+            source={require("../assets/icon-materialnotificationsactive@3x.png")}
           />
         </Pressable>
       </View>
@@ -55,7 +55,7 @@ const GroupFeed1 = () => {
                   <Image
                     style={styles.heartIcon}
                     resizeMode="cover"
-                    source={require("../assets/heart2.png")}
+                    source={require("../assets/heart2@3x.png")}
                   />
                   <View style={styles.rectangleView1} />
                 </View>
@@ -65,7 +65,7 @@ const GroupFeed1 = () => {
                 <Image
                   style={styles.componentIcon}
                   resizeMode="cover"
-                  source={require("../assets/component.png")}
+                  source={require("../assets/component@3x.png")}
                 />
               </View>
             </View>
@@ -75,13 +75,13 @@ const GroupFeed1 = () => {
               <Image
                 style={styles.component17Icon}
                 resizeMode="cover"
-                source={require("../assets/component-171.png")}
+                source={require("../assets/component-171@3x@3x.png")}
               />
             </View>
             <Image
               style={styles.maskGroup1}
               resizeMode="cover"
-              source={require("../assets/mask-group-1.png")}
+              source={require("../assets/mask-group-1@3x@3x.png")}
             />
           </View>
           <View style={styles.postsView1}>
@@ -97,7 +97,7 @@ const GroupFeed1 = () => {
                   <Image
                     style={styles.heartIcon1}
                     resizeMode="cover"
-                    source={require("../assets/heart3.png")}
+                    source={require("../assets/heart3@3x.png")}
                   />
                   <View style={styles.rectangleView3} />
                 </View>
@@ -107,7 +107,7 @@ const GroupFeed1 = () => {
                 <Image
                   style={styles.componentIcon1}
                   resizeMode="cover"
-                  source={require("../assets/component.png")}
+                  source={require("../assets/component@3x.png")}
                 />
               </View>
             </View>
@@ -117,13 +117,13 @@ const GroupFeed1 = () => {
               <Image
                 style={styles.component18Icon}
                 resizeMode="cover"
-                source={require("../assets/component-181.png")}
+                source={require("../assets/component-181@3x@3x.png")}
               />
             </View>
             <Image
               style={styles.maskGroup11}
               resizeMode="cover"
-              source={require("../assets/mask-group-1.png")}
+              source={require("../assets/mask-group-1@3x@3x.png")}
             />
           </View>
         </View>
@@ -138,7 +138,7 @@ const GroupFeed1 = () => {
           <Image
             style={styles.profileIcon}
             resizeMode="cover"
-            source={require("../assets/profile.png")}
+            source={require("../assets/profile@3x.png")}
           />
         </Pressable>
         <Pressable
@@ -149,7 +149,7 @@ const GroupFeed1 = () => {
           <Image
             style={styles.feedIcon}
             resizeMode="cover"
-            source={require("../assets/feed19.png")}
+            source={require("../assets/feed19@3x.png")}
           />
         </Pressable>
         <Pressable
@@ -162,7 +162,7 @@ const GroupFeed1 = () => {
             <Image
               style={styles.path99Icon}
               resizeMode="cover"
-              source={require("../assets/path-996.png")}
+              source={require("../assets/path-996@3x.png")}
             />
           </View>
         </Pressable>
@@ -174,7 +174,7 @@ const GroupFeed1 = () => {
           <Image
             style={styles.iconMaterialChatBubble}
             resizeMode="cover"
-            source={require("../assets/icon-materialchatbubble.png")}
+            source={require("../assets/icon-materialchatbubble@3x.png")}
           />
         </Pressable>
         <Pressable
@@ -185,7 +185,7 @@ const GroupFeed1 = () => {
           <Image
             style={styles.iconMaterialGroup}
             resizeMode="cover"
-            source={require("../assets/icon-materialgroup23.png")}
+            source={require("../assets/icon-materialgroup23@3x.png")}
           />
           <View style={styles.lineView} />
         </Pressable>

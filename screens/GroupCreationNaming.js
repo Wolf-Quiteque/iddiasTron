@@ -22,7 +22,7 @@ const GroupCreationNaming = () => {
           <Image
             style={styles.icon}
             resizeMode="cover"
-            source={require("../assets/backward-arrow.png")}
+            source={require("../assets/backward-arrow@3x.png")}
           />
         </Pressable>
       </View>
@@ -30,7 +30,7 @@ const GroupCreationNaming = () => {
         <Image
           style={styles.iconIonicMdCamera}
           resizeMode="cover"
-          source={require("../assets/icon-ionicmdcamera.png")}
+          source={require("../assets/icon-ionicmdcamera@3x.png")}
         />
       </View>
       <View style={[styles.lineView, styles.mt_53, styles.ml112]} />
@@ -53,22 +53,22 @@ const GroupCreationNaming = () => {
       <Image
         style={[styles.ellipseIcon, styles.mt48, styles.ml118]}
         resizeMode="cover"
-        source={require("../assets/ellipse-237.png")}
+        source={require("../assets/ellipse-237@3x.png")}
       />
       <Image
         style={[styles.ellipseIcon1, styles.mt_60, styles.ml40]}
         resizeMode="cover"
-        source={require("../assets/ellipse-236.png")}
+        source={require("../assets/ellipse-236@3x.png")}
       />
       <Image
         style={[styles.iconIonicIosCloseCircle, styles.mt_60, styles.ml88]}
         resizeMode="cover"
-        source={require("../assets/icon-ioniciosclosecircle.png")}
+        source={require("../assets/icon-ioniciosclosecircle@3x.png")}
       />
       <Image
         style={[styles.iconIonicIosCloseCircle1, styles.mt_12, styles.ml166]}
         resizeMode="cover"
-        source={require("../assets/icon-ioniciosclosecircle.png")}
+        source={require("../assets/icon-ioniciosclosecircle@3x.png")}
       />
       <Text style={[styles.nliaBarrosoText, styles.mt55, styles.ml121]}>
         NéliaBarroso
@@ -81,12 +81,12 @@ const GroupCreationNaming = () => {
         <Image
           style={styles.emojiGlyphIcon}
           resizeMode="cover"
-          source={require("../assets/emoji-glyph.png")}
+          source={require("../assets/emoji-glyph@3x.png")}
         />
         <Image
           style={styles.dictationGlyphIcon}
           resizeMode="cover"
-          source={require("../assets/dictation-glyph.png")}
+          source={require("../assets/dictation-glyph@3x.png")}
         />
         <View style={styles.bottomRowView}>
           <View style={styles.labelView}>
@@ -106,7 +106,7 @@ const GroupCreationNaming = () => {
             <Image
               style={styles.groupIcon}
               resizeMode="cover"
-              source={require("../assets/group-2.png")}
+              source={require("../assets/group-2@3x.png")}
             />
           </View>
           <View style={styles.mView}>
@@ -134,7 +134,7 @@ const GroupCreationNaming = () => {
             <Image
               style={styles.path3Icon}
               resizeMode="cover"
-              source={require("../assets/path-3.png")}
+              source={require("../assets/path-3@3x.png")}
             />
           </View>
         </View>

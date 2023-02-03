@@ -5,6 +5,8 @@ import { useNavigation } from "@react-navigation/native";
 const GroupFeedEdit = () => {
   const navigation = useNavigation();
 
+  const [select, setSelect] = React.useState(false);
+
   return (
     <View style={styles.groupFeedEditView}>
       <View style={[styles.navigationBarView, styles.mr121]}>
@@ -17,7 +19,7 @@ const GroupFeedEdit = () => {
         <Image
           style={styles.icon}
           resizeMode="cover"
-          source={require("../assets/1.png")}
+          source={require("../assets/1@3x.png")}
         />
       </Pressable>
       <Text style={[styles.editText, styles.mt_23]}>Edit</Text>
@@ -32,7 +34,7 @@ const GroupFeedEdit = () => {
         <Image
           style={styles.icon1}
           resizeMode="cover"
-          source={require("../assets/icon-materialnotificationsactive.png")}
+          source={require("../assets/icon-materialnotificationsactive@3x.png")}
         />
       </Pressable>
       <View style={[styles.inputView, styles.mt17]}>
@@ -41,7 +43,7 @@ const GroupFeedEdit = () => {
           <Image
             style={styles.path99Icon}
             resizeMode="cover"
-            source={require("../assets/path-99.png")}
+            source={require("../assets/path-99@3x.png")}
           />
         </View>
       </View>
@@ -50,17 +52,19 @@ const GroupFeedEdit = () => {
         <Image
           style={styles.rectangleIcon}
           resizeMode="cover"
-          source={require("../assets/rectangle-26146.png")}
+          source={require("../assets/rectangle-26146@3x.png")}
         />
         <Text style={styles.loremIpsumDolorSitAmetCo}>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
           nonumy eirmod tempor
         </Text>
-        <Image
-          style={styles.iconAwesomeCheckCircle}
-          resizeMode="cover"
-          source={require("../assets/icon-awesomecheckcircle.png")}
-        />
+        {select && (
+          <Image
+            style={styles.iconAwesomeCheckCircle}
+            resizeMode="cover"
+            source={require("../assets/icon-awesomecheckcircle@3x.png")}
+          />
+        )}
       </View>
       <Pressable
         style={[styles.namePressable, styles.mt35]}
@@ -70,74 +74,26 @@ const GroupFeedEdit = () => {
         <Image
           style={styles.rectangleIcon1}
           resizeMode="cover"
-          source={require("../assets/rectangle-26147.png")}
+          source={require("../assets/rectangle-26147@3x.png")}
         />
         <Text style={styles.loremIpsumDolorSitAmetCo1}>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
           nonumy eirmod tempor
         </Text>
-        <Image
-          style={styles.ellipseIcon}
-          resizeMode="cover"
-          source={require("../assets/ellipse-244.png")}
-        />
+        {select && (
+          <Image
+            style={styles.ellipseIcon}
+            resizeMode="cover"
+            source={require("../assets/ellipse-244@3x.png")}
+          />
+        )}
       </Pressable>
-      <View style={[styles.nameView1, styles.mt35]}>
-        <Text style={styles.sameNamesText}>Same Names</Text>
-        <Image
-          style={styles.rectangleIcon2}
-          resizeMode="cover"
-          source={require("../assets/rectangle-26148.png")}
-        />
-        <Text style={styles.loremIpsumDolorSitAmetCo2}>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor
-        </Text>
-        <Image
-          style={styles.ellipseIcon1}
-          resizeMode="cover"
-          source={require("../assets/ellipse-244.png")}
-        />
-      </View>
-      <View style={[styles.nameView2, styles.mt35]}>
-        <Text style={styles.samePersonalityText}>Same Personality</Text>
-        <Image
-          style={styles.rectangleIcon3}
-          resizeMode="cover"
-          source={require("../assets/rectangle-26149.png")}
-        />
-        <Text style={styles.loremIpsumDolorSitAmetCo3}>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor
-        </Text>
-        <Image
-          style={styles.ellipseIcon2}
-          resizeMode="cover"
-          source={require("../assets/ellipse-244.png")}
-        />
-      </View>
-      <View style={[styles.nameView3, styles.mt35]}>
-        <Text style={styles.sameInterestsText}>Same Interests</Text>
-        <Image
-          style={styles.rectangleIcon4}
-          resizeMode="cover"
-          source={require("../assets/rectangle-26150.png")}
-        />
-        <Text style={styles.loremIpsumDolorSitAmetCo4}>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor
-        </Text>
-        <Image
-          style={styles.ellipseIcon3}
-          resizeMode="cover"
-          source={require("../assets/ellipse-244.png")}
-        />
-      </View>
-      <Text style={[styles.archiveText, styles.mt8]}>Archive</Text>
+
+      {/* <Text style={[styles.archiveText, styles.mt8]}>Archive</Text>
       <Text style={[styles.archiveText1, styles.mt_19]}>Delete</Text>
       <Text style={[styles.archiveText2, styles.mt_19, styles.mr111]}>
         Read All
-      </Text>
+      </Text> */}
     </View>
   );
 };

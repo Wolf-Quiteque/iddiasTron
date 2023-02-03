@@ -28,8 +28,6 @@ const SearchResults1 = ({ route }) => {
   const [User, setUser] = React.useState(useSelector(selectUserDetails));
   const [user, setuser] = React.useState(route.params);
 
-
-
   const getUser = async () => {
     try {
       const q = query(
@@ -38,72 +36,62 @@ const SearchResults1 = ({ route }) => {
       );
 
       const querySnapshot = await getDocs(q);
-      chartData = querySnapshot.docs.map((doc) => doc.data());
+      const chartData = querySnapshot.docs.map((doc) => doc.data());
 
-    
       setuser(chartData[0]);
     } catch (error) {
       console.log(error);
     }
-    verifyFriend()
+    verifyFriend();
   };
 
-
-
   const addFriend = async () => {
+    var newList = [];
 
-    var newList =[ ]
-
-    if(user.Friendrequests){
-      newList = user.Friendrequests
+    if (user.Friendrequests) {
+      newList = user.Friendrequests;
     }
-    newList.push(User.email)
+    newList.push(User.email);
 
     try {
-
-
-
       docRef = doc(firestore, "users", user.email);
-      setDoc(docRef, {Friendrequests:newList},{ merge: true })
-      .then(() => {
-        console.log("Document has been added successfully");
-        getUser()
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
+      setDoc(docRef, { Friendrequests: newList }, { merge: true })
+        .then(() => {
+          console.log("Document has been added successfully");
+          getUser();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } catch (error) {
       console.log(error);
     }
   };
 
-  function decline (){
-
-    var list = user.Friendrequests
+  function decline() {
+    var list = user.Friendrequests;
     list.forEach(myFunction);
-    
-    function myFunction(item, index) {
-      if(item == User.email){
-        delete list[index];
 
+    function myFunction(item, index) {
+      if (item == User.email) {
+        delete list[index];
       }
     }
 
     const docRef = doc(firestore, "users", user.email);
-    if(!list[0]){
+    if (!list[0]) {
       const dataPic = {
         Friendrequests: 0,
       };
-      setDoc(docRef, dataPic,{ merge: true })
+      setDoc(docRef, dataPic, { merge: true })
         .then(() => {
           console.log("Document has been added successfully");
-          getUser()
+          getUser();
         })
         .catch((error) => {
           console.log(error);
         });
-        return false
+      return false;
     }
     const dataPic = {
       Friendrequests: list,
@@ -111,72 +99,72 @@ const SearchResults1 = ({ route }) => {
     setDoc(docRef, dataPic, { merge: true })
       .then(() => {
         console.log("Document has been added successfully");
-        getUser()
+        getUser();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function accept() {
+    getUser();
+
+    var friendList, FriendList;
+
+    if (user.friends) {
+      friendList = user.friends;
+      friendList.push(User.email);
+    } else {
+      friendList = [User.email];
+    }
+
+    if (User.friends) {
+      FriendList = User.friends;
+      FriendList.push(user.email);
+    } else {
+      FriendList = [user.email];
+    }
+
+    var list = user.Friendrequests;
+    list.forEach(myFunction);
+
+    function myFunction(item, index) {
+      if (item == User.email) {
+        delete list[index];
+      }
+    }
+
+    if (!list[0]) {
+      list = 0;
+    }
+
+    var docRef = doc(firestore, "users", user.email);
+    setDoc(
+      docRef,
+      { friends: friendList, Friendrequests: list },
+      { merge: true }
+    )
+      .then(() => {
+        console.log("Document has been added successfully");
       })
       .catch((error) => {
         console.log(error);
       });
 
-
-
+    docRef = doc(firestore, "users", User.email);
+    setDoc(docRef, { friends: FriendList }, { merge: true })
+      .then(() => {
+        console.log("Document has been added successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    getUser();
   }
-
-  function accept (){
-    var friendList, FriendList
-
-    if(user.friends){
-      friendList= user.friends
-      friendList.push(User.email)
-    } else{
-      friendList = [User.email]
-    }
-
-    if(User.friends){
-      FriendList= User.friends
-      FriendList.push(user.email)
-
-    }else{
-      FriendList = [user.email]
-
-    }
-
-    var list = user.Friendrequests
-    list.forEach(myFunction);
-    
-    function myFunction(item, index) {
-      if(item == User.email){
-        delete list[index];
-
-      }
-    }
-
-    if(!list[0]){
-      list = 0}
-
-    var docRef = doc(firestore, "users", user.email);
-    setDoc(docRef, {friends:friendList, Friendrequests:list},{ merge: true })
-    .then(() => {
-      console.log("Document has been added successfully");
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
-     docRef = doc(firestore, "users", User.email);
-    setDoc(docRef, {friends:FriendList},{ merge: true })
-    .then(() => {
-      console.log("Document has been added successfully");
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-    getUser()
-  }
-
 
   function verifyFriend() {
-    if(User.email == user.email){
-      navigation.navigate("UserProfile")
+    if (User.email == user.email) {
+      navigation.navigate("UserProfile");
     }
     if (user.Friendrequests) {
       const value = user.Friendrequests.includes(User.email);
@@ -187,10 +175,6 @@ const SearchResults1 = ({ route }) => {
       const value = user.friends.includes(User.email);
       setfriends(value);
     }
-
-
-
- 
   }
 
   React.useEffect(() => {
@@ -216,51 +200,66 @@ const SearchResults1 = ({ route }) => {
         <Image
           style={styles.profileIcon}
           resizeMode="cover"
-          source={user.firstpic && user.avatar ? user.avatar : user.firstpic}
+          source={user && user.avatar ? user.avatar : user.firstpic}
         />
         <View style={styles.nameView}>
-          <Text style={styles.neliaCamposText}>{user.name}</Text>
+          <Text style={styles.neliaCamposText}>{user && user.name}</Text>
           <Text style={styles.lisbonPTText}>
-            {user.city}, {user.country}
+            {user && user.city}, {user && user.country}
           </Text>
         </View>
-        <Text style={styles.hiMyNameIsNeliaCamposI}>{user.biography}</Text>
+        <Text style={styles.hiMyNameIsNeliaCamposI}>
+          {user && user.biography}
+        </Text>
       </View>
-    
-        {friend ? (  <View    style={[ {display: "flex",
-  justifyContent: "space-between"}, styles.mt_150, styles.mr43]}>
-    <Pressable onPress={accept}>
-    <Image
-        style={[styles.acceptIcon, styles.mt_19]}
-        resizeMode="cover"
-        source={require("../assets/accept@3x.png")}
-      />
-    </Pressable>
-        
-        <Pressable onPress={decline}>
-        <Image
-        style={[
-          styles.declineIcon,
-          styles.mt_22,
-          styles.mr44,
-          styles.iconLayout1,
-        ]}
-        resizeMode="cover"
-        source={require("../assets/decline@3x.png")}
-      />
+
+      {friend ? (
+        <View
+          style={[
+            { display: "flex", justifyContent: "space-between" },
+            styles.mt_150,
+            styles.mr43,
+          ]}
+        >
+          <Pressable onPress={accept}>
+            <Image
+              style={[styles.acceptIcon, styles.mt_19]}
+              resizeMode="cover"
+              source={require("../assets/accept@3x.png")}
+            />
+          </Pressable>
+
+          <Pressable onPress={decline}>
+            <Image
+              style={[
+                styles.declineIcon,
+                styles.mt_22,
+                styles.mr44,
+                styles.iconLayout1,
+              ]}
+              resizeMode="cover"
+              source={require("../assets/decline@3x.png")}
+            />
+          </Pressable>
+        </View>
+      ) : (
+        <Pressable
+          style={[styles.connectPressable, styles.mt_150, styles.mr43]}
+          onPress={() => navigation.navigate("ProfileConnected1")}
+        >
+          <View style={styles.rectangleView} />
+
+          {friends ? (
+            <Text style={styles.iDText}>IDID</Text>
+          ) : (
+            <Pressable onPress={addFriend}>
+              {" "}
+              <Text style={styles.iDText}>ID</Text>
+            </Pressable>
+          )}
         </Pressable>
-     
-          </View>):(     <Pressable
-        style={[styles.connectPressable, styles.mt_150, styles.mr43]}
-        onPress={() => navigation.navigate("ProfileConnected1")}
-      >
-        <View style={styles.rectangleView} />
-     
-          {friends ?  <Text style={styles.iDText}>IDID</Text> : <Pressable onPress={addFriend}> <Text style={styles.iDText}>ID</Text></Pressable>}
-      
-      </Pressable>)}
- 
-      
+      )}
+
       <Image
         style={[styles.iconAwesomeRocketchat, styles.mt_27, styles.mr120]}
         resizeMode="cover"
@@ -272,7 +271,7 @@ const SearchResults1 = ({ route }) => {
           style={styles.rectangleIcon}
           resizeMode="cover"
           source={
-            user.gallary
+            user && user.gallary
               ? user.gallary
               : require("../assets/rectangle-26135@3x.png")
           }
@@ -281,7 +280,7 @@ const SearchResults1 = ({ route }) => {
           style={styles.rectangleIcon1}
           resizeMode="cover"
           source={
-            user.gallary2
+            user && user.gallary2
               ? user.gallary2
               : require("../assets/rectangle-26135@3x.png")
           }
@@ -290,7 +289,7 @@ const SearchResults1 = ({ route }) => {
           style={styles.rectangleIcon2}
           resizeMode="cover"
           source={
-            user.gallary3
+            user && user.gallary3
               ? user.gallary3
               : require("../assets/rectangle-26135@3x.png")
           }
@@ -298,27 +297,33 @@ const SearchResults1 = ({ route }) => {
       </View>
       <View style={[styles.interestsView, styles.mt30, styles.mr37]}>
         <Text style={styles.interestsText}>Interests</Text>
-        <Image
-          style={styles.rectangleIcon3}
-          resizeMode="cover"
-          source={require("../assets/" + user.interests[0] + ".png")}
-        />
-        <Image
-          style={styles.rectangleIcon4}
-          resizeMode="cover"
-          source={require("../assets/" + user.interests[1] + ".png")}
-        />
-        <Image
-          style={styles.rectangleIcon5}
-          resizeMode="cover"
-          source={require("../assets/" + user.interests[2] + ".png")}
-        />
-        <Text style={styles.loremIpsumDolorSitAmetCo}>{user.interests[0]}</Text>
+        {user && (
+          <>
+            <Image
+              style={styles.rectangleIcon3}
+              resizeMode="cover"
+              source={require("../assets/" + user.interests[0] + ".png")}
+            />
+            <Image
+              style={styles.rectangleIcon4}
+              resizeMode="cover"
+              source={require("../assets/" + user.interests[1] + ".png")}
+            />
+            <Image
+              style={styles.rectangleIcon5}
+              resizeMode="cover"
+              source={require("../assets/" + user.interests[2] + ".png")}
+            />
+          </>
+        )}
+        <Text style={styles.loremIpsumDolorSitAmetCo}>
+          {user && user.interests[0]}
+        </Text>
         <Text style={styles.loremIpsumDolorSitAmetCo1}>
-          {user.interests[1]}
+          {user && user.interests[1]}
         </Text>
         <Text style={styles.loremIpsumDolorSitAmetCo2}>
-          {user.interests[2]}
+          {user && user.interests[2]}
         </Text>
       </View>
       <View style={[styles.toolbarView, styles.mt83]}>
@@ -547,7 +552,7 @@ const styles = StyleSheet.create({
   },
   mt_22: {
     marginTop: -20,
-    marginLeft: -40
+    marginLeft: -40,
   },
   rectangleIcon: {
     position: "absolute",

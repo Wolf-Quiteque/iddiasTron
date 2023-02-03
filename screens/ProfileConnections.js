@@ -8,9 +8,42 @@ import {
   ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+
+import {
+  selectIsLoggedIn,
+  selectUser,
+  selectUserName,
+  selectUserDetails,
+} from "../redux/slices/authSlice";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { firestore, storage } from "../firebase";
 
 const ProfileConnections = () => {
   const navigation = useNavigation();
+
+  const [users, setUsers] = React.useState(null);
+  const [user, setuser] = React.useState(useSelector(selectUserDetails));
+
+  const getUsers = async () => {
+    try {
+      const q = query(
+        collection(firestore, "users"),
+        where("email", "in", user.friends)
+      );
+
+      const querySnapshot = await getDocs(q);
+      const chartData = querySnapshot.docs.map((doc) => doc.data());
+
+      setUsers(chartData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  React.useEffect(() => {
+    getUsers();
+  }, []);
 
   return (
     <View style={styles.profileConnectionsView}>
@@ -18,13 +51,13 @@ const ProfileConnections = () => {
         <Text style={styles.profileText}>Profile</Text>
         <Pressable
           style={styles.component1Pressable}
-          onPress={() => navigation.navigate("Settings")}
+          onPress={() => navigation.navigate("UserProfile")}
         >
           <View style={styles.rectangleView} />
           <Image
             style={styles.path104Icon}
             resizeMode="cover"
-            source={require("../assets/path-104.png")}
+            source={require("../assets/path-104@3x.png")}
           />
         </Pressable>
         <Pressable
@@ -34,17 +67,17 @@ const ProfileConnections = () => {
           <Image
             style={styles.icon}
             resizeMode="cover"
-            source={require("../assets/icon-materialnotificationsactive.png")}
+            source={require("../assets/icon-materialnotificationsactive@3x.png")}
           />
         </Pressable>
         <Pressable
           style={styles.backwardArrowPressable}
-          onPress={() => navigation.navigate("Profile")}
+          onPress={() => navigation.navigate("UserProfile")}
         >
           <Image
             style={styles.icon1}
             resizeMode="cover"
-            source={require("../assets/backward-arrow.png")}
+            source={require("../assets/backward-arrow@3x.png")}
           />
         </Pressable>
       </View>
@@ -58,156 +91,25 @@ const ProfileConnections = () => {
       >
         <View style={styles.personsView2}>
           <View style={styles.personsView}>
-            <View style={styles.nameView}>
-              <Text style={styles.beatrizSilvaText}>Beatriz Silva</Text>
-              <Image
-                style={styles.rectangleIcon}
-                resizeMode="cover"
-                source={require("../assets/rectangle-261.png")}
-              />
-            </View>
-            <Pressable
-              style={styles.namePressable}
-              onPress={() => navigation.navigate("ProfileConnected1")}
-            >
-              <Text style={styles.neliaCamposText}>Nelia Campos</Text>
-              <Image
-                style={styles.rectangleIcon1}
-                resizeMode="cover"
-                source={require("../assets/rectangle-2611.png")}
-              />
-            </Pressable>
-            <View style={styles.nameView1}>
-              <Text style={styles.luziaBeltrandText}>Luzia Beltrand</Text>
-              <Image
-                style={styles.rectangleIcon2}
-                resizeMode="cover"
-                source={require("../assets/rectangle-2612.png")}
-              />
-            </View>
-            <View style={styles.nameView2}>
-              <Text style={styles.sofiaNabaisText}>Sofia Nabais</Text>
-              <Image
-                style={styles.rectangleIcon3}
-                resizeMode="cover"
-                source={require("../assets/rectangle-2613.png")}
-              />
-            </View>
-            <View style={styles.nameView3}>
-              <Text style={styles.conceioSousaText}>Conceição Sousa</Text>
-              <Image
-                style={styles.rectangleIcon4}
-                resizeMode="cover"
-                source={require("../assets/rectangle-2614.png")}
-              />
-            </View>
-          </View>
-          <View style={styles.personsView1}>
-            <View style={styles.nameView4}>
-              <Text style={styles.beatrizSilvaText1}>Beatriz Silva</Text>
-              <Image
-                style={styles.rectangleIcon5}
-                resizeMode="cover"
-                source={require("../assets/rectangle-261.png")}
-              />
-            </View>
-            <View style={styles.nameView5}>
-              <Text style={styles.neliaCamposText1}>Nelia Campos</Text>
-              <Image
-                style={styles.rectangleIcon6}
-                resizeMode="cover"
-                source={require("../assets/rectangle-2611.png")}
-              />
-            </View>
-            <View style={styles.nameView6}>
-              <Text style={styles.luziaBeltrandText1}>Luzia Beltrand</Text>
-              <Image
-                style={styles.rectangleIcon7}
-                resizeMode="cover"
-                source={require("../assets/rectangle-2612.png")}
-              />
-            </View>
-            <View style={styles.nameView7}>
-              <Text style={styles.sofiaNabaisText1}>Sofia Nabais</Text>
-              <Image
-                style={styles.rectangleIcon8}
-                resizeMode="cover"
-                source={require("../assets/rectangle-2613.png")}
-              />
-            </View>
-            <View style={styles.nameView8}>
-              <Text style={styles.conceioSousaText1}>Conceição Sousa</Text>
-              <Image
-                style={styles.rectangleIcon9}
-                resizeMode="cover"
-                source={require("../assets/rectangle-2614.png")}
-              />
-            </View>
+            {users &&
+              users.map((u) => (
+                <Pressable
+                  style={styles.namePressable}
+                  onPress={() => navigation.navigate("ProfileConnected1")}
+                >
+                  <View style={styles.nameView}>
+                    <Text style={styles.beatrizSilvaText}>{u.name}</Text>
+                    <Image
+                      style={styles.rectangleIcon}
+                      resizeMode="cover"
+                      source={u.avatar ? u.avatar : u.firstpic}
+                    />
+                  </View>{" "}
+                </Pressable>
+              ))}
           </View>
         </View>
       </ScrollView>
-      <View style={[styles.toolbarView, styles.mt12]}>
-        <View style={styles.rectangleView1} />
-        <Pressable
-          style={styles.profilePressable}
-          onPress={() => navigation.navigate("Profile")}
-        >
-          <Text style={styles.profileText1}>Profile</Text>
-          <View style={styles.lineView1} />
-          <Image
-            style={styles.union46Icon}
-            resizeMode="cover"
-            source={require("../assets/union-46.png")}
-          />
-        </Pressable>
-        <Pressable
-          style={styles.feedPressable}
-          onPress={() => navigation.navigate("NewsFeed")}
-        >
-          <Text style={styles.feedText}>Feed</Text>
-          <Image
-            style={styles.feedIcon}
-            resizeMode="cover"
-            source={require("../assets/feed5.png")}
-          />
-        </Pressable>
-        <Pressable
-          style={styles.searchPressable}
-          onPress={() => navigation.navigate("Search")}
-        >
-          <Text style={styles.searchText}>Search</Text>
-          <View style={styles.searchView}>
-            <View style={styles.rectangleView2} />
-            <Image
-              style={styles.path99Icon}
-              resizeMode="cover"
-              source={require("../assets/path-996.png")}
-            />
-          </View>
-        </Pressable>
-        <Pressable
-          style={styles.chatPressable}
-          onPress={() => navigation.navigate("Chat")}
-        >
-          <Text style={styles.chatText}>Chat</Text>
-          <Image
-            style={styles.iconMaterialChatBubble}
-            resizeMode="cover"
-            source={require("../assets/icon-materialchatbubble.png")}
-          />
-        </Pressable>
-        <Pressable
-          style={styles.groupPressable}
-          onPress={() => navigation.navigate("GroupFeed")}
-        >
-          <Text style={styles.groupText}>Group</Text>
-          <Image
-            style={styles.iconMaterialGroup}
-            resizeMode="cover"
-            source={require("../assets/icon-materialgroup.png")}
-          />
-        </Pressable>
-      </View>
     </View>
   );
 };

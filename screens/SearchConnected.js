@@ -16,7 +16,7 @@ const SearchConnected = () => {
           <Image
             style={styles.icon}
             resizeMode="cover"
-            source={require("../assets/icon-materialnotificationsactive.png")}
+            source={require("../assets/icon-materialnotificationsactive@3x.png")}
           />
         </Pressable>
       </View>
@@ -24,7 +24,7 @@ const SearchConnected = () => {
         <Image
           style={styles.profileIcon}
           resizeMode="cover"
-          source={require("../assets/profile6.png")}
+          source={require("../assets/profile6@3x.png")}
         />
         <View style={styles.nameView}>
           <Text style={styles.neliaCamposText}>Nelia Campos</Text>
@@ -53,7 +53,7 @@ const SearchConnected = () => {
         <Image
           style={styles.icon1}
           resizeMode="cover"
-          source={require("../assets/icon-awesomerocketchat2.png")}
+          source={require("../assets/icon-awesomerocketchat2@3x.png")}
         />
       </Pressable>
       <View style={[styles.galleryView, styles.mt133, styles.mr37]}>
@@ -61,17 +61,17 @@ const SearchConnected = () => {
         <Image
           style={styles.rectangleIcon}
           resizeMode="cover"
-          source={require("../assets/rectangle-26120.png")}
+          source={require("../assets/rectangle-26120@3x.png")}
         />
         <Image
           style={styles.rectangleIcon1}
           resizeMode="cover"
-          source={require("../assets/rectangle-262.png")}
+          source={require("../assets/rectangle-262@3x.png")}
         />
         <Image
           style={styles.rectangleIcon2}
           resizeMode="cover"
-          source={require("../assets/rectangle-920.png")}
+          source={require("../assets/rectangle-920@3x.png")}
         />
       </View>
       <View style={[styles.interestsView, styles.mt30, styles.mr37]}>
@@ -79,17 +79,17 @@ const SearchConnected = () => {
         <Image
           style={styles.rectangleIcon3}
           resizeMode="cover"
-          source={require("../assets/rectangle-26121.png")}
+          source={require("../assets/rectangle-26121@3x.png")}
         />
         <Image
           style={styles.rectangleIcon4}
           resizeMode="cover"
-          source={require("../assets/rectangle-2621.png")}
+          source={require("../assets/rectangle-2621@3x.png")}
         />
         <Image
           style={styles.rectangleIcon5}
           resizeMode="cover"
-          source={require("../assets/rectangle-9201.png")}
+          source={require("../assets/rectangle-9201@3x.png")}
         />
         <Text style={styles.loremIpsumDolorSitAmetCo}>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
@@ -113,7 +113,7 @@ const SearchConnected = () => {
           <Image
             style={styles.profileIcon1}
             resizeMode="cover"
-            source={require("../assets/profile.png")}
+            source={require("../assets/profile@3x.png")}
           />
         </Pressable>
         <Pressable
@@ -124,7 +124,7 @@ const SearchConnected = () => {
           <Image
             style={styles.feedIcon}
             resizeMode="cover"
-            source={require("../assets/feed.png")}
+            source={require("../assets/feed@3x.png")}
           />
         </Pressable>
         <Pressable
@@ -137,7 +137,7 @@ const SearchConnected = () => {
             <Image
               style={styles.path99Icon}
               resizeMode="cover"
-              source={require("../assets/path-99.png")}
+              source={require("../assets/path-99@3x.png")}
             />
           </View>
           <View style={styles.lineView} />
@@ -150,7 +150,7 @@ const SearchConnected = () => {
           <Image
             style={styles.iconMaterialChatBubble}
             resizeMode="cover"
-            source={require("../assets/icon-materialchatbubble.png")}
+            source={require("../assets/icon-materialchatbubble@3x.png")}
           />
         </Pressable>
         <Pressable
@@ -161,7 +161,7 @@ const SearchConnected = () => {
           <Image
             style={styles.iconMaterialGroup}
             resizeMode="cover"
-            source={require("../assets/icon-materialgroup.png")}
+            source={require("../assets/icon-materialgroup@3x.png")}
           />
         </Pressable>
       </View>

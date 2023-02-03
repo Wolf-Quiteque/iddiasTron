@@ -1,9 +1,57 @@
 import * as React from "react";
 import { Text, StyleSheet, Pressable, Image, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+
+import {
+  selectIsLoggedIn,
+  selectUser,
+  selectUserName,
+  selectUserDetails,
+} from "../redux/slices/authSlice";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { firestore, storage } from "../firebase";
 
 const GroupCreationMembers = () => {
+  var members = [];
+
   const navigation = useNavigation();
+
+  const [users, setUsers] = React.useState(null);
+  const [user, setuser] = React.useState(useSelector(selectUserDetails));
+  const [member, setmember] = React.useState([]);
+
+  const getUsers = async () => {
+    try {
+      const q = query(
+        collection(firestore, "users"),
+        where("email", "in", user.friends)
+      );
+
+      const querySnapshot = await getDocs(q);
+      const chartData = querySnapshot.docs.map((doc) => doc.data());
+
+      setUsers(chartData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const select = async (i) => {
+    members = member;
+    members.push(users[i].email);
+    const m = members;
+    setmember(m);
+  };
+
+  const deselect = async (i) => {
+    members.splice(i, 1);
+    setmember(members);
+  };
+
+  React.useEffect(() => {
+    getUsers();
+  }, []);
 
   return (
     <View style={styles.groupCreationMembersView}>
@@ -22,7 +70,7 @@ const GroupCreationMembers = () => {
           <Image
             style={styles.icon}
             resizeMode="cover"
-            source={require("../assets/backward-arrow.png")}
+            source={require("../assets/backward-arrow@3x.png")}
           />
         </Pressable>
       </View>
@@ -32,127 +80,52 @@ const GroupCreationMembers = () => {
           <Image
             style={styles.path99Icon}
             resizeMode="cover"
-            source={require("../assets/path-99.png")}
+            source={require("../assets/path-99@3x.png")}
           />
         </View>
       </View>
-      <View style={[styles.memberView, styles.mt21, styles.mr1]}>
-        <Image
-          style={styles.ellipseIcon}
-          resizeMode="cover"
-          source={require("../assets/ellipse-236.png")}
-        />
-        <Text style={styles.nliaMatosText}>Nélia Matos</Text>
-        <Image
-          style={styles.iconAwesomeCheckCircle}
-          resizeMode="cover"
-          source={require("../assets/icon-awesomecheckcircle.png")}
-        />
-      </View>
-      <View style={[styles.memberView1, styles.mt11, styles.mr1]}>
-        <Image
-          style={styles.ellipseIcon1}
-          resizeMode="cover"
-          source={require("../assets/ellipse-237.png")}
-        />
-        <Text style={styles.nliaBarrosoText}>Nélia Barroso</Text>
-        <Image
-          style={styles.iconAwesomeCheckCircle1}
-          resizeMode="cover"
-          source={require("../assets/icon-awesomecheckcircle.png")}
-        />
-      </View>
-      <View style={[styles.memberView2, styles.mt11, styles.mr1]}>
-        <Image
-          style={styles.ellipseIcon2}
-          resizeMode="cover"
-          source={require("../assets/ellipse-2361.png")}
-        />
-        <Text style={styles.nliaCarneiroText}>Nélia Carneiro</Text>
-        <Image
-          style={styles.ellipseIcon3}
-          resizeMode="cover"
-          source={require("../assets/ellipse-244.png")}
-        />
-      </View>
-      <View style={[styles.memberView3, styles.mt11, styles.mr1]}>
-        <Image
-          style={styles.ellipseIcon4}
-          resizeMode="cover"
-          source={require("../assets/ellipse-2362.png")}
-        />
-        <Text style={styles.nliaCardosoText}>Nélia Cardoso</Text>
-        <Image
-          style={styles.ellipseIcon5}
-          resizeMode="cover"
-          source={require("../assets/ellipse-244.png")}
-        />
-      </View>
-      <View style={[styles.memberView4, styles.mt12, styles.mr1]}>
-        <Image
-          style={styles.ellipseIcon6}
-          resizeMode="cover"
-          source={require("../assets/ellipse-2363.png")}
-        />
-        <Text style={styles.nliaPereiraText}>Nélia Pereira</Text>
-        <Image
-          style={styles.ellipseIcon7}
-          resizeMode="cover"
-          source={require("../assets/ellipse-244.png")}
-        />
-      </View>
-      <View style={[styles.memberView5, styles.mt11, styles.mr1]}>
-        <Image
-          style={styles.ellipseIcon8}
-          resizeMode="cover"
-          source={require("../assets/ellipse-2364.png")}
-        />
-        <Text style={styles.nliaOliveiraText}>Nélia Oliveira</Text>
-        <Image
-          style={styles.ellipseIcon9}
-          resizeMode="cover"
-          source={require("../assets/ellipse-244.png")}
-        />
-      </View>
-      <View style={[styles.memberView6, styles.mt11, styles.mr1]}>
-        <Image
-          style={styles.ellipseIcon10}
-          resizeMode="cover"
-          source={require("../assets/ellipse-2365.png")}
-        />
-        <Text style={styles.nliaSilvaText}>Nélia Silva</Text>
-        <Image
-          style={styles.ellipseIcon11}
-          resizeMode="cover"
-          source={require("../assets/ellipse-244.png")}
-        />
-      </View>
-      <View style={[styles.memberView7, styles.mt11, styles.mr1]}>
-        <Image
-          style={styles.ellipseIcon12}
-          resizeMode="cover"
-          source={require("../assets/ellipse-2366.png")}
-        />
-        <Text style={styles.nliaVieiraText}>Nélia Vieira</Text>
-        <Image
-          style={styles.ellipseIcon13}
-          resizeMode="cover"
-          source={require("../assets/ellipse-244.png")}
-        />
-      </View>
-      <View style={[styles.memberView8, styles.mt11]}>
-        <Image
-          style={styles.ellipseIcon14}
-          resizeMode="cover"
-          source={require("../assets/ellipse-2367.png")}
-        />
-        <Text style={styles.nliaCerqueiraText}>Nélia Cerqueira</Text>
-        <Image
-          style={styles.ellipseIcon15}
-          resizeMode="cover"
-          source={require("../assets/ellipse-244.png")}
-        />
-      </View>
+
+      {users &&
+        users.map((u, index) => (
+          <View
+            style={[styles.memberView, styles.mt21, styles.mr1]}
+            key={index}
+          >
+            <Image
+              style={styles.ellipseIcon}
+              resizeMode="cover"
+              source={require("../assets/ellipse-236@3x.png")}
+            />
+            <Text style={styles.nliaMatosText}>{u.name}</Text>
+            {member.includes(u.email) == true ? (
+              <Pressable
+                onPress={() => {
+                  deselect(index);
+                }}
+                style={{ marginTop: "31px" }}
+              >
+                <Image
+                  style={styles.iconAwesomeCheckCircle}
+                  resizeMode="cover"
+                  source={require("../assets/icon-awesomecheckcircle@3x.png")}
+                />
+              </Pressable>
+            ) : (
+              <Pressable
+                onPress={() => {
+                  select(index);
+                }}
+                style={{ marginTop: "31px" }}
+              >
+                <Image
+                  style={styles.iconAwesomeCheckCircle}
+                  resizeMode="cover"
+                  source={require("../assets/ellipse-244@3x.png")}
+                />
+              </Pressable>
+            )}
+          </View>
+        ))}
     </View>
   );
 };

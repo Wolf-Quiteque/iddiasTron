@@ -23,6 +23,8 @@ const SearchResults1 = ({ route }) => {
   const navigation = useNavigation();
 
   const [friend, setfriend] = React.useState(false);
+  const [request, setrequest] = React.useState(false);
+
   const [friends, setfriends] = React.useState(false);
 
   const [User, setUser] = React.useState(useSelector(selectUserDetails));
@@ -166,9 +168,14 @@ const SearchResults1 = ({ route }) => {
     if (User.email == user.email) {
       navigation.navigate("UserProfile");
     }
+    if (User.Friendrequests) {
+      const value = User.Friendrequests.includes(user.email);
+      setfriend(value);
+    }
+
     if (user.Friendrequests) {
       const value = user.Friendrequests.includes(User.email);
-      setfriend(value);
+      setrequest(value);
     }
 
     if (user.friends) {
@@ -243,28 +250,49 @@ const SearchResults1 = ({ route }) => {
           </Pressable>
         </View>
       ) : (
-        <Pressable
-          style={[styles.connectPressable, styles.mt_150, styles.mr43]}
-          onPress={() => navigation.navigate("ProfileConnected1")}
-        >
-          <View style={styles.rectangleView} />
+        <>
+          {request ? (
+            <Pressable
+              style={[styles.connectPressable, styles.mt_150, styles.mr43]}
+              onPress={() => navigation.navigate("ProfileConnected1")}
+            >
+              <View style={styles.rectangleView} />
 
-          {friends ? (
-            <Text style={styles.iDText}>IDID</Text>
+              <Text style={styles.iDDPText}>Pending</Text>
+            </Pressable>
           ) : (
-            <Pressable onPress={addFriend}>
-              {" "}
-              <Text style={styles.iDText}>ID</Text>
+            <Pressable
+              style={[styles.connectPressable, styles.mt_150, styles.mr43]}
+              onPress={() => navigation.navigate("ProfileConnected1")}
+            >
+              <View style={styles.rectangleView} />
+
+              {friends ? (
+                <Text style={styles.iDDText}>IDID</Text>
+              ) : (
+                <Pressable onPress={addFriend}>
+                  {" "}
+                  <Text style={styles.iDText}>ID</Text>
+                </Pressable>
+              )}
             </Pressable>
           )}
-        </Pressable>
+        </>
       )}
 
-      <Image
-        style={[styles.iconAwesomeRocketchat, styles.mt_27, styles.mr120]}
-        resizeMode="cover"
-        source={require("../assets/icon-awesomerocketchat@3x.png")}
-      />
+      <Pressable
+        onPress={() => {
+          navigation.navigate("Chat1", user);
+        }}
+      >
+        {" "}
+        <Image
+          style={[styles.iconAwesomeRocketchat, styles.mt_27, styles.mr120]}
+          resizeMode="cover"
+          source={require("../assets/icon-awesomerocketchat@3x.png")}
+        />
+      </Pressable>
+
       <View style={[styles.galleryView, styles.mt133, styles.mr37]}>
         <Text style={styles.galleryText}>Gallery</Text>
         <Image
@@ -365,10 +393,7 @@ const SearchResults1 = ({ route }) => {
             />
           </View>
         </Pressable>
-        <Pressable
-          style={styles.chatPressable}
-          onPress={() => navigation.navigate("Chat")}
-        >
+        <Pressable style={styles.chatPressable}>
           <Text style={styles.chatText}>Chat</Text>
           <Image
             style={styles.iconMaterialChatBubble}
@@ -519,9 +544,30 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#2699fb",
   },
-  iDText: {
+  iDDPText: {
     position: "absolute",
     marginTop: -9,
+    top: "50%",
+    marginLeft: -14,
+    left: 23,
+    fontSize: 14,
+    fontFamily: "Quicksand",
+    color: "#fff",
+    textAlign: "left",
+  },
+  iDDText: {
+    position: "absolute",
+    marginTop: -9,
+    top: "50%",
+    left: 23,
+    fontSize: 14,
+    fontFamily: "Quicksand",
+    color: "#fff",
+    textAlign: "left",
+  },
+  iDText: {
+    position: "absolute",
+    marginTop: 8,
     top: "50%",
     left: 23,
     fontSize: 14,

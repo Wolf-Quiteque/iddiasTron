@@ -13,7 +13,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, firestore } from "../firebase";
 import { useDispatch } from "react-redux";
 import { setSignIn } from "../redux/slices/authSlice";
-import DatePicker from 'react-native-modern-datepicker';
+import DatePicker from "react-native-modern-datepicker";
 
 import {
   collection,
@@ -39,9 +39,8 @@ const SignUp = () => {
   const [country, setcountry] = React.useState();
   const [city, setcity] = React.useState();
   const [phone, setphone] = React.useState();
-  const [birthdate, setbirthdate] = React.useState('');
+  const [birthdate, setbirthdate] = React.useState("");
   const [open, setOpen] = React.useState(false);
-
 
   function padTo2Digits(num) {
     return num.toString().padStart(2, "0");
@@ -95,7 +94,7 @@ const SignUp = () => {
     const docRef = doc(firestore, "users", email);
     const data = {
       email: email,
-      name: name,
+      name: name.charAt(0).toUpperCase() + name.slice(1),
       phone: phone,
       city: city,
       birthdate: birthdate,
@@ -113,12 +112,11 @@ const SignUp = () => {
   };
 
   React.useEffect(() => {
-   if (birthdate) {
-    console.log(birthdate)
-    setOpen(false)
-   }
+    if (birthdate) {
+      console.log(birthdate);
+      setOpen(false);
+    }
   }, [birthdate]);
-
 
   return (
     <View style={styles.signUpView}>
@@ -228,34 +226,35 @@ const SignUp = () => {
               setphone(text);
             }}
           />
-          <Pressable  
-          
-          onPress = {()=>{
-              setOpen(true)
-            }}> <RNPTextInput
-            style={styles.rectangleRNPTextInput8}
-            placeholder="Date of Birth"
-            label="Date of Birth"
-            mode="outlined"
-            theme={{ colors: { background: "#fff" } }}
-           value = {birthdate && birthdate.slice(0,-6)}
-            onChangeText={(text) => {
-              setbirthdate(text);
+          <Pressable
+            onPress={() => {
+              setOpen(true);
             }}
-          /></Pressable>
+          >
+            {" "}
+            <RNPTextInput
+              style={styles.rectangleRNPTextInput8}
+              placeholder="Date of Birth"
+              label="Date of Birth"
+              mode="outlined"
+              theme={{ colors: { background: "#fff" } }}
+              value={birthdate && birthdate.slice(0, -6)}
+              onChangeText={(text) => {
+                setbirthdate(text);
+              }}
+            />
+          </Pressable>
 
-
-          {open && ( <><DatePicker
-              onSelectedChange={(date) =>{
-                setbirthdate(date)
-                setOpen(false)
-              } }
-
-          />
-
-          
-          </> )}
-         
+          {open && (
+            <>
+              <DatePicker
+                onSelectedChange={(date) => {
+                  setbirthdate(date);
+                  setOpen(false);
+                }}
+              />
+            </>
+          )}
         </View>
         <Pressable
           style={[styles.continuePressable, styles.mt35, styles.ml19]}

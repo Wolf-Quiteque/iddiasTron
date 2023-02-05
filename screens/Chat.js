@@ -9,7 +9,11 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
-import { selectIsLoggedIn, selectUserName } from "../redux/slices/authSlice";
+import {
+  selectIsLoggedIn,
+  selectUserName,
+  selectUserDetails,
+} from "../redux/slices/authSlice";
 import { firestore, storage } from "../firebase";
 
 import { collection, query, where, getDocs } from "firebase/firestore";
@@ -21,6 +25,7 @@ const Chat = ({ navigation, user }) => {
   const username = useSelector(selectUserName);
 
   const [users, setUsers] = React.useState(null);
+  const [User, setUser] = React.useState(useSelector(selectUserDetails));
 
   function GetUsersAvatar(props) {
     getDownloadURL(ref(storage, props.avatar))
@@ -57,6 +62,7 @@ const Chat = ({ navigation, user }) => {
 
   React.useEffect(() => {
     getUsers();
+    getUsersChat();
   }, []);
 
   return (
@@ -115,12 +121,12 @@ const Chat = ({ navigation, user }) => {
                 {" "}
                 <View style={styles.nameView}>
                   <View>
-                  <Image
-                   style={styles.profileIcon}
-                   resizeMode="cover"
-            source={u.avatar ? u.avatar : u.firstpic}
-          />
-                    
+                    <Image
+                      style={styles.profileIcon}
+                      resizeMode="cover"
+                      source={u.avatar ? u.avatar : u.firstpic}
+                    />
+
                     <Text style={styles.mikeFullerText}>{u.name}</Text>
                     <Text style={styles.loremIpsumDolorSitAme}>
                       Lorem ipsum dolor sit ame{" "}
@@ -352,10 +358,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     marginLeft: -14,
-    marginTop:-7,
+    marginTop: -7,
     width: 50,
     height: 50,
-    borderRadius: "50%"
+    borderRadius: "50%",
   },
   familyGroupText: {
     position: "absolute",

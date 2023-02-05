@@ -7,6 +7,7 @@ import SearchInterests from "../screens/SearchInterests";
 import SearchFaceSimiliarity from "../screens/SearchFaceSimiliarity";
 import SearchResults1 from "../screens/SearchResults1";
 import Profile from "../screens/Profile";
+import Chat1 from "../screens/Chat1";
 
 import { auth } from "../firebase";
 
@@ -25,6 +26,7 @@ const SearchNavigator = () => {
       <Stack.Screen name="SearchProfession" component={SearchProfession} />
       <Stack.Screen name="SearchInterests" component={SearchInterests} />
       <Stack.Screen name="UserProfile" component={Profile} />
+      <Stack.Screen name="Chat1" component={Chat1} />
 
       <Stack.Screen
         name="SearchFaceSimiliarity"

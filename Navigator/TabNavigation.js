@@ -10,10 +10,10 @@ import {
   ScrollView,
 } from "react-native";
 import NewsFeed from "../screens/NewsFeed";
-import { GroupNavigator } from "./GroupNavigator";
 import Search from "../screens/Search";
 import { ChatNavigator } from "./ChatNavigator";
 import { ProfileNavigator } from "./ProfileNavigator";
+import { FriendsNavigation } from "./FriendsNavigation";
 
 import { SearchNavigator } from "./SearchNavigator";
 
@@ -67,10 +67,10 @@ const BottomTabNavigator = () => {
       ></Tab.Screen>
 
       <Tab.Screen
-        name="Group"
-        component={GroupNavigator}
+        name="Connections"
+        component={FriendsNavigation}
         options={{
-          tabBarLabel: "Group",
+          tabBarLabel: "Connections",
           tabBarIcon: () => (
             <Image
               style={styles.iconMaterialGroup}

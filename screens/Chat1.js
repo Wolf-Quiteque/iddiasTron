@@ -168,7 +168,7 @@ const Chat1 = ({ route, navigation }) => {
           <Image
             style={styles.icon}
             resizeMode="cover"
-            source={require("../assets/backward-arrow@3x.png")}
+            source={"../assets/backward-arrow@3x.png"}
           />
         </Pressable>
         <Pressable
@@ -178,7 +178,7 @@ const Chat1 = ({ route, navigation }) => {
           <Image
             style={styles.icon1}
             resizeMode="cover"
-            source={require("../assets/icon-awesomevideo@3x.png")}
+            source={"../assets/icon-awesomevideo@3x.png"}
           />
         </Pressable>
       </View>

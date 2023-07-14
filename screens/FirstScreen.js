@@ -15,28 +15,28 @@ const FirstScreen = () => {
           <Image
             style={styles.polygonIcon}
             resizeMode="cover"
-            source={require("../assets/polygon-5.png")}
+            source={"../assets/polygon-5@3x.png"}
           />
           <Image
             style={styles.polygonIcon1}
             resizeMode="cover"
-            source={require("../assets/polygon-5.png")}
+            source={"../assets/polygon-5@3x.png"}
           />
           <Image
             style={styles.iDDiasFinalIcon}
             resizeMode="cover"
-            source={require("../assets/iddiasfinal.png")}
+            source={"../assets/iddiasfinal@3x.png"}
           />
         </View>
         <Image
           style={styles.iDDias1mobileappWhiteIcon}
           resizeMode="cover"
-          source={require("../assets/iddias1mobileappwhite.png")}
+          source={"../assets/iddias1mobileappwhite@3x.png"}
         />
         <Image
           style={styles.iDDiasFinalWhiteIcon}
           resizeMode="cover"
-          source={require("../assets/iddiasfinal.png")}
+          source={"../assets/iddiasfinal@3x.png"}
         />
         <Text style={styles.iDDIASText}>IDDIAS</Text>
       </View>

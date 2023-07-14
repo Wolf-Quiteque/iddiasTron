@@ -64,7 +64,7 @@ const ProfileConnections = () => {
           <Image
             style={styles.path99Icon}
             resizeMode="cover"
-            source={require("../assets/path-99@3x.png")}
+            source={"../assets/path-99@3x.png"}
           />
         </View>
       </View>

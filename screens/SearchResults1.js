@@ -199,7 +199,7 @@ const SearchResults1 = ({ route }) => {
           <Image
             style={styles.icon}
             resizeMode="cover"
-            source={require("../assets/icon-materialnotificationsactive@3x.png")}
+            source={"../assets/icon-materialnotificationsactive@3x.png"}
           />
         </Pressable>
       </View>
@@ -232,7 +232,7 @@ const SearchResults1 = ({ route }) => {
             <Image
               style={[styles.acceptIcon, styles.mt_19]}
               resizeMode="cover"
-              source={require("../assets/accept@3x.png")}
+              source={"../assets/accept@3x.png"}
             />
           </Pressable>
 
@@ -245,7 +245,7 @@ const SearchResults1 = ({ route }) => {
                 styles.iconLayout1,
               ]}
               resizeMode="cover"
-              source={require("../assets/decline@3x.png")}
+              source={"../assets/decline@3x.png"}
             />
           </Pressable>
         </View>
@@ -289,7 +289,7 @@ const SearchResults1 = ({ route }) => {
         <Image
           style={[styles.iconAwesomeRocketchat, styles.mt_27, styles.mr120]}
           resizeMode="cover"
-          source={require("../assets/icon-awesomerocketchat@3x.png")}
+          source={"../assets/icon-awesomerocketchat@3x.png"}
         />
       </Pressable>
 
@@ -301,7 +301,7 @@ const SearchResults1 = ({ route }) => {
           source={
             user && user.gallary
               ? user.gallary
-              : require("../assets/rectangle-26135@3x.png")
+              : "../assets/rectangle-26135@3x.png"
           }
         />
         <Image
@@ -310,7 +310,7 @@ const SearchResults1 = ({ route }) => {
           source={
             user && user.gallary2
               ? user.gallary2
-              : require("../assets/rectangle-26135@3x.png")
+              : "../assets/rectangle-26135@3x.png"
           }
         />
         <Image
@@ -319,7 +319,7 @@ const SearchResults1 = ({ route }) => {
           source={
             user && user.gallary3
               ? user.gallary3
-              : require("../assets/rectangle-26135@3x.png")
+              : "../assets/rectangle-26135@3x.png"
           }
         />
       </View>
@@ -330,17 +330,17 @@ const SearchResults1 = ({ route }) => {
             <Image
               style={styles.rectangleIcon3}
               resizeMode="cover"
-              source={require("../assets/" + user.interests[0] + ".png")}
+              source={user && "../assets/" + user.interests[0] + ".png"}
             />
             <Image
               style={styles.rectangleIcon4}
               resizeMode="cover"
-              source={require("../assets/" + user.interests[1] + ".png")}
+              source={user && "../assets/" + user.interests[1] + ".png"}
             />
             <Image
               style={styles.rectangleIcon5}
               resizeMode="cover"
-              source={require("../assets/" + user.interests[2] + ".png")}
+              source={user && "../assets/" + user.interests[2] + ".png"}
             />
           </>
         )}
@@ -365,7 +365,7 @@ const SearchResults1 = ({ route }) => {
           <Image
             style={styles.union46Icon}
             resizeMode="cover"
-            source={require("../assets/union-46@3x.png")}
+            source={"../assets/union-46@3x.png"}
           />
         </Pressable>
         <Pressable
@@ -376,7 +376,7 @@ const SearchResults1 = ({ route }) => {
           <Image
             style={styles.feedIcon}
             resizeMode="cover"
-            source={require("../assets/feed5@3x.png")}
+            source={"../assets/feed5@3x.png"}
           />
         </Pressable>
         <Pressable
@@ -389,7 +389,7 @@ const SearchResults1 = ({ route }) => {
             <Image
               style={styles.path99Icon}
               resizeMode="cover"
-              source={require("../assets/path-996@3x.png")}
+              source={"../assets/path-996@3x.png"}
             />
           </View>
         </Pressable>
@@ -398,7 +398,7 @@ const SearchResults1 = ({ route }) => {
           <Image
             style={styles.iconMaterialChatBubble}
             resizeMode="cover"
-            source={require("../assets/icon-materialchatbubble@3x.png")}
+            source={"../assets/icon-materialchatbubble@3x.png"}
           />
         </Pressable>
         <Pressable
@@ -409,7 +409,7 @@ const SearchResults1 = ({ route }) => {
           <Image
             style={styles.iconMaterialGroup}
             resizeMode="cover"
-            source={require("../assets/icon-materialgroup@3x.png")}
+            source={"../assets/icon-materialgroup@3x.png"}
           />
         </Pressable>
       </View>

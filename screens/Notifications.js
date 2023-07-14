@@ -19,7 +19,7 @@ const Notifications = () => {
         <Image
           style={styles.iconMaterialNotificationsAc}
           resizeMode="cover"
-          source={require("../assets/icon-materialnotificationsactive13@3x.png")}
+          source={"../assets/icon-materialnotificationsactive13@3x.png"}
         />
       </View>
       <ScrollView
@@ -115,7 +115,7 @@ const Notifications = () => {
           <Image
             style={styles.profileIcon}
             resizeMode="cover"
-            source={require("../assets/profile@3x.png")}
+            source={"../assets/profile@3x.png"}
           />
         </Pressable>
         <Pressable
@@ -126,7 +126,7 @@ const Notifications = () => {
           <Image
             style={styles.feedIcon}
             resizeMode="cover"
-            source={require("../assets/feed19@3x.png")}
+            source={"../assets/feed19@3x.png"}
           />
         </Pressable>
         <Pressable
@@ -139,7 +139,7 @@ const Notifications = () => {
             <Image
               style={styles.path99Icon}
               resizeMode="cover"
-              source={require("../assets/path-996@3x.png")}
+              source={"../assets/path-996@3x.png"}
             />
           </View>
         </Pressable>
@@ -151,7 +151,7 @@ const Notifications = () => {
           <Image
             style={styles.iconMaterialChatBubble}
             resizeMode="cover"
-            source={require("../assets/icon-materialchatbubble@3x.png")}
+            source={"../assets/icon-materialchatbubble@3x.png"}
           />
         </Pressable>
         <Pressable
@@ -162,7 +162,7 @@ const Notifications = () => {
           <Image
             style={styles.iconMaterialGroup}
             resizeMode="cover"
-            source={require("../assets/icon-materialgroup@3x.png")}
+            source={"../assets/icon-materialgroup@3x.png"}
           />
         </Pressable>
       </View>

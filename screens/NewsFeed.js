@@ -29,7 +29,7 @@ const NewsFeed = () => {
         <Image
           style={styles.icon}
           resizeMode="cover"
-          source={require("../assets/icon-materialnotificationsactive@3x.png")}
+          source={require("../assets/icon-materialnotificationsactive.png")}
         />
       </Pressable>
       <View style={[styles.inputView, styles.mt12, styles.mr37]}>
@@ -38,7 +38,7 @@ const NewsFeed = () => {
           <Image
             style={styles.path99Icon}
             resizeMode="cover"
-            source={require("../assets/path-99@3x.png")}
+            source={require("../assets/path-99.png")}
           />
         </View>
       </View>
@@ -54,7 +54,7 @@ const NewsFeed = () => {
           <ImageBackground
             style={styles.rectangleIcon}
             resizeMode="cover"
-            source={require("../assets/rectangle216@3x.png")}
+            source={require("../assets/rectangle216.png")}
           />
           <View style={styles.likesCommentsView}>
             <View style={styles.likesView}>
@@ -63,7 +63,7 @@ const NewsFeed = () => {
                 <Image
                   style={styles.heartIcon}
                   resizeMode="cover"
-                  source={require("../assets/heart@3x.png")}
+                  source={require("../assets/heart.png")}
                 />
                 <View style={styles.rectangleView1} />
               </View>
@@ -76,7 +76,6 @@ const NewsFeed = () => {
             <Text style={styles.hAgoText}>1h ago</Text>
           </View>
         </View>
-
 
         <View style={styles.postsView}>
           <Text style={styles.loremIpsumDolorSitAmetCo}>
@@ -86,7 +85,7 @@ const NewsFeed = () => {
           <ImageBackground
             style={styles.rectangleIcon}
             resizeMode="cover"
-            source={require("../assets/rectangle216@3x.png")}
+            source={require("../assets/rectangle216.png")}
           />
           <View style={styles.likesCommentsView}>
             <View style={styles.likesView}>
@@ -95,7 +94,7 @@ const NewsFeed = () => {
                 <Image
                   style={styles.heartIcon}
                   resizeMode="cover"
-                  source={require("../assets/heart@3x.png")}
+                  source={require("../assets/heart.png")}
                 />
                 <View style={styles.rectangleView1} />
               </View>
@@ -108,7 +107,6 @@ const NewsFeed = () => {
             <Text style={styles.hAgoText}>1h ago</Text>
           </View>
         </View>
-        
       </ScrollView>
     </View>
   );
@@ -151,7 +149,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 20,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
     width: 105,
@@ -182,6 +180,8 @@ const styles = StyleSheet.create({
     top: 0,
     right: 0.1,
     bottom: 0.1,
+    height: 16,
+    width: 18,
     left: 0,
     maxWidth: "100%",
     overflow: "hidden",
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     left: 1,
     fontSize: 14,
     lineHeight: 24,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 296,
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     right: -1,
     fontSize: 14,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
   },
@@ -238,6 +238,8 @@ const styles = StyleSheet.create({
     top: 1,
     right: 0,
     bottom: 0.88,
+    height: 16,
+    width: 18,
     left: 0,
     maxWidth: "100%",
     overflow: "hidden",
@@ -278,7 +280,7 @@ const styles = StyleSheet.create({
     left: 0,
     fontSize: 14,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 217,
@@ -289,7 +291,7 @@ const styles = StyleSheet.create({
     top: "50%",
     right: -1,
     fontSize: 14,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "right",
     width: 45,
@@ -304,7 +306,7 @@ const styles = StyleSheet.create({
   },
   postsView: {
     width: "99.33%",
-    marginBottom:"50px",
+    marginBottom: 50,
     position: "relative",
     height: 341,
     alignSelf: "flex-end",
@@ -315,7 +317,7 @@ const styles = StyleSheet.create({
     left: 3,
     fontSize: 14,
     lineHeight: 24,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 296,
@@ -335,7 +337,7 @@ const styles = StyleSheet.create({
     right: -1,
     fontSize: 14,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
   },
@@ -384,7 +386,7 @@ const styles = StyleSheet.create({
     left: 0,
     fontSize: 14,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 118,
@@ -395,7 +397,7 @@ const styles = StyleSheet.create({
     top: "50%",
     right: -1,
     fontSize: 14,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "right",
     width: 45,
@@ -432,7 +434,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
     width: 39,
@@ -460,7 +462,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 11,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 29,
@@ -497,7 +499,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
     width: 41,
@@ -542,7 +544,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
     width: 28,
@@ -569,7 +571,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
     width: 37,

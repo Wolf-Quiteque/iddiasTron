@@ -17,7 +17,7 @@ const ChatNewChat = () => {
         <Image
           style={styles.icon}
           resizeMode="cover"
-          source={require("../assets/3@3x.png")}
+          source={"../assets/3@3x.png"}
         />
       </Pressable>
       <View style={[styles.inputView, styles.mt15_030000000000001]}>
@@ -26,7 +26,7 @@ const ChatNewChat = () => {
           <Image
             style={styles.path99Icon}
             resizeMode="cover"
-            source={require("../assets/path-99@3x.png")}
+            source={"../assets/path-99@3x.png"}
           />
         </View>
       </View>
@@ -39,7 +39,7 @@ const ChatNewChat = () => {
           <Image
             style={styles.component9Icon}
             resizeMode="cover"
-            source={require("../assets/component-5@3x.png")}
+            source={"../assets/component-5@3x.png"}
           />
         </View>
         <Pressable
@@ -53,7 +53,7 @@ const ChatNewChat = () => {
           <Image
             style={styles.component10Icon}
             resizeMode="cover"
-            source={require("../assets/component-6@3x.png")}
+            source={"../assets/component-6@3x.png"}
           />
         </Pressable>
         <View style={styles.nameView1}>
@@ -64,7 +64,7 @@ const ChatNewChat = () => {
           <Image
             style={styles.component11Icon}
             resizeMode="cover"
-            source={require("../assets/component-7@3x.png")}
+            source={"../assets/component-7@3x.png"}
           />
         </View>
         <View style={styles.nameView2}>
@@ -75,7 +75,7 @@ const ChatNewChat = () => {
           <Image
             style={styles.component12Icon}
             resizeMode="cover"
-            source={require("../assets/component-8@3x.png")}
+            source={"../assets/component-8@3x.png"}
           />
         </View>
         <View style={styles.nameView3}>
@@ -86,7 +86,7 @@ const ChatNewChat = () => {
           <Image
             style={styles.component13Icon}
             resizeMode="cover"
-            source={require("../assets/component-9@3x.png")}
+            source={"../assets/component-9@3x.png"}
           />
         </View>
         <View style={styles.nameView4}>
@@ -97,7 +97,7 @@ const ChatNewChat = () => {
           <Image
             style={styles.component14Icon}
             resizeMode="cover"
-            source={require("../assets/component-10@3x.png")}
+            source={"../assets/component-10@3x.png"}
           />
         </View>
         <View style={styles.nameView5}>
@@ -108,7 +108,7 @@ const ChatNewChat = () => {
           <Image
             style={styles.component15Icon}
             resizeMode="cover"
-            source={require("../assets/component-6@3x.png")}
+            source={"../assets/component-6@3x.png"}
           />
         </View>
         <View style={styles.nameView6}>
@@ -119,7 +119,7 @@ const ChatNewChat = () => {
           <Image
             style={styles.component16Icon}
             resizeMode="cover"
-            source={require("../assets/component-12@3x.png")}
+            source={"../assets/component-12@3x.png"}
           />
         </View>
         <View style={styles.nameView7}>
@@ -130,7 +130,7 @@ const ChatNewChat = () => {
           <Image
             style={styles.component17Icon}
             resizeMode="cover"
-            source={require("../assets/component-91@3x.png")}
+            source={"../assets/component-91@3x.png"}
           />
         </View>
       </View>

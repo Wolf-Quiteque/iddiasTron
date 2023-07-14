@@ -61,12 +61,12 @@ const Interests = ({ route }) => {
       <ImageBackground
         style={[styles.imageIcon, styles.mt36]}
         resizeMode="cover"
-        source={require("../assets/image@3x.png")}
+        source={"../assets/image.png"}
       />
       <ImageBackground
         style={[styles.imageIcon1, styles.mt_100, styles.ml156]}
         resizeMode="cover"
-        source={require("../assets/image1@3x.png")}
+        source={"../assets/image1.png"}
       />{" "}
       <Pressable
         onPress={() => {
@@ -100,12 +100,12 @@ const Interests = ({ route }) => {
       <ImageBackground
         style={[styles.imageIcon2, styles.mt52]}
         resizeMode="cover"
-        source={require("../assets/image2@3x.png")}
+        source={"../assets/image2.png"}
       />
       <ImageBackground
         style={[styles.imageIcon3, styles.mt_100, styles.ml156]}
         resizeMode="cover"
-        source={require("../assets/image3@3x.png")}
+        source={"../assets/image3.png"}
       />
       <Pressable
         onPress={() => {
@@ -134,12 +134,12 @@ const Interests = ({ route }) => {
       <ImageBackground
         style={[styles.imageIcon4, styles.mt52]}
         resizeMode="cover"
-        source={require("../assets/image4@3x.png")}
+        source={"../assets/image4.png"}
       />
       <ImageBackground
         style={[styles.imageIcon5, styles.mt_100, styles.ml156]}
         resizeMode="cover"
-        source={require("../assets/image5@3x.png")}
+        source={"../assets/image5.png"}
       />
       <Pressable
         onPress={() => {
@@ -172,12 +172,12 @@ const Interests = ({ route }) => {
       <ImageBackground
         style={[styles.imageIcon6, styles.mt52]}
         resizeMode="cover"
-        source={require("../assets/image6@3x.png")}
+        source={"../assets/image6.png"}
       />
       <ImageBackground
         style={[styles.imageIcon7, styles.mt_100, styles.ml156]}
         resizeMode="cover"
-        source={require("../assets/image7@3x.png")}
+        source={"../assets/image7.png"}
       />
       <Pressable
         onPress={() => {
@@ -212,12 +212,12 @@ const Interests = ({ route }) => {
       <ImageBackground
         style={[styles.imageIcon8, styles.mt52, styles.ml1]}
         resizeMode="cover"
-        source={require("../assets/image8@3x.png")}
+        source={"../assets/image8.png"}
       />
       <ImageBackground
         style={[styles.imageIcon9, styles.mt_100]}
         resizeMode="cover"
-        source={require("../assets/image9@3x.png")}
+        source={"../assets/image9.png"}
       />
       <Pressable
         onPress={() => {
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
     position: "relative",
     fontSize: 20,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
     width: 87,
@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 24,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
     width: 62,
@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 24,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 24,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
     width: 65,
@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 24,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
     width: 31,
@@ -399,7 +399,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 24,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
     width: 49,
@@ -409,7 +409,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 24,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
     width: 111,
@@ -429,7 +429,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 24,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
     width: 73,
@@ -439,7 +439,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 24,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
     width: 98,
@@ -460,7 +460,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 24,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
     width: 75,
@@ -470,7 +470,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 24,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
     width: 66,
@@ -493,7 +493,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     lineHeight: 12,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "center",
     width: 79,

@@ -64,7 +64,7 @@ const SearchInterests = () => {
             <Image
               style={styles.icon}
               resizeMode="cover"
-              source={require("../assets/icon-materialnotificationsactive@3x.png")}
+              source={"../assets/icon-materialnotificationsactive@3x.png"}
             />
           </Pressable>
         </View>

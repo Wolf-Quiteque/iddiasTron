@@ -163,7 +163,7 @@ const ProfileEdit = () => {
           <Image
             style={styles.path104Icon}
             resizeMode="cover"
-            source={require("../assets/path-104@3x.png")}
+            source={"../assets/path-104@3x.png"}
           />
         </Pressable>
         <Pressable
@@ -173,7 +173,7 @@ const ProfileEdit = () => {
           <Image
             style={styles.icon}
             resizeMode="cover"
-            source={require("../assets/icon-materialnotificationsactive@3x.png")}
+            source={"../assets/icon-materialnotificationsactive@3x.png"}
           />
         </Pressable>
       </View>

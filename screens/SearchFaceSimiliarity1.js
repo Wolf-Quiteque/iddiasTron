@@ -17,7 +17,7 @@ const SearchFaceSimiliarity1 = () => {
       <ImageBackground
         style={[styles.faceIcon, styles.mr_142]}
         resizeMode="cover"
-        source={require("../assets/face.png")}
+        source={"../assets/face@3x.png"}
       />
       <Pressable
         style={[styles.subtraction1Pressable, styles.mt_832]}
@@ -29,7 +29,7 @@ const SearchFaceSimiliarity1 = () => {
       <Image
         style={[styles.rectangleIcon, styles.mt_812]}
         resizeMode="cover"
-        source={require("../assets/rectangle-574.png")}
+        source={"../assets/rectangle-574@3x.png"}
       />
       <View style={[styles.rectangleView2, styles.mt_698, styles.mr35]} />
       <Text style={[styles.faceScanText, styles.mt143, styles.mr140]}>
@@ -47,7 +47,7 @@ const SearchFaceSimiliarity1 = () => {
           <Image
             style={styles.profileIcon}
             resizeMode="cover"
-            source={require("../assets/profile.png")}
+            source={"../assets/profile@3x.png"}
           />
         </Pressable>
         <Pressable
@@ -58,7 +58,7 @@ const SearchFaceSimiliarity1 = () => {
           <Image
             style={styles.feedIcon}
             resizeMode="cover"
-            source={require("../assets/feed.png")}
+            source={"../assets/feed@3x.png"}
           />
         </Pressable>
         <Pressable
@@ -71,7 +71,7 @@ const SearchFaceSimiliarity1 = () => {
             <Image
               style={styles.path99Icon}
               resizeMode="cover"
-              source={require("../assets/path-99.png")}
+              source={"../assets/path-99@3x.png"}
             />
           </View>
           <View style={styles.lineView} />
@@ -84,7 +84,7 @@ const SearchFaceSimiliarity1 = () => {
           <Image
             style={styles.iconMaterialChatBubble}
             resizeMode="cover"
-            source={require("../assets/icon-materialchatbubble.png")}
+            source={"../assets/icon-materialchatbubble@3x.png"}
           />
         </Pressable>
         <Pressable
@@ -95,7 +95,7 @@ const SearchFaceSimiliarity1 = () => {
           <Image
             style={styles.iconMaterialGroup}
             resizeMode="cover"
-            source={require("../assets/icon-materialgroup.png")}
+            source={"../assets/icon-materialgroup@3x.png"}
           />
         </Pressable>
       </View>

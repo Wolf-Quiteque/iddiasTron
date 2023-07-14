@@ -13,25 +13,26 @@ import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 const SignIn = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [email, setemail] = React.useState();
-  const [password, setpassword] = React.useState();
+  const [email, setemail] = React.useState("");
+  const [password, setpassword] = React.useState("");
 
   const getUser = async () => {
     try {
-      const q = query(
-        collection(firestore, "users"),
-        where("email", "in", [email])
-      );
+      // const q = query(
+      //   collection(firestore, "users"),
+      //   where("email", "in", [email])
+      // );
 
-      const querySnapshot = await getDocs(q);
-      chartData = querySnapshot.docs.map((doc) => doc.data());
+      // const querySnapshot = await getDocs(q);
+      // chartData = querySnapshot.docs.map((doc) => doc.data());
+      // console.log(chartData[0]);
 
       dispatch(
         setSignIn({
-          email: email,
+          email: "marcioqui@gmaril.co",
           isLoggedIn: true,
-          userName: chartData[0].name,
-          userDetails: chartData[0],
+          userName: "Marcio Quiteque",
+          userDetails: "some people think",
         })
       );
     } catch (error) {
@@ -40,6 +41,9 @@ const SignIn = () => {
   };
 
   const Login = async () => {
+    getUser();
+    return false;
+
     try {
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
@@ -66,7 +70,7 @@ const SignIn = () => {
       <Image
         style={styles.heroIcon}
         resizeMode="cover"
-        source={require("../assets/hero@3x.png")}
+        source={require("../assets/hero.png")}
       />
       <View style={[styles.accountSignupView, styles.mt25]}>
         <View style={styles.rectangleView} />
@@ -84,7 +88,6 @@ const SignIn = () => {
           placeholder="Password"
           label="Password"
           mode="outlined"
-          secureTextEntry="true"
           onChangeText={(text) => {
             setpassword(text);
           }}
@@ -166,7 +169,6 @@ const styles = StyleSheet.create({
     fontSize: 26,
     lineHeight: 30,
     fontWeight: "700",
-    fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
     width: 85,
@@ -183,7 +185,7 @@ const styles = StyleSheet.create({
     left: 36,
     fontSize: 14,
     lineHeight: 20,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
     width: 269,
@@ -224,14 +226,14 @@ const styles = StyleSheet.create({
   },
   continueText: {
     position: "absolute",
-    marginTop: -11,
+    marginTop: -8,
     marginLeft: -38,
     top: "50%",
     left: "50%",
     fontSize: 18,
-    lineHeight: 12,
+    lineHeight: 18,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "center",
     width: 79,
@@ -245,18 +247,18 @@ const styles = StyleSheet.create({
     position: "relative",
     fontSize: 20,
     lineHeight: 20,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
     width: 235,
   },
   signUpText: {
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
   },
   text: {
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#21ae9c",
   },
   signUpPressable: {

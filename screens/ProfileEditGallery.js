@@ -25,55 +25,55 @@ const ProfileEditGallery = () => {
       <Image
         style={[styles.rectangleIcon, styles.mt45, styles.ml1]}
         resizeMode="cover"
-        source={require("../assets/rectangle-5394@3x.png")}
+        source={"../assets/rectangle-5394@3x.png"}
       />
 
       <View style={[styles.galleryView, styles.mt43, styles.mr1]}>
         <Image
           style={styles.rectangleIcon1}
           resizeMode="cover"
-          source={require("../assets/rectangle-26134@3x.png")}
+          source={"../assets/rectangle-26134@3x.png"}
         />
         <View style={styles.rectangleView} />
         <Image
           style={styles.rectangleIcon2}
           resizeMode="cover"
-          source={require("../assets/rectangle-2624@3x.png")}
+          source={"../assets/rectangle-2624@3x.png"}
         />
         <Image
           style={styles.rectangleIcon3}
           resizeMode="cover"
-          source={require("../assets/rectangle-9204@3x.png")}
+          source={"../assets/rectangle-9204@3x.png"}
         />
         <Image
           style={styles.rectangleIcon4}
           resizeMode="cover"
-          source={require("../assets/rectangle-26135@3x.png")}
+          source={"../assets/rectangle-26135@3x.png"}
         />
         <Image
           style={styles.rectangleIcon5}
           resizeMode="cover"
-          source={require("../assets/rectangle-2625@3x.png")}
+          source={"../assets/rectangle-2625@3x.png"}
         />
         <Image
           style={styles.rectangleIcon6}
           resizeMode="cover"
-          source={require("../assets/rectangle-9205@3x.png")}
+          source={"../assets/rectangle-9205@3x.png"}
         />
         <Image
           style={styles.rectangleIcon7}
           resizeMode="cover"
-          source={require("../assets/rectangle-26136@3x.png")}
+          source={"../assets/rectangle-26136@3x.png"}
         />
         <Image
           style={styles.rectangleIcon8}
           resizeMode="cover"
-          source={require("../assets/rectangle-2626@3x.png")}
+          source={"../assets/rectangle-2626@3x.png"}
         />
         <Image
           style={styles.rectangleIcon9}
           resizeMode="cover"
-          source={require("../assets/rectangle-9206@3x.png")}
+          source={"../assets/rectangle-9206@3x.png"}
         />
         <View style={styles.rectangleView1} />
         <Text style={styles.recentsText}>Recents</Text>
@@ -86,7 +86,7 @@ const ProfileEditGallery = () => {
           <Image
             style={styles.union46Icon}
             resizeMode="cover"
-            source={require("../assets/union-46@3x.png")}
+            source={"../assets/union-46@3x.png"}
           />
         </View>
         <Pressable
@@ -97,7 +97,7 @@ const ProfileEditGallery = () => {
           <Image
             style={styles.feedIcon}
             resizeMode="cover"
-            source={require("../assets/feed5@3x.png")}
+            source={"../assets/feed5@3x.png"}
           />
         </Pressable>
         <Pressable
@@ -110,7 +110,7 @@ const ProfileEditGallery = () => {
             <Image
               style={styles.path99Icon}
               resizeMode="cover"
-              source={require("../assets/path-996@3x.png")}
+              source={"../assets/path-996@3x.png"}
             />
           </View>
         </Pressable>
@@ -122,7 +122,7 @@ const ProfileEditGallery = () => {
           <Image
             style={styles.iconMaterialChatBubble}
             resizeMode="cover"
-            source={require("../assets/icon-materialchatbubble@3x.png")}
+            source={"../assets/icon-materialchatbubble@3x.png"}
           />
         </Pressable>
         <Pressable
@@ -133,7 +133,7 @@ const ProfileEditGallery = () => {
           <Image
             style={styles.iconMaterialGroup}
             resizeMode="cover"
-            source={require("../assets/icon-materialgroup@3x.png")}
+            source={"../assets/icon-materialgroup@3x.png"}
           />
         </Pressable>
       </View>

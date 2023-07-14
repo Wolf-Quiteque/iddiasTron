@@ -18,7 +18,7 @@ const Chat2 = () => {
           <Image
             style={styles.icon}
             resizeMode="cover"
-            source={require("../assets/backward-arrow.png")}
+            source={require("../assets/backward-arrow@3x.png")}
           />
         </Pressable>
       </View>
@@ -27,7 +27,7 @@ const Chat2 = () => {
           <Image
             style={styles.path112Icon}
             resizeMode="cover"
-            source={require("../assets/path-112.png")}
+            source={require("../assets/path-112@3x.png")}
           />
           <Text style={styles.sedUtPerspiciatisOmnis}>
             Sed ut perspiciatis omnis.
@@ -37,7 +37,7 @@ const Chat2 = () => {
           <Image
             style={styles.path113Icon}
             resizeMode="cover"
-            source={require("../assets/path-113.png")}
+            source={require("../assets/path-113@3x.png")}
           />
           <Text style={styles.excepteurSintOccaecatCupida}>
             Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
@@ -48,7 +48,7 @@ const Chat2 = () => {
           <Image
             style={styles.path116Icon}
             resizeMode="cover"
-            source={require("../assets/path-116.png")}
+            source={require("../assets/path-116@3x.png")}
           />
           <Text style={styles.loremIpsumDolorSitAmetCo}>
             Lorem ipsum dolor sit amet, consectetur.
@@ -60,29 +60,29 @@ const Chat2 = () => {
           <Image
             style={styles.component1Icon}
             resizeMode="cover"
-            source={require("../assets/component-18.png")}
+            source={require("../assets/component-18@3x.png")}
           />
         </View>
         <Image
           style={styles.component1Icon1}
           resizeMode="cover"
-          source={require("../assets/component-19.png")}
+          source={require("../assets/component-19@3x.png")}
         />
         <Image
           style={styles.component2Icon}
           resizeMode="cover"
-          source={require("../assets/component-21.png")}
+          source={require("../assets/component-21@3x.png")}
         />
         <Image
           style={styles.component3Icon}
           resizeMode="cover"
-          source={require("../assets/component-21.png")}
+          source={require("../assets/component-21@3x.png")}
         />
         <View style={styles.messageView3}>
           <Image
             style={styles.path112Icon1}
             resizeMode="cover"
-            source={require("../assets/path-112.png")}
+            source={require("../assets/path-112@3x.png")}
           />
           <Text style={styles.sedUtPerspiciatisOmnis1}>
             Sed ut perspiciatis omnis.
@@ -91,7 +91,7 @@ const Chat2 = () => {
         <Image
           style={styles.component4Icon}
           resizeMode="cover"
-          source={require("../assets/component-19.png")}
+          source={require("../assets/component-19@3x.png")}
         />
       </View>
       <View style={styles.toolbarView}>
@@ -108,7 +108,7 @@ const Chat2 = () => {
             <Image
               style={styles.icon1}
               resizeMode="cover"
-              source={require("../assets/profile.png")}
+              source={require("../assets/profile@3x.png")}
             />
           </Pressable>
         </Pressable>
@@ -120,7 +120,7 @@ const Chat2 = () => {
           <Image
             style={styles.feedIcon}
             resizeMode="cover"
-            source={require("../assets/feed19.png")}
+            source={require("../assets/feed19@3x.png")}
           />
         </Pressable>
         <Pressable
@@ -133,7 +133,7 @@ const Chat2 = () => {
             <Image
               style={styles.path99Icon}
               resizeMode="cover"
-              source={require("../assets/path-996.png")}
+              source={require("../assets/path-996@3x.png")}
             />
           </View>
         </Pressable>
@@ -145,7 +145,7 @@ const Chat2 = () => {
           <Image
             style={styles.iconMaterialChatBubble}
             resizeMode="cover"
-            source={require("../assets/icon-materialchatbubble20.png")}
+            source={require("../assets/icon-materialchatbubble20@3x.png")}
           />
           <View style={styles.lineView} />
         </Pressable>
@@ -157,7 +157,7 @@ const Chat2 = () => {
           <Image
             style={styles.iconMaterialGroup}
             resizeMode="cover"
-            source={require("../assets/icon-materialgroup.png")}
+            source={require("../assets/icon-materialgroup@3x.png")}
           />
         </Pressable>
       </View>

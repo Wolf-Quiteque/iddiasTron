@@ -10,7 +10,7 @@ import {
   ScrollView,
 } from "react-native";
 import NewsFeed from "../screens/NewsFeed";
-import Search from "../screens/Search";
+// import Search from "../screens/Search";
 import { ChatNavigator } from "./ChatNavigator";
 import { ProfileNavigator } from "./ProfileNavigator";
 import { FriendsNavigation } from "./FriendsNavigation";
@@ -26,16 +26,12 @@ const BottomTabNavigator = () => {
         tabBarStyle: {
           height: 60,
           backgroundColor: "#15abb5",
+          display: "flex",
         },
+        tabBarActiveTintColor: "black",
+        tabBarInactiveTintColor: "black",
+        tabBarLabelStyle: { display: "none" },
       })}
-      tabBarOptions={{
-        activeTintColor: "black",
-        inactiveTintColor: "black",
-        showLabel: false,
-        headerTitleStyle: {
-          color: "#fff",
-        },
-      }}
     >
       <Tab.Screen
         name="NewsFeed"
@@ -46,7 +42,7 @@ const BottomTabNavigator = () => {
             <Image
               style={styles.feedIcon}
               resizeMode="cover"
-              source={require("../assets/feed5@3x.png")}
+              source={require("../assets/feed5.png")}
             />
           ),
         }}
@@ -60,7 +56,7 @@ const BottomTabNavigator = () => {
             <Image
               style={styles.iconMaterialChatBubble}
               resizeMode="cover"
-              source={require("../assets/icon-materialchatbubble@3x.png")}
+              source={require("../assets/icon-materialchatbubble.png")}
             />
           ),
         }}
@@ -75,7 +71,7 @@ const BottomTabNavigator = () => {
             <Image
               style={styles.iconMaterialGroup}
               resizeMode="cover"
-              source={require("../assets/icon-materialgroup@3x.png")}
+              source={require("../assets/icon-materialgroup.png")}
             />
           ),
         }}
@@ -90,7 +86,7 @@ const BottomTabNavigator = () => {
             <Image
               style={styles.path99Icon}
               resizeMode="cover"
-              source={require("../assets/path-996@3x.png")}
+              source={require("../assets/path-996.png")}
             />
           ),
         }}
@@ -105,7 +101,7 @@ const BottomTabNavigator = () => {
             <Image
               style={styles.union46Icon}
               resizeMode="cover"
-              source={require("../assets/union-46@3x.png")}
+              source={require("../assets/union-46.png")}
             />
           ),
         }}
@@ -153,7 +149,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 20,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
   },
@@ -186,7 +182,7 @@ const styles = StyleSheet.create({
     left: 0,
     fontSize: 16,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#21ae9c",
     textAlign: "left",
   },
@@ -195,7 +191,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
   },
@@ -213,7 +209,7 @@ const styles = StyleSheet.create({
     left: 0,
     fontSize: 14,
     lineHeight: 24,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 303,
@@ -239,7 +235,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 23,
     fontSize: 14,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -260,7 +256,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 16,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#15abb5",
     textAlign: "center",
   },
@@ -298,7 +294,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 16,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#15abb5",
     textAlign: "center",
   },
@@ -332,7 +328,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     fontSize: 10,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 89,
@@ -344,7 +340,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: "50%",
     fontSize: 10,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 89,
@@ -355,7 +351,7 @@ const styles = StyleSheet.create({
     right: -1,
     bottom: 0,
     fontSize: 10,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 89,
@@ -380,7 +376,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 6.5,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
   },
@@ -413,7 +409,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -435,7 +431,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -472,7 +468,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -495,7 +491,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },

@@ -175,7 +175,7 @@ const Profile = ({ route }) => {
             <Image
               style={styles.path104Icon}
               resizeMode="cover"
-              source={require("../assets/path-104@3x.png")}
+              source={"../assets/path-104@3x.png"}
             />
           </Pressable>
           <Pressable
@@ -185,7 +185,7 @@ const Profile = ({ route }) => {
             <Image
               style={styles.icon}
               resizeMode="cover"
-              source={require("../assets/icon-materialnotificationsactive13@3x.png")}
+              source={"../assets/icon-materialnotificationsactive13@3x.png"}
             />
           </Pressable>
         </View>
@@ -213,7 +213,7 @@ const Profile = ({ route }) => {
               <Image
                 style={styles.path110Icon}
                 resizeMode="cover"
-                source={require("../assets/path-110@3x.png")}
+                source={"../assets/path-110@3x.png"}
               />
             </View>
           </Pressable>
@@ -224,7 +224,7 @@ const Profile = ({ route }) => {
             <Image
               style={styles.icon1}
               resizeMode="cover"
-              source={require("../assets/connections@3x.png")}
+              source={"../assets/connections@3x.png"}
             />
           </Pressable>
         </View>
@@ -239,7 +239,7 @@ const Profile = ({ route }) => {
                   ? { uri: image }
                   : User.gallary
                   ? User.gallary
-                  : require("../assets/rectangle-26135@3x.png")
+                  : "../assets/rectangle-26135@3x.png"
               }
             />
           </Pressable>
@@ -252,7 +252,7 @@ const Profile = ({ route }) => {
                   ? { uri: image2 }
                   : User.gallary2
                   ? User.gallary2
-                  : require("../assets/rectangle-2625@3x.png")
+                  : "../assets/rectangle-2625@3x.png"
               }
             />
           </Pressable>
@@ -265,7 +265,7 @@ const Profile = ({ route }) => {
                   ? { uri: image3 }
                   : User.gallary3
                   ? User.gallary3
-                  : require("../assets/rectangle-9205@3x.png")
+                  : "../assets/rectangle-9205@3x.png"
               }
             />
           </Pressable>
@@ -276,7 +276,7 @@ const Profile = ({ route }) => {
             <Image
               style={styles.icon2}
               resizeMode="cover"
-              source={require("../assets/@3x.png")}
+              source={"../assets/@3x.png"}
             />
           </Pressable>
         </View>
@@ -286,20 +286,18 @@ const Profile = ({ route }) => {
             <Image
               style={[styles.rectangleIcon3, styles.adjusts]}
               resizeMode="cover"
-              source={
-                User && require("../assets/" + User.interests[0] + ".png")
-              }
+              source={User && "../assets/" + User.interests[0] + ".png"}
             />
           </Pressable>
           <Image
             style={[styles.rectangleIcon4, styles.adjusts2]}
             resizeMode="cover"
-            source={User && require("../assets/" + User.interests[1] + ".png")}
+            source={User && "../assets/" + User.interests[1] + ".png"}
           />
           <Image
             style={[styles.rectangleIcon5, styles.adjusts3]}
             resizeMode="cover"
-            source={User && require("../assets/" + User.interests[2] + ".png")}
+            source={User && "../assets/" + User.interests[2] + ".png"}
           />
           <Text style={styles.loremIpsumDolorSitAmetCo}>
             {User.interests[0]}

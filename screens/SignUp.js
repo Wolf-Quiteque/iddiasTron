@@ -31,14 +31,14 @@ const SignUp = () => {
   const dispatch = useDispatch();
 
   const navigation = useNavigation();
-  const [email, setemail] = React.useState();
-  const [name, setname] = React.useState();
-  const [password, setpassword] = React.useState();
-  const [passwordConfirm, setpasswordConfirm] = React.useState();
-  const [profession, setprofession] = React.useState();
-  const [country, setcountry] = React.useState();
-  const [city, setcity] = React.useState();
-  const [phone, setphone] = React.useState();
+  const [email, setemail] = React.useState("");
+  const [name, setname] = React.useState("");
+  const [password, setpassword] = React.useState("");
+  const [passwordConfirm, setpasswordConfirm] = React.useState("");
+  const [profession, setprofession] = React.useState("");
+  const [country, setcountry] = React.useState("");
+  const [city, setcity] = React.useState("");
+  const [phone, setphone] = React.useState("");
   const [birthdate, setbirthdate] = React.useState("");
   const [open, setOpen] = React.useState(false);
 
@@ -63,19 +63,26 @@ const SignUp = () => {
   }
 
   const Register = async () => {
-    var error = false;
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        uploadData();
-      })
-      .catch((error) => {
-        error = true;
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(error);
-        alert("Usuario ja existe / Houve um erro");
+    try {
+      const data = {
+        email: email,
+        name: name.charAt(0).toUpperCase() + name.slice(1),
+        phone: phone,
+        city: city,
+        birthdate: birthdate,
+        profession: profession,
+        country: country,
+        createdAt: formatDate(new Date()),
+      };
+
+      await fetch("http://localhost:4000/api/iddias/new", {
+        method: "Post",
+        body: data,
       });
+      navigation.navigate("Interests", data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const uploadData = async () => {
@@ -123,7 +130,7 @@ const SignUp = () => {
       <Image
         style={styles.heroIcon}
         resizeMode="cover"
-        source={require("../assets/hero@3x.png")}
+        source={require("../assets/hero.png")}
       />
       <Text style={[styles.createAnAccount, styles.mt42, styles.ml1]}>
         Create an Account
@@ -138,138 +145,87 @@ const SignUp = () => {
             <Text style={styles.byCreatingAn}>
               By creating an account you agree to our
             </Text>
-            <Text
-              style={styles.privacyPolicy}
-            >{`Privacy Policy & Terms of Service`}</Text>
+            <Text style={styles.privacyPolicy}>
+              Privacy Policy & Terms of Service
+            </Text>
           </Text>
           <RNPTextInput
-            style={styles.rectangleRNPTextInput}
-            placeholder="Full Name"
-            label="Full Name"
             mode="outlined"
-            onChangeText={(text) => {
-              setname(text);
-            }}
-            theme={{ colors: { background: "#fff" } }}
+            style={[styles.email, styles.mt42]}
+            label="Email"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            value={email}
+            onChangeText={(text) => setemail(text)}
           />
-          {/* <RNPTextInput
-            style={styles.rectangleRNPTextInput1}
-            placeholder="Confirm Password"
-            label="Confirm Password"
-            mode="outlined"
-            secureTextEntry="true"
-            onChangeText={(text) => {
-              setpasswordConfirm(text);
-            }}
-            theme={{ colors: { background: "#fff" } }}
-          /> */}
-
           <RNPTextInput
-            style={styles.rectangleRNPTextInput2}
-            placeholder="Password"
+            mode="outlined"
+            style={[styles.password, styles.mt22]}
             label="Password"
-            mode="outlined"
-            onChangeText={(text) => {
-              setpassword(text);
-            }}
-            secureTextEntry="true"
-            theme={{ colors: { background: "#fff" } }}
-          />
-
-          <RNPTextInput
-            style={styles.rectangleRNPTextInput3}
-            placeholder="E-mail"
-            label="E-mail"
-            mode="outlined"
-            onChangeText={(text) => {
-              setemail(text);
-            }}
-            theme={{ colors: { background: "#fff" } }}
+            secureTextEntry
+            autoCapitalize="none"
+            value={password}
+            onChangeText={(text) => setpassword(text)}
           />
           <RNPTextInput
-            style={styles.rectangleRNPTextInput4}
-            placeholder="Enter your Profession"
-            label="Enter your Profession"
             mode="outlined"
-            theme={{ colors: { background: "#fff" } }}
-            onChangeText={(text) => {
-              setprofession(text);
-            }}
+            style={[styles.name, styles.mt22]}
+            label="Name"
+            value={name}
+            onChangeText={(text) => setname(text)}
           />
           <RNPTextInput
-            style={styles.rectangleRNPTextInput5}
-            placeholder="Country"
+            mode="outlined"
+            style={[styles.profession, styles.mt22]}
+            label="Profession"
+            value={profession}
+            onChangeText={(text) => setprofession(text)}
+          />
+          <RNPTextInput
+            mode="outlined"
+            style={[styles.country, styles.mt22]}
             label="Country"
-            mode="outlined"
-            theme={{ colors: { background: "#fff" } }}
-            onChangeText={(text) => {
-              setcountry(text);
-            }}
+            value={country}
+            onChangeText={(text) => setcountry(text)}
           />
           <RNPTextInput
-            style={styles.rectangleRNPTextInput6}
-            placeholder="City"
+            mode="outlined"
+            style={[styles.city, styles.mt22]}
             label="City"
-            mode="outlined"
-            theme={{ colors: { background: "#fff" } }}
-            onChangeText={(text) => {
-              setcity(text);
-            }}
+            value={city}
+            onChangeText={(text) => setcity(text)}
           />
           <RNPTextInput
-            style={styles.rectangleRNPTextInput7}
-            placeholder="Phone Number"
-            label="Phone Number"
             mode="outlined"
-            theme={{ colors: { background: "#fff" } }}
-            onChangeText={(text) => {
-              setphone(text);
-            }}
+            style={[styles.phone, styles.mt22]}
+            label="Phone"
+            keyboardType="phone-pad"
+            value={phone}
+            onChangeText={(text) => setphone(text)}
           />
           <Pressable
-            onPress={() => {
-              setOpen(true);
-            }}
+            style={[styles.dateOfBirth, styles.mt22]}
+            onPress={() => setOpen(true)}
           >
-            {" "}
-            <RNPTextInput
-              style={styles.rectangleRNPTextInput8}
-              placeholder="Date of Birth"
-              label="Date of Birth"
-              mode="outlined"
-              theme={{ colors: { background: "#fff" } }}
-              value={birthdate && birthdate.slice(0, -6)}
-              onChangeText={(text) => {
-                setbirthdate(text);
-              }}
-            />
+            <Text style={styles.dateOfBirthText}>
+              {birthdate || "Date of Birth"}
+            </Text>
           </Pressable>
-
           {open && (
-            <>
-              <DatePicker
-                onSelectedChange={(date) => {
-                  setbirthdate(date);
-                  setOpen(false);
-                }}
-              />
-            </>
+            <DatePicker
+              mode="datetime"
+              onTimeChange={(time) => console.log(time)}
+              onDateChange={(date) => setbirthdate(date)}
+              maxDate={new Date()}
+            />
           )}
+          <Pressable
+            style={[styles.signUpButton, styles.mt42]}
+            onPress={Register}
+          >
+            <Text style={styles.signUpButtonText}>Sign Up</Text>
+          </Pressable>
         </View>
-        <Pressable
-          style={[styles.continuePressable, styles.mt35, styles.ml19]}
-          onPress={() => Register()}
-        >
-          <View style={styles.rectangleView1} />
-          <Text style={styles.signUpText}>Sign Up</Text>
-        </Pressable>
-        <Pressable
-          style={[styles.backPressable, styles.mt25, styles.ml19]}
-          onPress={() => navigation.navigate("SighIn")}
-        >
-          <View style={styles.rectangleView2} />
-          <Text style={styles.backText}>Back</Text>
-        </Pressable>
       </ScrollView>
     </View>
   );
@@ -278,6 +234,31 @@ const SignUp = () => {
 const styles = StyleSheet.create({
   mt35: {
     marginTop: 35,
+  },
+  signUpButton: {
+    height: 50,
+    borderRadius: 10,
+    marginBottom: 20,
+
+    backgroundColor: "#21ae9c",
+    fontSize: 18,
+    lineHeight: 18,
+    fontWeight: "700",
+    // fontFamily: "Quicksand",
+  },
+  signUpButtonText: {
+    position: "absolute",
+    marginTop: -8,
+    marginLeft: -38,
+    top: "50%",
+    left: "50%",
+    fontSize: 18,
+    lineHeight: 18,
+    fontWeight: "700",
+    // fontFamily: "Quicksand",
+    color: "#fff",
+    textAlign: "center",
+    width: 79,
   },
   ml19: {
     marginLeft: 19,
@@ -306,7 +287,7 @@ const styles = StyleSheet.create({
     position: "relative",
     fontSize: 20,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
     width: 179,
@@ -333,10 +314,33 @@ const styles = StyleSheet.create({
     left: 33,
     fontSize: 14,
     lineHeight: 20,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
     width: 275,
+  },
+  rectangleView1: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    borderRadius: 10,
+    backgroundColor: "#21ae9c",
+  },
+  continueText: {
+    position: "absolute",
+    marginTop: -8,
+    marginLeft: -38,
+    top: "50%",
+    left: "50%",
+    fontSize: 18,
+    lineHeight: 18,
+    fontWeight: "700",
+    // fontFamily: "Quicksand",
+    color: "#fff",
+    textAlign: "center",
+    width: 79,
   },
   rectangleRNPTextInput: {
     position: "absolute",
@@ -448,7 +452,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     lineHeight: 12,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "center",
     width: 69,
@@ -476,7 +480,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 12,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "center",
     width: 39,

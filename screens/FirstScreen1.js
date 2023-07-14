@@ -13,7 +13,7 @@ const FirstScreen1 = () => {
       <Image
         style={styles.heroIcon}
         resizeMode="cover"
-        source={require("../assets/hero2.png")}
+        source={"../assets/hero2@3x.png"}
       />
     </Pressable>
   );

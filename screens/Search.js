@@ -1,120 +1,64 @@
 import * as React from "react";
-import { Text, StyleSheet, Image, Pressable, View } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  View,
+  ScrollView,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 const Search = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.searchView2}>
-      <View style={[styles.navigationBarView, styles.ml67]}>
-        <Text style={styles.searchSimiliarityText}>Search Similiarity</Text>
-        <Pressable
-          style={styles.iconMaterialNotificationsAcPressable}
-          onPress={() => navigation.navigate("Notifications")}
-        >
-          <Image
-            style={styles.icon}
-            resizeMode="cover"
-            source={"../assets/icon-materialnotificationsactive.png"}
-          />
-        </Pressable>
-      </View>
-      <Pressable
-        style={[styles.faceSimiliarityPressable, styles.mt25, styles.ml1]}
-        onPress={() => navigation.navigate("SearchFaceSimiliarity")}
-      >
-        <View style={styles.rectangleView} />
-        <Text style={styles.faceText}>Face</Text>
-      </Pressable>
-      <Pressable
-        style={[styles.namePressable, styles.mt60, styles.ml1]}
-        onPress={() => navigation.navigate("SearchName")}
-      >
-        <View style={styles.rectangleView1} />
-        <Text style={styles.nameText}>Name</Text>
-      </Pressable>
-      <Pressable
-        style={[styles.personalityPressable, styles.mt60, styles.ml1]}
-        onPress={() => navigation.navigate("SearchPersonality")}
-      >
-        <View style={styles.rectangleView2} />
-        <Text style={styles.personalityText}>Personality</Text>
-      </Pressable>
-      <Pressable
-        style={[styles.interestsPressable, styles.mt60, styles.ml1]}
-        onPress={() => navigation.navigate("SearchInterests")}
-      >
-        <View style={styles.rectangleView3} />
-        <Text style={styles.interestsText}>Interests</Text>
-      </Pressable>
-      <Pressable
-        style={[styles.professionPressable, styles.mt60, styles.ml1]}
-        onPress={() => navigation.navigate("SearchProfession")}
-      >
-        <View style={styles.rectangleView4} />
-        <Text style={styles.professionText}>Profession</Text>
-      </Pressable>
-      <View style={[styles.toolbarView, styles.mt61]}>
-        <View style={styles.rectangleView5} />
-        <Pressable
-          style={styles.profilePressable}
-          onPress={() => navigation.navigate("Profile")}
-        >
-          <Text style={styles.profileText}>Profile</Text>
-          <Image
-            style={styles.profileIcon}
-            resizeMode="cover"
-            source={"../assets/profile.png"}
-          />
-        </Pressable>
-        <Pressable
-          style={styles.feedPressable}
-          onPress={() => navigation.navigate("NewsFeed")}
-        >
-          <Text style={styles.feedText}>Feed</Text>
-          <Image
-            style={styles.feedIcon}
-            resizeMode="cover"
-            source={"../assets/feed.png"}
-          />
-        </Pressable>
-        <View style={styles.searchView1}>
-          <Text style={styles.searchText}>Search</Text>
-          <View style={styles.searchView}>
-            <View style={styles.rectangleView6} />
+    <ScrollView>
+      <View style={styles.searchView2}>
+        <View style={[styles.navigationBarView, styles.ml67]}>
+          <Text style={styles.searchSimiliarityText}>Search Similiarity</Text>
+          <Pressable
+            style={styles.iconMaterialNotificationsAcPressable}
+            onPress={() => navigation.navigate("Notifications")}
+          >
             <Image
-              style={styles.path99Icon}
+              style={styles.icon}
               resizeMode="cover"
-              source={"../assets/path-99.png"}
+              source={"../assets/icon-materialnotificationsactive.png"}
             />
-          </View>
-          <View style={styles.lineView} />
+          </Pressable>
         </View>
         <Pressable
-          style={styles.chatPressable}
-          onPress={() => navigation.navigate("Chat1")}
+          style={[styles.faceSimiliarityPressable, styles.mt25, styles.ml1]}
+          onPress={() => navigation.navigate("SearchFaceSimiliarity")}
         >
-          <Text style={styles.chatText}>Chat</Text>
-          <Image
-            style={styles.iconMaterialChatBubble}
-            resizeMode="cover"
-            source={"../assets/icon-materialchatbubble.png"}
-          />
+          <View style={styles.rectangleView} />
+          <Text style={styles.faceText}>Face</Text>
         </Pressable>
         <Pressable
-          style={styles.groupPressable}
-          onPress={() => navigation.navigate("GroupFeed")}
+          style={[styles.namePressable, styles.mt60, styles.ml1]}
+          onPress={() => navigation.navigate("SearchName")}
         >
-          <Text style={styles.groupText}>Group</Text>
-          <Image
-            style={styles.iconMaterialGroup}
-            resizeMode="cover"
-            source={"../assets/icon-materialgroup.png"}
-          />
+          <View style={styles.rectangleView1} />
+          <Text style={styles.nameText}>Name</Text>
+        </Pressable>
+
+        <Pressable
+          style={[styles.interestsPressable, styles.mt60, styles.ml1]}
+          onPress={() => navigation.navigate("SearchInterests")}
+        >
+          <View style={styles.rectangleView3} />
+          <Text style={styles.interestsText}>Interests</Text>
+        </Pressable>
+        <Pressable
+          style={[styles.professionPressable, styles.mt60, styles.ml1]}
+          onPress={() => navigation.navigate("SearchProfession")}
+        >
+          <View style={styles.rectangleView4} />
+          <Text style={styles.professionText}>Profession</Text>
         </Pressable>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -142,7 +86,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 20,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
   },
@@ -179,7 +123,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 22,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "center",
   },
@@ -205,7 +149,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 22,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "center",
   },
@@ -231,7 +175,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 22,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "center",
   },
@@ -257,7 +201,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 22,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "center",
   },
@@ -283,7 +227,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 22,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "center",
   },
@@ -306,7 +250,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -333,7 +277,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -361,7 +305,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 4.5,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
   },
@@ -415,7 +359,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -441,7 +385,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },

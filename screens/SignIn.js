@@ -18,21 +18,48 @@ const SignIn = () => {
 
   const getUser = async () => {
     try {
-      // const q = query(
-      //   collection(firestore, "users"),
-      //   where("email", "in", [email])
-      // );
+      const data = {
+        email: email,
+        password: password,
+      };
 
-      // const querySnapshot = await getDocs(q);
-      // chartData = querySnapshot.docs.map((doc) => doc.data());
-      // console.log(chartData[0]);
+      const res = await fetch(
+        "https://iddias-api-sehk.vercel.app/api/iddias/auth",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const response = await res.json();
+
+      if (!response) {
+        if (!response) {
+          Alert.alert(
+            "Access Denied",
+            "email or password incorrect",
+            [
+              {
+                text: "OK",
+                onPress: () => console.log("OK Pressed"),
+              },
+            ],
+            { cancelable: false }
+          );
+          return false;
+        }
+        return false;
+      }
 
       dispatch(
         setSignIn({
-          email: "marcioqui@gmaril.co",
+          email: email,
           isLoggedIn: true,
           userName: "Marcio Quiteque",
-          userDetails: "some people think",
+          userDetails: response,
         })
       );
     } catch (error) {
@@ -88,6 +115,7 @@ const SignIn = () => {
           placeholder="Password"
           label="Password"
           mode="outlined"
+          secureTextEntry
           onChangeText={(text) => {
             setpassword(text);
           }}
@@ -254,7 +282,9 @@ const styles = StyleSheet.create({
   },
   signUpText: {
     // fontFamily: "Quicksand",
-    color: "#000",
+    color: "#21ae9c",
+    textAlign: "center",
+    fontSize: 20,
   },
   text: {
     fontWeight: "700",

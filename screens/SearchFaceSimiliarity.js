@@ -12,6 +12,7 @@ const SearchFaceSimiliarity = () => {
   const navigation = useNavigation();
 
   const User = useSelector(selectUserDetails);
+
   const [users, setUsers] = React.useState(false);
   const [Similarusers, setSimilarUsers] = React.useState(false);
   const [totalfaces, settotalfaces] = React.useState(false);
@@ -20,27 +21,31 @@ const SearchFaceSimiliarity = () => {
   var UserMatches = [];
 
   const getUsers = async () => {
-    try {
-      const q = query(
-        collection(firestore, "users"),
-        where("email", "!=", User.email)
-      );
+    const res = await fetch(
+      "https://iddias-api-sehk.vercel.app/api/iddias/allusers",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-      const querySnapshot = await getDocs(q);
-      chartData = querySnapshot.docs.map((doc) => doc.data());
-      setUsers(chartData);
-    } catch (error) {
-      console.log(error);
-    }
+    const chartData = await res.json();
+
+    setUsers(chartData);
   };
 
   async function GetFace() {
     for (let index = 0; index < users.length; index++) {
-      if (users[index].firstpic) {
-        var response = await axios.post("http://127.0.0.1:5000/ai", {
-          photo_taken: users[index].firstpic,
-          db_photo: User.firstpic,
-        });
+      if (users[index].firstpic && users[index]._id != User._id) {
+        var response = await axios.post(
+          "https://ragyquiteque.pythonanywhere.com/ai",
+          {
+            photo_taken: users[index].firstpic,
+            db_photo: User.firstpic,
+          }
+        );
 
         if (response.data != "image without a face has been uploaded") {
           var dummyuser = users[index];
@@ -48,6 +53,7 @@ const SearchFaceSimiliarity = () => {
 
           UserMatches.push(dummyuser);
           setSimilarUsers(UserMatches);
+          console.log(UserMatches);
         }
       }
     }
@@ -78,13 +84,16 @@ const SearchFaceSimiliarity = () => {
         )}
         {Similarusers &&
           Similarusers.map((u) => (
-            <Pressable onPress={() => navigation.navigate("SearchResults")}>
+            <Pressable
+              key={u._id}
+              onPress={() => navigation.navigate("SearchResults1", u)}
+            >
               <View style={[styles.nameView, styles.mt43, styles.mr1]}>
                 <Text style={styles.beatrizSilvaText}>{u.name}</Text>
                 <Image
                   style={styles.rectangleIcon}
                   resizeMode="cover"
-                  source={u.avatar ? u.avatar : u.firstpic}
+                  source={{ uri: u.avatar ? u.avatar : u.firstpic }}
                 />
                 <Text style={styles.similarityText}>
                   {u.percentage}% Similarity
@@ -123,7 +132,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 16,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#21ae9c",
     textAlign: "left",
   },
@@ -140,7 +149,7 @@ const styles = StyleSheet.create({
     top: 29,
     right: -1,
     fontSize: 14,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 186,
@@ -158,7 +167,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 16,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#21ae9c",
     textAlign: "left",
   },
@@ -175,7 +184,7 @@ const styles = StyleSheet.create({
     top: 29,
     right: -1,
     fontSize: 14,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 186,
@@ -193,7 +202,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 16,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#21ae9c",
     textAlign: "left",
   },
@@ -210,7 +219,7 @@ const styles = StyleSheet.create({
     top: 29,
     right: -1,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 186,
@@ -228,7 +237,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 16,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#21ae9c",
     textAlign: "left",
   },
@@ -245,7 +254,7 @@ const styles = StyleSheet.create({
     top: 29,
     right: -1,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 186,
@@ -263,7 +272,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 16,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#21ae9c",
     textAlign: "center",
   },
@@ -280,7 +289,7 @@ const styles = StyleSheet.create({
     top: 29,
     right: -1,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 186,
@@ -305,7 +314,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -332,7 +341,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -360,7 +369,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 4.5,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
   },
@@ -414,7 +423,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -440,7 +449,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },

@@ -24,20 +24,27 @@ const SearchInterests = () => {
   const email = useSelector(selectUserName);
   const User = useSelector(selectUserDetails);
 
+  var array = [];
+
   const navigation = useNavigation();
   const [users, setUsers] = React.useState(null);
   const [name, setname] = React.useState(User.interests);
 
   const getUsers = async () => {
     try {
-      const q = query(
-        collection(firestore, "users"),
-        where("interests", "array-contains-any", [name[0], name[1], name[2]]),
-        where("email", "!=", email)
+      const res = await fetch(
+        "https://iddias-api-sehk.vercel.app/api/iddias/find",
+        {
+          method: "POST",
+          headers: {
+            "content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            interests: { $in: name },
+          }),
+        }
       );
-
-      const querySnapshot = await getDocs(q);
-      chartData = querySnapshot.docs.map((doc) => doc.data());
+      const chartData = await res.json();
       setUsers(chartData);
       console.log(chartData);
     } catch (error) {
@@ -74,7 +81,9 @@ const SearchInterests = () => {
           label="Search"
           mode="outlined"
           onChangeText={(text) => {
-            setname(text);
+            array = [];
+            array.push(text);
+            setname(array);
           }}
           placeholderTextColor="#000"
           theme={{ colors: { text: "#000", background: "#fff" } }}
@@ -82,15 +91,24 @@ const SearchInterests = () => {
 
         {users ? (
           users.map((u) => (
-            <View style={[styles.nameView, styles.mt35, styles.mr1]}>
-              <Text style={styles.neliaCardosoText}>{u.name}</Text>
-              <Image
-                style={styles.rectangleIcon}
-                resizeMode="cover"
-                source={u.avatar ? u.avatar : u.firstpic}
-              />
-              <Text style={styles.loremIpsumDolorSitAmetCo}>{u.interests}</Text>
-            </View>
+            <>
+              {u._id != User._id && (
+                <View
+                  key={u._id}
+                  style={[styles.nameView, styles.mt35, styles.mr1]}
+                >
+                  <Text style={styles.neliaCardosoText}>{u.name}</Text>
+                  <Image
+                    style={styles.rectangleIcon}
+                    resizeMode="cover"
+                    source={{ uri: u.avatar ? u.avatar : u.firstpic }}
+                  />
+                  <Text style={styles.loremIpsumDolorSitAmetCo}>
+                    {u.interests}
+                  </Text>
+                </View>
+              )}
+            </>
           ))
         ) : (
           <Text>No Interests similar to yours found!</Text>
@@ -127,7 +145,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 20,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
   },
@@ -161,7 +179,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 16,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#21ae9c",
     textAlign: "left",
   },
@@ -178,7 +196,7 @@ const styles = StyleSheet.create({
     top: 29,
     right: -1,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 186,
@@ -196,7 +214,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 16,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#21ae9c",
     textAlign: "left",
   },
@@ -213,7 +231,7 @@ const styles = StyleSheet.create({
     top: 29,
     right: -1,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 186,
@@ -231,7 +249,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 16,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#21ae9c",
     textAlign: "left",
   },
@@ -248,7 +266,7 @@ const styles = StyleSheet.create({
     top: 29,
     right: -1,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 186,
@@ -266,7 +284,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 16,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#21ae9c",
     textAlign: "left",
   },
@@ -283,7 +301,7 @@ const styles = StyleSheet.create({
     top: 29,
     right: -1,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 186,
@@ -301,7 +319,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 16,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#21ae9c",
     textAlign: "center",
   },
@@ -318,7 +336,7 @@ const styles = StyleSheet.create({
     top: 29,
     right: -1,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 186,
@@ -343,7 +361,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -370,7 +388,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -398,7 +416,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 4.5,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
   },
@@ -452,7 +470,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -478,7 +496,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },

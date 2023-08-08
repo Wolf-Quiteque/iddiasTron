@@ -5,6 +5,8 @@ import {
   Text,
   ScrollView,
   View,
+  KeyboardAvoidingView,
+  Alert,
   Pressable,
 } from "react-native";
 import { TextInput as RNPTextInput } from "react-native-paper";
@@ -69,16 +71,41 @@ const SignUp = () => {
         name: name.charAt(0).toUpperCase() + name.slice(1),
         phone: phone,
         city: city,
+        password: password,
         birthdate: birthdate,
         profession: profession,
         country: country,
         createdAt: formatDate(new Date()),
       };
 
-      await fetch("http://localhost:4000/api/iddias/new", {
-        method: "Post",
-        body: data,
-      });
+      const res = await fetch(
+        "https://iddias-api-sehk.vercel.app/api/iddias/new",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const response = await res.json();
+
+      if (!response) {
+        Alert.alert(
+          "User Exits",
+          "email already exists, try again.",
+          [
+            {
+              text: "OK",
+              onPress: () => console.log("OK Pressed"),
+            },
+          ],
+          { cancelable: false }
+        );
+        return false;
+      }
+
       navigation.navigate("Interests", data);
     } catch (err) {
       console.log(err);
@@ -135,98 +162,115 @@ const SignUp = () => {
       <Text style={[styles.createAnAccount, styles.mt42, styles.ml1]}>
         Create an Account
       </Text>
-      <ScrollView
-        style={styles.scrollGroup5}
-        contentContainerStyle={styles.scrollGroup5Content}
-      >
-        <View style={styles.accountSignupView}>
-          <View style={styles.rectangleView} />
-          <Text style={styles.byCreatingAnAccountYouAgr}>
-            <Text style={styles.byCreatingAn}>
-              By creating an account you agree to our
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+        <ScrollView
+          style={styles.scrollGroup5}
+          contentContainerStyle={styles.scrollGroup5Content}
+        >
+          <View style={styles.accountSignupView}>
+            <View style={styles.rectangleView} />
+            <Text style={styles.byCreatingAnAccountYouAgr}>
+              <Text style={styles.byCreatingAn}>
+                By creating an account you agree to our
+              </Text>
+              <Text style={styles.privacyPolicy}>
+                Privacy Policy & Terms of Service
+              </Text>
             </Text>
-            <Text style={styles.privacyPolicy}>
-              Privacy Policy & Terms of Service
-            </Text>
-          </Text>
-          <RNPTextInput
-            mode="outlined"
-            style={[styles.email, styles.mt42]}
-            label="Email"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            value={email}
-            onChangeText={(text) => setemail(text)}
-          />
-          <RNPTextInput
-            mode="outlined"
-            style={[styles.password, styles.mt22]}
-            label="Password"
-            secureTextEntry
-            autoCapitalize="none"
-            value={password}
-            onChangeText={(text) => setpassword(text)}
-          />
-          <RNPTextInput
-            mode="outlined"
-            style={[styles.name, styles.mt22]}
-            label="Name"
-            value={name}
-            onChangeText={(text) => setname(text)}
-          />
-          <RNPTextInput
-            mode="outlined"
-            style={[styles.profession, styles.mt22]}
-            label="Profession"
-            value={profession}
-            onChangeText={(text) => setprofession(text)}
-          />
-          <RNPTextInput
-            mode="outlined"
-            style={[styles.country, styles.mt22]}
-            label="Country"
-            value={country}
-            onChangeText={(text) => setcountry(text)}
-          />
-          <RNPTextInput
-            mode="outlined"
-            style={[styles.city, styles.mt22]}
-            label="City"
-            value={city}
-            onChangeText={(text) => setcity(text)}
-          />
-          <RNPTextInput
-            mode="outlined"
-            style={[styles.phone, styles.mt22]}
-            label="Phone"
-            keyboardType="phone-pad"
-            value={phone}
-            onChangeText={(text) => setphone(text)}
-          />
-          <Pressable
-            style={[styles.dateOfBirth, styles.mt22]}
-            onPress={() => setOpen(true)}
-          >
-            <Text style={styles.dateOfBirthText}>
-              {birthdate || "Date of Birth"}
-            </Text>
-          </Pressable>
-          {open && (
-            <DatePicker
-              mode="datetime"
-              onTimeChange={(time) => console.log(time)}
-              onDateChange={(date) => setbirthdate(date)}
-              maxDate={new Date()}
+            <RNPTextInput
+              mode="outlined"
+              style={[styles.email, styles.mt42]}
+              label="Email"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              value={email}
+              onChangeText={(text) => setemail(text)}
             />
-          )}
-          <Pressable
-            style={[styles.signUpButton, styles.mt42]}
-            onPress={Register}
-          >
-            <Text style={styles.signUpButtonText}>Sign Up</Text>
-          </Pressable>
-        </View>
-      </ScrollView>
+            <RNPTextInput
+              mode="outlined"
+              style={[styles.password, styles.mt22]}
+              label="Password"
+              secureTextEntry
+              autoCapitalize="none"
+              value={password}
+              onChangeText={(text) => setpassword(text)}
+            />
+            <Pressable
+              style={[styles.dateOfBirth, styles.mt22]}
+              onPress={() => setOpen(true)}
+            >
+              <RNPTextInput
+                mode="outlined"
+                style={[styles.name, styles.mt42, { marginTop: -1 }]}
+                label="Date of Birth"
+                keyboardType={birthdate || ""}
+                autoCapitalize="none"
+                value={birthdate || ""}
+                disabled={true}
+              />
+            </Pressable>
+            {open && (
+              <DatePicker
+                mode="datetime"
+                onTimeChange={(time) => console.log(time)}
+                onDateChange={(date) => setbirthdate(date)}
+                maxDate={new Date()}
+              />
+            )}
+            <RNPTextInput
+              mode="outlined"
+              style={[styles.name, styles.mt22]}
+              label="Name"
+              value={name}
+              onChangeText={(text) => setname(text)}
+            />
+            <RNPTextInput
+              mode="outlined"
+              style={[styles.profession, styles.mt22]}
+              label="Profession"
+              value={profession}
+              onChangeText={(text) => setprofession(text)}
+            />
+            <RNPTextInput
+              mode="outlined"
+              style={[styles.country, styles.mt22]}
+              label="Country"
+              value={country}
+              onChangeText={(text) => setcountry(text)}
+            />
+            <RNPTextInput
+              mode="outlined"
+              style={[styles.city, styles.mt22]}
+              label="City"
+              value={city}
+              onChangeText={(text) => setcity(text)}
+            />
+            <RNPTextInput
+              mode="outlined"
+              style={[styles.phone, styles.mt22]}
+              label="Phone"
+              keyboardType="phone-pad"
+              value={phone}
+              onChangeText={(text) => setphone(text)}
+            />
+
+            <Pressable
+              style={[styles.signUpButton, styles.mt42]}
+              onPress={Register}
+            >
+              <Text style={styles.signUpButtonText}>Sign Up</Text>
+            </Pressable>
+
+            <Pressable
+              style={[styles.backPressable, styles.mt25, styles.ml19]}
+              onPress={() => navigation.navigate("SignIn")}
+            >
+              <View style={styles.rectangleView2} />
+              <Text style={styles.backText}>Back</Text>
+            </Pressable>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   );
 };
@@ -235,11 +279,11 @@ const styles = StyleSheet.create({
   mt35: {
     marginTop: 35,
   },
+
   signUpButton: {
     height: 50,
     borderRadius: 10,
-    marginBottom: 20,
-
+    marginBottom: 80,
     backgroundColor: "#21ae9c",
     fontSize: 18,
     lineHeight: 18,
@@ -264,7 +308,9 @@ const styles = StyleSheet.create({
     marginLeft: 19,
   },
   mt25: {
-    marginTop: 25,
+    paddingTop: 15,
+    marginTop: -25,
+    paddingBottom: 5,
   },
   scrollGroup5Content: {
     alignItems: "flex-start",
@@ -433,6 +479,8 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     position: "relative",
     height: 634,
+    paddingBottom: 20,
+    marginBottom: 60,
   },
   rectangleView1: {
     position: "absolute",
@@ -469,16 +517,22 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     borderRadius: 10,
-    backgroundColor: "#000",
+    backgroundColor: "#000000",
+    marginTop: -50,
+    marginBottom: 60,
+    height: 42,
+    fontSize: 18,
+    lineHeight: 18,
+    fontWeight: "700",
   },
   backText: {
     position: "absolute",
-    marginTop: -12,
+    marginTop: -60,
     marginLeft: -19.94,
     top: "50%",
     left: "50%",
     fontSize: 16,
-    lineHeight: 12,
+    lineHeight: 20,
     fontWeight: "700",
     // fontFamily: "Quicksand",
     color: "#fff",
@@ -488,7 +542,7 @@ const styles = StyleSheet.create({
   backPressable: {
     width: "89.09%",
     position: "relative",
-    height: 48,
+    height: 68,
   },
   scrollGroup5: {
     width: 339,

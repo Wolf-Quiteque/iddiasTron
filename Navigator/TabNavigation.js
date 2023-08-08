@@ -78,7 +78,7 @@ const BottomTabNavigator = () => {
       ></Tab.Screen>
 
       <Tab.Screen
-        name="Search"
+        name="Searches"
         component={SearchNavigator}
         options={{
           tabBarLabel: "Search",

@@ -1,5 +1,12 @@
 import * as React from "react";
-import { Text, StyleSheet, Image, Pressable, View } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  View,
+  ScrollView,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { selectUserDetails } from "../redux/slices/authSlice";
 import { useSelector } from "react-redux";
@@ -18,10 +25,14 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { firestore, storage } from "../firebase";
+import { set } from "firebase/database";
+import { setSignIn } from "../redux/slices/authSlice";
+import { useDispatch } from "react-redux";
+import { DrawerContentScrollView } from "@react-navigation/drawer";
 
 const SearchResults1 = ({ route }) => {
   const navigation = useNavigation();
-
+  const dispatch = useDispatch();
   const [friend, setfriend] = React.useState(false);
   const [request, setrequest] = React.useState(false);
 
@@ -32,46 +43,48 @@ const SearchResults1 = ({ route }) => {
 
   const getUser = async () => {
     try {
-      const q = query(
-        collection(firestore, "users"),
-        where("email", "in", [user.email])
+      const res = await fetch(
+        "https://iddias-api-sehk.vercel.app/api/iddias/finduser",
+        {
+          method: "POST",
+          headers: {
+            "content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: user.email }),
+        }
       );
+      const response = await res.json();
 
-      const querySnapshot = await getDocs(q);
-      const chartData = querySnapshot.docs.map((doc) => doc.data());
-
-      setuser(chartData[0]);
+      setuser(response);
+      verifyFriend();
     } catch (error) {
       console.log(error);
     }
-    verifyFriend();
   };
 
   const addFriend = async () => {
-    var newList = [];
-
-    if (user.Friendrequests) {
-      newList = user.Friendrequests;
-    }
-    newList.push(User.email);
-
     try {
-      docRef = doc(firestore, "users", user.email);
-      setDoc(docRef, { Friendrequests: newList }, { merge: true })
-        .then(() => {
-          console.log("Document has been added successfully");
-          getUser();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      const res = await fetch(
+        "https://iddias-api-sehk.vercel.app/api/iddias/newfriendrequest",
+        {
+          method: "POST",
+          headers: {
+            "content-Type": "application/json",
+          },
+          body: JSON.stringify({ id: user._id, email: User.email }),
+        }
+      );
+
+      setrequest(true);
+
+      getUser();
     } catch (error) {
       console.log(error);
     }
   };
 
   function decline() {
-    var list = user.Friendrequests;
+    var list = user.friendrequest;
     list.forEach(myFunction);
 
     function myFunction(item, index) {
@@ -83,7 +96,7 @@ const SearchResults1 = ({ route }) => {
     const docRef = doc(firestore, "users", user.email);
     if (!list[0]) {
       const dataPic = {
-        Friendrequests: 0,
+        friendrequest: 0,
       };
       setDoc(docRef, dataPic, { merge: true })
         .then(() => {
@@ -96,7 +109,7 @@ const SearchResults1 = ({ route }) => {
       return false;
     }
     const dataPic = {
-      Friendrequests: list,
+      friendrequest: list,
     };
     setDoc(docRef, dataPic, { merge: true })
       .then(() => {
@@ -108,312 +121,247 @@ const SearchResults1 = ({ route }) => {
       });
   }
 
-  function accept() {
-    getUser();
+  async function accept() {
+    try {
+      const res = await fetch(
+        "https://iddias-api-sehk.vercel.app/api/iddias/newfriend",
+        {
+          method: "POST",
+          headers: {
+            "content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: user.email, Useremail: User.email }),
+        }
+      );
+      setfriends(true);
 
-    var friendList, FriendList;
-
-    if (user.friends) {
-      friendList = user.friends;
-      friendList.push(User.email);
-    } else {
-      friendList = [User.email];
-    }
-
-    if (User.friends) {
-      FriendList = User.friends;
-      FriendList.push(user.email);
-    } else {
-      FriendList = [user.email];
-    }
-
-    var list = user.Friendrequests;
-    list.forEach(myFunction);
-
-    function myFunction(item, index) {
-      if (item == User.email) {
-        delete list[index];
-      }
-    }
-
-    if (!list[0]) {
-      list = 0;
-    }
-
-    var docRef = doc(firestore, "users", user.email);
-    setDoc(
-      docRef,
-      { friends: friendList, Friendrequests: list },
-      { merge: true }
-    )
-      .then(() => {
-        console.log("Document has been added successfully");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    docRef = doc(firestore, "users", User.email);
-    setDoc(docRef, { friends: FriendList }, { merge: true })
-      .then(() => {
-        console.log("Document has been added successfully");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    getUser();
+      const ress = await fetch(
+        "https://iddias-api-sehk.vercel.app/api/iddias/finduser",
+        {
+          method: "POST",
+          headers: {
+            "content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: User.email }),
+        }
+      );
+      const userDetails = await ress.json();
+    } catch (error) {}
   }
 
   function verifyFriend() {
     if (User.email == user.email) {
       navigation.navigate("UserProfile");
     }
-    if (User.Friendrequests) {
-      const value = User.Friendrequests.includes(user.email);
+    if (User.friendrequest) {
+      const value = User.friendrequest.includes(user.email);
       setfriend(value);
     }
 
-    if (user.Friendrequests) {
-      const value = user.Friendrequests.includes(User.email);
+    if (user.friendrequest) {
+      const value = user.friendrequest.includes(User.email);
       setrequest(value);
     }
 
-    if (user.friends) {
-      const value = user.friends.includes(User.email);
+    if (user.friend) {
+      const value = user.friend.includes(User.email);
       setfriends(value);
     }
   }
 
   React.useEffect(() => {
     verifyFriend();
-  }, [user]);
+  }, []);
 
   return (
-    <View style={styles.searchResults1View}>
-      <View style={[styles.navigationBarView, styles.mr35]}>
-        <Text style={styles.profileText}>Profile</Text>
-        <Pressable
-          style={styles.iconMaterialNotificationsAcPressable}
-          onPress={() => navigation.navigate("Notifications")}
-        >
+    <ScrollView>
+      <View style={styles.searchResults1View}>
+        <View style={[styles.navigationBarView, styles.mr35]}>
+          <Text style={styles.profileText}>Profile</Text>
+          <Pressable
+            style={styles.iconMaterialNotificationsAcPressable}
+            onPress={() => navigation.navigate("Notifications")}
+          >
+            <Image
+              style={styles.icon}
+              resizeMode="cover"
+              source={"../assets/icon-materialnotificationsactive@3x.png"}
+            />
+          </Pressable>
+        </View>
+        <View style={[styles.heroView, styles.mt20, styles.mr37]}>
           <Image
-            style={styles.icon}
+            style={styles.profileIcon}
             resizeMode="cover"
-            source={"../assets/icon-materialnotificationsactive@3x.png"}
+            source={user && { uri: user.avatar ? user.avatar : user.firstpic }}
           />
-        </Pressable>
-      </View>
-      <View style={[styles.heroView, styles.mt20, styles.mr37]}>
-        <Image
-          style={styles.profileIcon}
-          resizeMode="cover"
-          source={user && user.avatar ? user.avatar : user.firstpic}
-        />
-        <View style={styles.nameView}>
-          <Text style={styles.neliaCamposText}>{user && user.name}</Text>
-          <Text style={styles.lisbonPTText}>
-            {user && user.city}, {user && user.country}
+          <View style={styles.nameView}>
+            <Text style={styles.neliaCamposText}>{user && user.name}</Text>
+            <Text style={styles.lisbonPTText}>
+              {user && user.city}, {user && user.country}
+            </Text>
+          </View>
+          <Text style={styles.hiMyNameIsNeliaCamposI}>
+            {user && user.biography}
           </Text>
         </View>
-        <Text style={styles.hiMyNameIsNeliaCamposI}>
-          {user && user.biography}
-        </Text>
-      </View>
 
-      {friend ? (
-        <View
-          style={[
-            { display: "flex", justifyContent: "space-between" },
-            styles.mt_150,
-            styles.mr43,
-          ]}
-        >
-          <Pressable onPress={accept}>
-            <Image
-              style={[styles.acceptIcon, styles.mt_19]}
-              resizeMode="cover"
-              source={"../assets/accept@3x.png"}
-            />
-          </Pressable>
-
-          <Pressable onPress={decline}>
-            <Image
-              style={[
-                styles.declineIcon,
-                styles.mt_22,
-                styles.mr44,
-                styles.iconLayout1,
-              ]}
-              resizeMode="cover"
-              source={"../assets/decline@3x.png"}
-            />
-          </Pressable>
-        </View>
-      ) : (
-        <>
-          {request ? (
-            <Pressable
-              style={[styles.connectPressable, styles.mt_150, styles.mr43]}
-              onPress={() => navigation.navigate("ProfileConnected1")}
-            >
-              <View style={styles.rectangleView} />
-
-              <Text style={styles.iDDPText}>Pending</Text>
+        {friend ? (
+          <View
+            style={[
+              { display: "flex", justifyContent: "space-between" },
+              styles.mt_150,
+              styles.mr43,
+            ]}
+          >
+            <Pressable onPress={accept}>
+              <Image
+                style={[styles.acceptIcon, styles.mt_19]}
+                resizeMode="cover"
+                source={require("../assets/accept.png")}
+              />
             </Pressable>
-          ) : (
-            <Pressable
-              style={[styles.connectPressable, styles.mt_150, styles.mr43]}
-              onPress={() => navigation.navigate("ProfileConnected1")}
-            >
-              <View style={styles.rectangleView} />
 
-              {friends ? (
-                <Text style={styles.iDDText}>IDID</Text>
-              ) : (
-                <Pressable onPress={addFriend}>
-                  {" "}
-                  <Text style={styles.iDText}>ID</Text>
-                </Pressable>
-              )}
+            <Pressable onPress={decline}>
+              <Image
+                style={[
+                  styles.declineIcon,
+                  styles.mt_22,
+                  styles.mr44,
+                  styles.iconLayout1,
+                ]}
+                resizeMode="cover"
+                source={require("../assets/decline.png")}
+              />
             </Pressable>
-          )}
-        </>
-      )}
-
-      <Pressable
-        onPress={() => {
-          navigation.navigate("Chat1", user);
-        }}
-      >
-        {" "}
-        <Image
-          style={[styles.iconAwesomeRocketchat, styles.mt_27, styles.mr120]}
-          resizeMode="cover"
-          source={"../assets/icon-awesomerocketchat@3x.png"}
-        />
-      </Pressable>
-
-      <View style={[styles.galleryView, styles.mt133, styles.mr37]}>
-        <Text style={styles.galleryText}>Gallery</Text>
-        <Image
-          style={styles.rectangleIcon}
-          resizeMode="cover"
-          source={
-            user && user.gallary
-              ? user.gallary
-              : "../assets/rectangle-26135@3x.png"
-          }
-        />
-        <Image
-          style={styles.rectangleIcon1}
-          resizeMode="cover"
-          source={
-            user && user.gallary2
-              ? user.gallary2
-              : "../assets/rectangle-26135@3x.png"
-          }
-        />
-        <Image
-          style={styles.rectangleIcon2}
-          resizeMode="cover"
-          source={
-            user && user.gallary3
-              ? user.gallary3
-              : "../assets/rectangle-26135@3x.png"
-          }
-        />
-      </View>
-      <View style={[styles.interestsView, styles.mt30, styles.mr37]}>
-        <Text style={styles.interestsText}>Interests</Text>
-        {user && (
+          </View>
+        ) : (
           <>
-            <Image
+            {request ? (
+              <Pressable
+                style={[styles.connectPressable, styles.mt_150, styles.mr43]}
+                // onPress={() => navigation.navigate("ProfileConnected1")}
+              >
+                <View style={styles.rectangleView} />
+
+                <Text style={styles.iDDPText}>Pending</Text>
+              </Pressable>
+            ) : (
+              <>
+                <Pressable
+                  style={[styles.connectPressable, styles.mt_150, styles.mr43]}
+                  // onPress={() => navigation.navigate("ProfileConnected1")}
+                >
+                  <View style={styles.rectangleView} />
+
+                  {friends ? (
+                    <>
+                      <Text style={styles.iDDText}>IDID</Text>
+                      <Pressable
+                        onPress={() => {
+                          navigation.navigate("Chat1", user);
+                        }}
+                      >
+                        <Image
+                          style={[
+                            styles.iconAwesomeRocketchat,
+                            styles.mt_27,
+                            styles.mr120,
+                          ]}
+                          resizeMode="cover"
+                          source={require("../assets/icon-awesomerocketchat.png")}
+                        />
+                      </Pressable>
+                    </>
+                  ) : (
+                    <Pressable onPress={addFriend}>
+                      <Text style={styles.iDText}>ID</Text>
+                    </Pressable>
+                  )}
+                </Pressable>
+              </>
+            )}
+          </>
+        )}
+
+        <Pressable
+          onPress={() => {
+            navigation.navigate("Chat1", user);
+          }}
+        >
+          <Image
+            style={[styles.iconAwesomeRocketchat, styles.mt_27, styles.mr120]}
+            resizeMode="cover"
+            source={"../assets/icon-awesomerocketchat.png"}
+          />
+        </Pressable>
+
+        <View style={[styles.galleryView, styles.mt133, styles.mr37]}>
+          <Text style={styles.galleryText}>Gallery</Text>
+          <Image
+            style={styles.rectangleIcon}
+            resizeMode="cover"
+            source={
+              user && user.gallary
+                ? user.gallary
+                : "../assets/rectangle-26135@3x.png"
+            }
+          />
+          <Image
+            style={styles.rectangleIcon1}
+            resizeMode="cover"
+            source={
+              user && user.gallary2
+                ? user.gallary2
+                : "../assets/rectangle-26135@3x.png"
+            }
+          />
+          <Image
+            style={styles.rectangleIcon2}
+            resizeMode="cover"
+            source={
+              user && user.gallary3
+                ? user.gallary3
+                : "../assets/rectangle-26135@3x.png"
+            }
+          />
+        </View>
+        <View style={[styles.interestsView, styles.mt30, styles.mr37]}>
+          <Text style={styles.interestsText}>Interests</Text>
+
+          {user && (
+            <>
+              <Text>{user.interests[1]} </Text>
+
+              {/* <Image
               style={styles.rectangleIcon3}
               resizeMode="cover"
-              source={user && "../assets/" + user.interests[0] + ".png"}
-            />
-            <Image
+              source={user && require(`../assets/${user.interests[1]}.png`)}
+            /> */}
+              {/* <Image
               style={styles.rectangleIcon4}
               resizeMode="cover"
-              source={user && "../assets/" + user.interests[1] + ".png"}
+              source={user && require(`../assets/${user.interests[1]}.png`)}
             />
             <Image
               style={styles.rectangleIcon5}
               resizeMode="cover"
-              source={user && "../assets/" + user.interests[2] + ".png"}
-            />
-          </>
-        )}
-        <Text style={styles.loremIpsumDolorSitAmetCo}>
-          {user && user.interests[0]}
-        </Text>
-        <Text style={styles.loremIpsumDolorSitAmetCo1}>
-          {user && user.interests[1]}
-        </Text>
-        <Text style={styles.loremIpsumDolorSitAmetCo2}>
-          {user && user.interests[2]}
-        </Text>
+              source={user && require(`../assets/${user.interests[2]}.png`)}
+            /> */}
+            </>
+          )}
+          <Text style={styles.loremIpsumDolorSitAmetCo}>
+            {user && user.interests[0]}
+          </Text>
+          <Text style={styles.loremIpsumDolorSitAmetCo1}>
+            {user && user.interests[1]}
+          </Text>
+          <Text style={styles.loremIpsumDolorSitAmetCo2}>
+            {user && user.interests[2]}
+          </Text>
+        </View>
       </View>
-      <View style={[styles.toolbarView, styles.mt83]}>
-        <View style={styles.rectangleView1} />
-        <Pressable
-          style={styles.profilePressable}
-          onPress={() => navigation.navigate("Profile")}
-        >
-          <Text style={styles.profileText1}>Profile</Text>
-          <View style={styles.lineView} />
-          <Image
-            style={styles.union46Icon}
-            resizeMode="cover"
-            source={"../assets/union-46@3x.png"}
-          />
-        </Pressable>
-        <Pressable
-          style={styles.feedPressable}
-          onPress={() => navigation.navigate("NewsFeed")}
-        >
-          <Text style={styles.feedText}>Feed</Text>
-          <Image
-            style={styles.feedIcon}
-            resizeMode="cover"
-            source={"../assets/feed5@3x.png"}
-          />
-        </Pressable>
-        <Pressable
-          style={styles.searchPressable}
-          onPress={() => navigation.navigate("Search")}
-        >
-          <Text style={styles.searchText}>Search</Text>
-          <View style={styles.searchView}>
-            <View style={styles.rectangleView2} />
-            <Image
-              style={styles.path99Icon}
-              resizeMode="cover"
-              source={"../assets/path-996@3x.png"}
-            />
-          </View>
-        </Pressable>
-        <Pressable style={styles.chatPressable}>
-          <Text style={styles.chatText}>Chat</Text>
-          <Image
-            style={styles.iconMaterialChatBubble}
-            resizeMode="cover"
-            source={"../assets/icon-materialchatbubble@3x.png"}
-          />
-        </Pressable>
-        <Pressable
-          style={styles.groupPressable}
-          onPress={() => navigation.navigate("GroupFeed")}
-        >
-          <Text style={styles.groupText}>Group</Text>
-          <Image
-            style={styles.iconMaterialGroup}
-            resizeMode="cover"
-            source={"../assets/icon-materialgroup@3x.png"}
-          />
-        </Pressable>
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -437,7 +385,8 @@ const styles = StyleSheet.create({
     marginTop: -27,
   },
   mr120: {
-    marginRight: 120,
+    marginLeft: -40,
+    marginTop: 3,
   },
   mt133: {
     marginTop: 133,
@@ -456,7 +405,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 20,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
   },
@@ -489,7 +438,7 @@ const styles = StyleSheet.create({
     left: 0,
     fontSize: 16,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#21ae9c",
     textAlign: "left",
   },
@@ -506,7 +455,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
   },
@@ -524,7 +473,7 @@ const styles = StyleSheet.create({
     left: 0,
     fontSize: 14,
     lineHeight: 24,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 303,
@@ -551,7 +500,7 @@ const styles = StyleSheet.create({
     marginLeft: -14,
     left: 23,
     fontSize: 14,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -561,7 +510,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 23,
     fontSize: 14,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -571,7 +520,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 23,
     fontSize: 14,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -592,7 +541,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 16,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#15abb5",
     textAlign: "center",
   },
@@ -634,7 +583,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 16,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#15abb5",
     textAlign: "center",
   },
@@ -668,7 +617,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     fontSize: 10,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 89,
@@ -680,7 +629,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: "50%",
     fontSize: 10,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 89,
@@ -691,7 +640,7 @@ const styles = StyleSheet.create({
     right: -1,
     bottom: 0,
     fontSize: 10,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
     width: 89,
@@ -716,7 +665,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 6.5,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
   },
@@ -755,7 +704,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -783,7 +732,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -826,7 +775,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -852,7 +801,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },

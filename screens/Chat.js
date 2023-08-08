@@ -47,22 +47,26 @@ const Chat = ({ navigation, user }) => {
 
   const getUsers = async () => {
     try {
-      const q = query(
-        collection(firestore, "users"),
-        where("email", "!=", username)
+      const res = await fetch(
+        "https://iddias-api-sehk.vercel.app/api/iddias/finduser",
+        {
+          method: "POST",
+          headers: {
+            "content-Type": "application/json",
+          },
+          body: JSON.stringify({ id: User }),
+        }
       );
-
-      const querySnapshot = await getDocs(q);
-      chartData = querySnapshot.docs.map((doc) => doc.data());
+      const chartData = await res.json();
       setUsers(chartData);
     } catch (error) {
       console.log(error);
     }
   };
 
-  // React.useEffect(() => {
-  //   getUsers();
-  // }, []);
+  React.useEffect(() => {
+    getUsers();
+  }, []);
 
   return (
     <View style={styles.chatView1}>

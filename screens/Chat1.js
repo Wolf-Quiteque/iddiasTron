@@ -15,146 +15,92 @@ import { firestore } from "../firebase";
 import { GiftedChat } from "react-native-gifted-chat";
 import { selectUserName } from "../redux/slices/authSlice";
 import { useSelector } from "react-redux";
+import { selectUserDetails } from "../redux/slices/authSlice";
 
 const Chat1 = ({ route, navigation }) => {
+  const SERVER_URL = "https://iddias-api-sehk.vercel.app/api/iddias";
+  const User = useSelector(selectUserDetails);
+
   const email = useSelector(selectUserName);
 
   const recieverData = route.params;
-  var user;
+  const [currentChatRoom, setCurrentChatRoom] = useState("");
 
-  recieverData._id = recieverData.email;
+  const [messages, setMessages] = useState([]);
 
-  const getUser = async () => {
-    const q = query(
-      collection(firestore, "users"),
-      where("email", "==", email)
-    );
-    const querySnapshot = await getDocs(q);
-    chartData = querySnapshot.docs.map((doc) => doc.data());
-    user = chartData[0];
-    user._id = user.email;
+  useEffect(() => {
+    // Fetch initial messages for the default chat room when the component mounts
+    fetchChat();
+  }, []);
+
+  useEffect(() => {
+    fetchMessages();
+  }, [currentChatRoom]);
+
+  const fetchChat = async () => {
+    try {
+      const response = await fetch(`${SERVER_URL}/messages/chatroom`, {
+        method: "POST",
+        headers: {
+          "content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          users: [recieverData.email, User.email],
+        }),
+      });
+
+      const data = await response.json();
+
+      setCurrentChatRoom(data.idchat);
+    } catch (error) {
+      console.error("Failed to fetch messages:", error);
+    }
   };
 
-  React.useEffect(() => {
-    if (recieverData) {
-      const unsub = onSnapshot(
-        query(
-          collection(
-            firestore,
-            "users",
-            email,
-            "chatUsers",
-            recieverData.email,
-            "messages"
-          ),
-          orderBy("createdAt", "desc")
-        ),
-        (snapshot) => {
-          setMessages(snapshot.docs.map((doc) => doc.data()));
-        }
-      );
-    }
-  }, []);
-
-  // React.useEffect(() => {
-  //   setMessages([
-  //     {
-  //       _id: "marcio",
-  //       text: "Hello developer",
-  //       createdAt: new Date(),
-  //       user: {
-  //         _id: "marta",
-  //         name: "React Native",
-  //         avatar: "https://placeimg.com/140/140/any",
-  //       },
-  //     },
-
-  //     {
-  //       _id: "marta",
-  //       text: "ojoj",
-  //       createdAt: new Date(),
-  //       user: {
-  //         _id: "marcio",
-  //         name: "React Native",
-  //         avatar: "https://placeimg.com/140/140/any",
-  //       },
-  //     },
-  //   ]);
-  // }, []);
-
-  React.useEffect(() => {
-    getUser();
-  }, []);
-
-  const [messages, setMessages] = React.useState([]);
-
-  function padTo2Digits(num) {
-    return num.toString().padStart(2, "0");
-  }
-
-  function formatDate(date) {
-    return (
-      [
-        date.getFullYear(),
-        padTo2Digits(date.getMonth() + 1),
-        padTo2Digits(date.getDate()),
-      ].join("-") +
-      " " +
-      [
-        padTo2Digits(date.getHours()),
-        padTo2Digits(date.getMinutes()),
-        padTo2Digits(date.getSeconds()),
-      ].join(":")
-    );
-  }
-
-  const onSend = React.useCallback(async (messages = []) => {
-    // setMessages((previousMessages) =>
-    //   GiftedChat.append(previousMessages, messages)
-    // );
-
-    const { _id, createdAt, text } = messages[0];
+  const fetchMessages = async () => {
     try {
-      if (user && recieverData) {
-        await addDoc(
-          collection(
-            firestore,
-            "users", // Collection
-            user.email, // sender doc id
-            "chatUsers", //Collection
-            recieverData.email, //reciever doc id
-            "messages" // Collection
-          ),
-          {
-            _id: recieverData.email,
-            user: user,
-            text: text,
-            createdAt: formatDate(new Date()),
-          }
-        );
+      const response = await fetch(`${SERVER_URL}/messages`, {
+        method: "POST",
+        headers: {
+          "content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          users: [recieverData.email, User.email],
+        }),
+      });
 
-        await addDoc(
-          collection(
-            firestore,
-            "users", //Collection
-            recieverData.email, // receiver doc id
-            "chatUsers", //Collection
-            user.email, //sender doc id
-            "messages" //Collection
-          ),
-          {
-            user: user,
-            _id: recieverData.email,
-            text: text,
-            createdAt: formatDate(new Date()),
-          }
-        );
-      }
+      const messages = response.data.map((message) => ({
+        _id: message._id,
+        text: message.message,
+        createdAt: new Date(message.createdAt),
+        user: {
+          _id: message.user,
+          name: message.user,
+        },
+      }));
+      setMessages(messages);
     } catch (error) {
-      console.log(error);
+      console.error("Failed to fetch messages:", error);
     }
-  }, []);
+  };
 
+  const onSend = async (newMessages = []) => {
+    try {
+      const response = await axios.post(SERVER_URL + "/api/new/message", {
+        idchat: currentChatRoom,
+        message: newMessages[0].text,
+        user: newMessages[0].user._id,
+        createdAt: new Date().toISOString(),
+      });
+
+      // Update the local state with the sent message
+      setMessages((prevMessages) =>
+        GiftedChat.append(prevMessages, newMessages)
+      );
+    } catch (error) {
+      console.error("Failed to send message:", error);
+    }
+  };
   return (
     <View style={styles.chat1View}>
       <View style={styles.navigationBarView}>
@@ -183,15 +129,14 @@ const Chat1 = ({ route, navigation }) => {
         </Pressable>
       </View>
 
-      {messages && (
-        <GiftedChat
-          messages={messages}
-          onSend={(messages) => onSend(messages)}
-          user={{
-            _id: email,
-          }}
-        />
-      )}
+      <GiftedChat
+        messages={messages}
+        onSend={(newMessages) => onSend(newMessages)}
+        user={{
+          _id: User._id, // Replace with the user ID or username of the current user
+          name: User.name, // Replace with the name of the current user
+        }}
+      />
     </View>
   );
 };
@@ -222,7 +167,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 20,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
   },
@@ -270,7 +215,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 32.48,
     fontSize: 14,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
     width: 165,
@@ -300,7 +245,7 @@ const styles = StyleSheet.create({
     left: 24.12,
     fontSize: 14,
     lineHeight: 24,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
     width: 191,
@@ -330,7 +275,7 @@ const styles = StyleSheet.create({
     left: 24.12,
     fontSize: 14,
     lineHeight: 24,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
     width: 191,
@@ -352,7 +297,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 14,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
   },
@@ -362,7 +307,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 35,
     fontSize: 14,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
   },
@@ -420,7 +365,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 32.48,
     fontSize: 14,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
     width: 165,
@@ -462,7 +407,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -493,7 +438,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -521,7 +466,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },
@@ -564,7 +509,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 11.5,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
   },
@@ -601,7 +546,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: 0,
     fontSize: 12,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#fff",
     textAlign: "left",
   },

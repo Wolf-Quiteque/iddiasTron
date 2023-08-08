@@ -11,27 +11,33 @@ import {
 } from "../redux/slices/authSlice";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { firestore, storage } from "../firebase";
+import { ScrollView } from "react-native-gesture-handler";
 
 const ProfileConnections = () => {
   var members = [];
 
   const navigation = useNavigation();
 
-  const [users, setUsers] = React.useState(null);
+  const [users, setUsers] = React.useState([]);
   const [user, setuser] = React.useState(useSelector(selectUserDetails));
   const [member, setmember] = React.useState([]);
 
   const getUsers = async () => {
     try {
-      const q = query(
-        collection(firestore, "users"),
-        where("email", "in", user.friends)
+      const res = await fetch(
+        "https://iddias-api-sehk.vercel.app/api/iddias/getfriends",
+        {
+          method: "POST",
+          headers: {
+            "content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: user.email }),
+        }
       );
-
-      const querySnapshot = await getDocs(q);
-      const chartData = querySnapshot.docs.map((doc) => doc.data());
-
-      setUsers(chartData);
+      const response = await res.json();
+      //sdfjlkjlkjljlkjlljlkjkljlkjkjlkj
+      console.log(response);
+      setUsers(response);
     } catch (error) {
       console.log(error);
     }
@@ -54,38 +60,55 @@ const ProfileConnections = () => {
   }, []);
 
   return (
-    <View style={styles.groupCreationMembersView}>
-      <View style={[styles.navigationBarView, styles.mr1]}>
-        <Text style={styles.addMembersText}>Connections</Text>
-      </View>
-      <View style={[styles.inputView, styles.mt29]}>
-        <View style={styles.component1View}>
-          <View style={styles.rectangleView} />
-          <Image
-            style={styles.path99Icon}
-            resizeMode="cover"
-            source={"../assets/path-99@3x.png"}
-          />
+    <ScrollView>
+      <View style={styles.groupCreationMembersView}>
+        <View style={[styles.navigationBarView, styles.mr1]}>
+          <Text style={styles.addMembersText}>Connections</Text>
         </View>
-      </View>
+        <View style={[styles.inputView, styles.mt29]}>
+          <View style={styles.component1View}>
+            <View style={styles.rectangleView} />
+            <Image
+              style={styles.path99Icon}
+              resizeMode="cover"
+              source={"../assets/path-99@3x.png"}
+            />
+          </View>
+        </View>
 
-      {users &&
-        users.map((u, index) => (
-          <Pressable onPress={() => navigation.navigate("SearchResults1", u)}>
-            <View
-              style={[styles.memberView, styles.mt21, styles.mr1]}
-              key={index}
+        {users &&
+          users.map((u, index) => (
+            <Pressable
+              key={u._Id}
+              onPress={() => navigation.navigate("SearchResults1", u)}
             >
-              <Image
-                style={styles.ellipseIcon}
-                resizeMode="cover"
-                source={u.avatar ? u.avatar : u.firstpic}
-              />
-              <Text style={styles.nliaMatosText}>{u.name}</Text>
-            </View>
-          </Pressable>
-        ))}
-    </View>
+              <View
+                style={[styles.memberView, styles.mt21, styles.mr1]}
+                key={index}
+              >
+                <Image
+                  style={styles.ellipseIcon}
+                  resizeMode="cover"
+                  source={{ uri: u.avatar ? u.avatar : u.firstpic }}
+                />
+                <Text style={styles.nliaMatosText}>{u.name}</Text>
+              </View>
+            </Pressable>
+          ))}
+
+        <Pressable
+          style={styles.chatPressable}
+          onPress={() => navigation.navigate("Chat")}
+        >
+          <Text style={styles.chatText}>Chat</Text>
+          <Image
+            style={styles.iconMaterialChatBubble}
+            resizeMode="cover"
+            source={require("../assets/icon-materialchatbubble.png")}
+          />
+        </Pressable>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -113,7 +136,7 @@ const styles = StyleSheet.create({
     left: "50%",
     fontSize: 20,
     fontWeight: "700",
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
   },
@@ -121,7 +144,7 @@ const styles = StyleSheet.create({
     marginTop: -9.5,
     marginLeft: 115,
     fontSize: 16,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#15abb5",
     textAlign: "left",
   },
@@ -196,7 +219,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: "50%",
     fontSize: 14,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
   },
@@ -228,7 +251,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: "50%",
     fontSize: 14,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
   },
@@ -260,7 +283,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: "50%",
     fontSize: 14,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "left",
   },
@@ -292,7 +315,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: "50%",
     fontSize: 14,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
   },
@@ -324,7 +347,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: "50%",
     fontSize: 14,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
   },
@@ -356,7 +379,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: "50%",
     fontSize: 14,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
   },
@@ -388,7 +411,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: "50%",
     fontSize: 14,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
   },
@@ -420,7 +443,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: "50%",
     fontSize: 14,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
   },
@@ -452,7 +475,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: "50%",
     fontSize: 14,
-    fontFamily: "Quicksand",
+    // fontFamily: "Quicksand",
     color: "#000",
     textAlign: "center",
   },

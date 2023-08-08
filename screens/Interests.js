@@ -4,6 +4,8 @@ import {
   StyleSheet,
   ImageBackground,
   Pressable,
+  ScrollView,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import {
@@ -28,20 +30,27 @@ const Interests = ({ route }) => {
   const [interests, setinterests] = React.useState(true);
 
   async function addInterest() {
-    const docRef = doc(firestore, "users", user.email);
     const data = {
+      email: user.email,
       interests: interestsArray,
     };
-    setDoc(docRef, data, { merge: true })
-      .then(() => {
-        navigation.navigate("FaceRecognition", {
-          name: user.name,
-          email: user.email,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
+
+    try {
+      await fetch("https://iddias-api-sehk.vercel.app/api/iddias/update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
+
+      navigation.navigate("FaceRecognition", {
+        name: user.name,
+        email: user.email,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   var interestsArray = [];
@@ -55,209 +64,247 @@ const Interests = ({ route }) => {
   }, []);
 
   return (
-    <View style={styles.interestsView}>
-      <Text style={[styles.interestsText, styles.ml109]}>Interests</Text>{" "}
-      <View></View>
-      <ImageBackground
-        style={[styles.imageIcon, styles.mt36]}
-        resizeMode="cover"
-        source={"../assets/image.png"}
-      />
-      <ImageBackground
-        style={[styles.imageIcon1, styles.mt_100, styles.ml156]}
-        resizeMode="cover"
-        source={"../assets/image1.png"}
-      />{" "}
-      <Pressable
-        onPress={() => {
-          if (interests) {
-            interestsArray.push("Travel");
-          }
-        }}
-      >
-        <Text style={[styles.travelText, styles.mt_62, styles.ml43]}>
-          Travel
-        </Text>
-      </Pressable>
-      <Pressable
-        onPress={() => {
-          if (interests) {
-            interestsArray.push("Music");
-          }
-        }}
-      >
-        <Text
-          style={[
-            styles.musicText,
-            styles.mt_25,
-            styles.ml203,
-            styles.mt_margin,
-          ]}
+    <ScrollView>
+      <View style={styles.interestsView}>
+        <Text style={[styles.interestsText, styles.ml109]}>Interests</Text>
+
+        <ImageBackground
+          style={[styles.imageIcon, styles.mt36]}
+          resizeMode="cover"
+          source={require("../assets/image.png")}
+        />
+
+        <ImageBackground
+          style={[styles.imageIcon1, styles.mt_100, styles.ml156]}
+          resizeMode="cover"
+          source={require("../assets/image1.png")}
+        />
+
+        <View>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (interests) {
+                interestsArray.push("Travel");
+              }
+            }}
+          >
+            <Text style={[styles.travelText, styles.mt_62, styles.ml43]}>
+              Travel
+            </Text>
+          </TouchableWithoutFeedback>
+        </View>
+
+        <View>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (interests) {
+                interestsArray.push("Music");
+              }
+            }}
+          >
+            <Text
+              style={[
+                styles.musicText,
+                styles.mt_25,
+                styles.ml203,
+                styles.mt_margin,
+              ]}
+            >
+              Music
+            </Text>
+          </TouchableWithoutFeedback>
+        </View>
+
+        <ImageBackground
+          style={[styles.imageIcon2, styles.mt52]}
+          resizeMode="cover"
+          source={require("../assets/image2.png")}
+        />
+        <ImageBackground
+          style={[styles.imageIcon3, styles.mt_100, styles.ml156]}
+          resizeMode="cover"
+          source={require("../assets/image3.png")}
+        />
+        <View>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (interests) {
+                interestsArray.push("Sports");
+              }
+            }}
+          >
+            <Text style={[styles.sportsText, styles.mt_62, styles.ml41]}>
+              Sports
+            </Text>
+          </TouchableWithoutFeedback>
+        </View>
+
+        <View>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (interests) {
+                interestsArray.push("Art");
+              }
+            }}
+          >
+            <Text
+              style={[
+                styles.artText,
+                styles.mt_25,
+                styles.ml214,
+                styles.mt_margin,
+              ]}
+            >
+              Art
+            </Text>
+          </TouchableWithoutFeedback>
+        </View>
+
+        <ImageBackground
+          style={[styles.imageIcon4, styles.mt52]}
+          resizeMode="cover"
+          source={require("../assets/image4.png")}
+        />
+        <ImageBackground
+          style={[styles.imageIcon5, styles.mt_100, styles.ml156]}
+          resizeMode="cover"
+          source={require("../assets/image5.png")}
+        />
+
+        <View>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (interests) {
+                interestsArray.push("Food");
+              }
+            }}
+          >
+            <Text style={[styles.foodText, styles.mt_62, styles.ml49]}>
+              Food
+            </Text>
+          </TouchableWithoutFeedback>
+        </View>
+
+        <View>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (interests) {
+                interestsArray.push("Technology");
+              }
+            }}
+          >
+            <Text
+              style={[
+                styles.technologyText,
+                styles.mt_25,
+                styles.ml174,
+                styles.mt_margin,
+              ]}
+            >
+              Technology
+            </Text>
+          </TouchableWithoutFeedback>
+        </View>
+
+        <ImageBackground
+          style={[styles.imageIcon6, styles.mt52]}
+          resizeMode="cover"
+          source={require("../assets/image6.png")}
+        />
+        <ImageBackground
+          style={[styles.imageIcon7, styles.mt_100, styles.ml156]}
+          resizeMode="cover"
+          source={require("../assets/image7.png")}
+        />
+
+        <View>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (interests) {
+                interestsArray.push("Cinema");
+              }
+            }}
+          >
+            <Text style={[styles.cinemaText, styles.mt_62, styles.ml37]}>
+              Cinema
+            </Text>
+          </TouchableWithoutFeedback>
+        </View>
+
+        <View>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (interests) {
+                interestsArray.push("Literature");
+              }
+            }}
+          >
+            <Text
+              style={[
+                styles.literatureText,
+                styles.mt_25,
+                styles.ml181,
+                styles.mt_margin,
+              ]}
+            >
+              Literature
+            </Text>
+          </TouchableWithoutFeedback>
+        </View>
+        <ImageBackground
+          style={[styles.imageIcon8, styles.mt52, styles.ml]}
+          resizeMode="cover"
+          source={require("../assets/image8.png")}
+        />
+        <ImageBackground
+          style={[styles.imageIcon9, styles.mt_100, styles.mt2]}
+          resizeMode="cover"
+          source={require("../assets/image9.png")}
+        />
+        <View>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (interests) {
+                interestsArray.push("Fashion");
+              }
+            }}
+          >
+            <Text style={[styles.fashionText, styles.mt_62, styles.ml37]}>
+              Fashion
+            </Text>
+          </TouchableWithoutFeedback>
+        </View>
+
+        <View>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (interests) {
+                interestsArray.push("Design");
+              }
+            }}
+          >
+            <Text
+              style={[
+                styles.designText,
+                styles.mt_25,
+                styles.ml198,
+                styles.mt_margin,
+              ]}
+            >
+              Design
+            </Text>
+          </TouchableWithoutFeedback>
+        </View>
+
+        <Pressable
+          style={[styles.continuePressable, styles.mt101]}
+          onPress={() => addInterest()}
         >
-          Music
-        </Text>
-      </Pressable>
-      <ImageBackground
-        style={[styles.imageIcon2, styles.mt52]}
-        resizeMode="cover"
-        source={"../assets/image2.png"}
-      />
-      <ImageBackground
-        style={[styles.imageIcon3, styles.mt_100, styles.ml156]}
-        resizeMode="cover"
-        source={"../assets/image3.png"}
-      />
-      <Pressable
-        onPress={() => {
-          if (interests) {
-            interestsArray.push("Sports");
-          }
-        }}
-      >
-        <Text style={[styles.sportsText, styles.mt_62, styles.ml41]}>
-          Sports
-        </Text>
-      </Pressable>
-      <Pressable
-        onPress={() => {
-          if (interests) {
-            interestsArray.push("Art");
-          }
-        }}
-      >
-        <Text
-          style={[styles.artText, styles.mt_25, styles.ml214, styles.mt_margin]}
-        >
-          Art
-        </Text>{" "}
-      </Pressable>
-      <ImageBackground
-        style={[styles.imageIcon4, styles.mt52]}
-        resizeMode="cover"
-        source={"../assets/image4.png"}
-      />
-      <ImageBackground
-        style={[styles.imageIcon5, styles.mt_100, styles.ml156]}
-        resizeMode="cover"
-        source={"../assets/image5.png"}
-      />
-      <Pressable
-        onPress={() => {
-          if (interests) {
-            interestsArray.push("Food");
-          }
-        }}
-      >
-        {" "}
-        <Text style={[styles.foodText, styles.mt_62, styles.ml49]}>Food</Text>
-      </Pressable>
-      <Pressable
-        onPress={() => {
-          if (interests) {
-            interestsArray.push("Technology");
-          }
-        }}
-      >
-        <Text
-          style={[
-            styles.technologyText,
-            styles.mt_25,
-            styles.ml174,
-            styles.mt_margin,
-          ]}
-        >
-          Technology
-        </Text>
-      </Pressable>
-      <ImageBackground
-        style={[styles.imageIcon6, styles.mt52]}
-        resizeMode="cover"
-        source={"../assets/image6.png"}
-      />
-      <ImageBackground
-        style={[styles.imageIcon7, styles.mt_100, styles.ml156]}
-        resizeMode="cover"
-        source={"../assets/image7.png"}
-      />
-      <Pressable
-        onPress={() => {
-          if (interests) {
-            interestsArray.push("Cinema");
-          }
-        }}
-      >
-        {" "}
-        <Text style={[styles.cinemaText, styles.mt_62, styles.ml37]}>
-          Cinema
-        </Text>
-      </Pressable>
-      <Pressable
-        onPress={() => {
-          if (interests) {
-            interestsArray.push("Literature");
-          }
-        }}
-      >
-        <Text
-          style={[
-            styles.literatureText,
-            styles.mt_25,
-            styles.ml181,
-            styles.mt_margin,
-          ]}
-        >
-          Literature
-        </Text>{" "}
-      </Pressable>
-      <ImageBackground
-        style={[styles.imageIcon8, styles.mt52, styles.ml1]}
-        resizeMode="cover"
-        source={"../assets/image8.png"}
-      />
-      <ImageBackground
-        style={[styles.imageIcon9, styles.mt_100]}
-        resizeMode="cover"
-        source={"../assets/image9.png"}
-      />
-      <Pressable
-        onPress={() => {
-          if (interests) {
-            interestsArray.push("Fashion");
-          }
-        }}
-      >
-        {" "}
-        <Text style={[styles.fashionText, styles.mt_62, styles.ml37]}>
-          Fashion
-        </Text>
-      </Pressable>
-      <Pressable
-        onPress={() => {
-          if (interests) {
-            interestsArray.push("Design");
-          }
-        }}
-      >
-        {" "}
-        <Text
-          style={[
-            styles.designText,
-            styles.mt_25,
-            styles.ml198,
-            styles.mt_margin,
-          ]}
-        >
-          Design
-        </Text>
-      </Pressable>
-      <Pressable
-        style={[styles.continuePressable, styles.mt101]}
-        onPress={() => navigation.navigate("FaceRecognition")}
-      >
-        <View style={styles.rectangleView} />
-        <Text style={styles.continueText}>Continue</Text>
-      </Pressable>
-    </View>
+          <View style={styles.rectangleView} />
+          <Text style={styles.continueText}>Continue</Text>
+        </Pressable>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -287,7 +334,7 @@ const styles = StyleSheet.create({
     marginLeft: 203,
   },
   mt52: {
-    marginTop: 52,
+    marginTop: 42,
   },
   ml41: {
     marginLeft: 41,
@@ -314,7 +361,11 @@ const styles = StyleSheet.create({
     marginLeft: 198,
   },
   mt101: {
-    marginTop: 101,
+    marginTop: 50,
+  },
+
+  mt2: {
+    marginRight: -10,
   },
   interestsText: {
     position: "relative",
@@ -483,15 +534,17 @@ const styles = StyleSheet.create({
     left: 0,
     borderRadius: 10,
     backgroundColor: "#21ae9c",
+    marginBottom: 5,
+    width: 320,
   },
   continueText: {
     position: "absolute",
-    marginTop: -11,
+    marginTop: -10,
     marginLeft: -38,
     top: "50%",
     left: "50%",
     fontSize: 18,
-    lineHeight: 12,
+    lineHeight: 20,
     fontWeight: "700",
     // fontFamily: "Quicksand",
     color: "#fff",
@@ -510,7 +563,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     flexDirection: "column",
-    paddingLeft: 36,
+    paddingLeft: 30,
     paddingTop: 39,
     paddingRight: 36,
     alignItems: "flex-start",
